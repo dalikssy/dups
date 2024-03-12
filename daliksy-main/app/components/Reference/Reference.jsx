@@ -68,7 +68,22 @@ const clients = [
     name: "Nyhrox",
     description: "Fortnite World Cup Winner",
     image: "nyhrox.png"
-  }
+  },
+  {
+    name: "NBA",
+    description: "National Basketball League",
+    image: "nba.png"
+  },
+  {
+    name: "NFL",
+    description: "National Football League",
+    image: "nfl.png"
+  },
+  {
+    name: "Gatorade",
+    description: "Hydration drink company",
+    image: "gatorade.png"
+  },
 ];
 
 const Reference = () => {
