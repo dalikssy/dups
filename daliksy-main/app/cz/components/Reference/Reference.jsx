@@ -13,6 +13,16 @@ const clients = [
     image: "jarvis.png",
   },
   {
+    name: "NBA",
+    description: "National Basketball League",
+    image: "nba.png"
+  },
+  {
+    name: "NFL",
+    description: "National Football League",
+    image: "nfl.png"
+  },
+  {
     name: "MrSavage",
     tiktok: "3M+",
     instagram: "2M+",
