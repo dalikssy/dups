@@ -78,7 +78,7 @@ const clients = [
     name: "Nyhrox",
     description: "Fortnite World Cup Vítěz",
     image: "nyhrox.png"
-  }
+  },
 ];
 
 const Reference = () => {
