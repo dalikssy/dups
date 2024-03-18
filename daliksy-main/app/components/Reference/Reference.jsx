@@ -84,6 +84,16 @@ const clients = [
     description: "Hydration drink company",
     image: "gatorade.png"
   },
+  {
+    name: "Jordan Welch",
+    description: "Content Creator and millionaire",
+    image: "jordan.jpeg",
+  },
+  {
+    name: "Andy Milonakis",
+    description: "American comedian, actor, rapper, and internet personality",
+    image: "andy.webp",
+  },
 ];
 
 const Reference = () => {
