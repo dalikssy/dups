@@ -70,6 +70,16 @@ const clients = [
     image: "risa.png"
   },
   {
+    name: "Jordan Welch",
+    description: "Content Creator",
+    image: "jordan.jpeg",
+  },
+  {
+    name: "Andy Milonakis",
+    description: "Americký komik, herec a rapper",
+    image: "andy.webp",
+  },
+  {
     name: "Ninjas In Pyjamas",
     description: "Jedna z největších herních organizací",
     image: "ninjas.png"
