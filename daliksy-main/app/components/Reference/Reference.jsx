@@ -94,6 +94,11 @@ const clients = [
     description: "American comedian, actor, rapper, and internet personality",
     image: "andy.webp",
   },
+  {
+    name: "KayCyy",
+    description: "American rapper",
+    image: "kaycyy.jpeg"
+  },
 ];
 
 const Reference = () => {
