@@ -84,6 +84,11 @@ const clients = [
     description: "Jedna z největších herních organizací",
     image: "ninjas.png"
   },
+   {
+    name: "KayCyy",
+    description: "Americký rapper",
+    image: "kaycyy.jpeg"
+  },
   {
     name: "Nyhrox",
     description: "Fortnite World Cup Vítěz",
