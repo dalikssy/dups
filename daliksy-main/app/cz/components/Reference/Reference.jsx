@@ -51,11 +51,6 @@ const clients = [
     image: "mag.png",
   },
   {
-    name: "Jordan Welch",
-    description: "Content Creator",
-    image: "jordan.jpeg",
-  },
-  {
     name: "Ninjas In Pyjamas",
     description: "Jedna z největších herních organizací",
     image: "ninjas.png"
