@@ -30,20 +30,6 @@ const clients = [
     image: "savage.png",
   },
   {
-    name: "Faze Replays",
-    tiktok: "750K+",
-    instagram: "500K+",
-    youtube: "1.3M+",
-    image: "replays.png",
-  },
-  {
-    name: "Jon Sandman",
-    tiktok: "550K+",
-    instagram: "100K+",
-    youtube: "1M+",
-    image: "jon.png",
-  },
-  {
     name: "Gamdom",
     description: "Největší online kasino kasino na světě",
     image: "gamdom.png",
@@ -65,29 +51,14 @@ const clients = [
     image: "mag.png",
   },
   {
-    name: "Risa Zelinka",
-    description: "Český koloběžkář",
-    image: "risa.png"
-  },
-  {
     name: "Jordan Welch",
     description: "Content Creator",
     image: "jordan.jpeg",
   },
   {
-    name: "Andy Milonakis",
-    description: "Americký komik, herec a rapper",
-    image: "andy.webp",
-  },
-  {
     name: "Ninjas In Pyjamas",
     description: "Jedna z největších herních organizací",
     image: "ninjas.png"
-  },
-   {
-    name: "KayCyy",
-    description: "Americký rapper",
-    image: "kaycyy.jpeg"
   },
   {
     name: "Nyhrox",
