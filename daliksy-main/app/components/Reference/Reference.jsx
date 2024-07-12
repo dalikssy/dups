@@ -55,11 +55,6 @@ const clients = [
     image: "mag.png",
   },
   {
-    name: "Risa Zelinka",
-    description: "Czech Scooter Rider",
-    image: "risa.png"
-  },
-  {
     name: "Ninjas In Pyjamas",
     description: "One of the biggest gaming organizations",
     image: "ninjas.png"
@@ -75,30 +70,9 @@ const clients = [
     image: "nba.png"
   },
   {
-    name: "NFL",
-    description: "National Football League",
-    image: "nfl.png"
-  },
-  {
-    name: "Gatorade",
-    description: "Hydration drink company",
-    image: "gatorade.png"
-  },
-  {
-    name: "Jordan Welch",
-    description: "Content Creator and millionaire",
-    image: "jordan.jpeg",
-  },
-  {
-    name: "Andy Milonakis",
-    description: "American comedian, actor, rapper, and internet personality",
-    image: "andy.webp",
-  },
-  {
-    name: "KayCyy",
-    description: "American rapper",
-    image: "kaycyy.jpeg"
-  },
+    name: "Impakt",
+    description: "Youth Council of the President of the Czech Republic",
+    image: "impakt.png"
 ];
 
 const Reference = () => {
