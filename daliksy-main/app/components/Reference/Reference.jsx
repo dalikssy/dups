@@ -73,6 +73,7 @@ const clients = [
     name: "Impakt",
     description: "Youth Council of the President of the Czech Republic",
     image: "impakt.png"
+   },
 ];
 
 const Reference = () => {
