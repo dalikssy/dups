@@ -69,11 +69,6 @@ const clients = [
     description: "National Basketball League",
     image: "nba.png"
   },
-  {
-    name: "Impakt",
-    description: "Youth Council of the President of the Czech Republic",
-    image: "impakt.png"
-   },
 ];
 
 const Reference = () => {
