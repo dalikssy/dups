@@ -1,0 +1,245 @@
+{
+  "navbar": {
+    "en": "Contact",
+    "cz": "Kontakt"
+  },
+  "title": {
+    "en": "We are DUPSCALED",
+    "cz": "My jsme DUPSCALED"
+  },
+  "main_text": {
+    "en": [
+      { "type": "span", "className": "blue", "text": "DUPSCALED" },
+      {
+        "type": "text",
+        "text": " crafts standout brands through social mastery, expert editing, and stunning design. We've sparked "
+      },
+      { "type": "span", "text": "over a billion views" },
+      { "type": "text", "text": " for global stars. " },
+      { "type": "span", "text": "Join us to elevate your online presence." }
+    ],
+    "cz": [
+      { "type": "span", "className": "blue", "text": "DUPSCALED" },
+      {
+        "type": "text",
+        "text": " exceluje ve vytváření vynikajícího kontentu a zdokonalování značek díky svým znalostem sociálních sítí, profesionálním střihem a designem. S globálními hvězdami jsme již "
+      },
+      {
+        "type": "span",
+        "text": "dosáhli více než miliardy zhlédnutí. Připojte se k nám a zvedněte svou online prezentaci na novou úroveň!"
+      }
+    ]
+  },
+  "main_book": {
+    "en": "Book a free call",
+    "cz": "Sjednat Schůzku"
+  },
+  "main_references": {
+    "en": "View References",
+    "cz": "Prohlédnout reference"
+  },
+  "references": [
+    {
+      "name": "Benjyfishy",
+      "description": {
+        "en": "Professional Valorant Player",
+        "cz": "Profesionální hráč Valorantu"
+      },
+      "img": "benjyfishy.png",
+      "reference": {
+        "en": "Dal has been very professional and has been able to get me great results quickly, he has put in extra effort and is my go-to person for short-form content",
+        "cz": "Dal byl velmi profesionální a dokázal mi rychle dosáhnout skvělých výsledků, vynaložil další úsilí a je mým hlavním člověkem pro krátký obsah"
+      }
+    },
+    {
+      "name": "Benjyy",
+      "description": {
+        "en": "Professional Valorant Player",
+        "cz": "Profesionální hráč Valorantu"
+      },
+      "reference": {
+        "en": "Dalk has been very professional and has been able to get me great results quickly, he has put in extra effort and is my go-to person for short-form content",
+        "cz": "Dalk byl velmi profesionální a dokázal mi rychle dosáhnout skvělých výsledků, vynaložil další úsilí a je mým hlavním člověkem pro krátký obsah"
+      }
+    },
+    {
+      "name": "B",
+      "description": {
+        "en": "Professional Valorant Player",
+        "cz": "Profesionální hráč Valorantu"
+      },
+      "reference": {
+        "en": "alik has been very professional and has been able to get me great results quickly, he has put in extra effort and is my go-to person for short-form content",
+        "cz": "alik byl velmi profesionální a dokázal mi rychle dosáhnout skvělých výsledků, vynaložil další úsilí a je mým hlavním člověkem pro krátký obsah"
+      }
+    }
+  ],
+  "clients": [
+    {
+      "name": "Jarvis",
+      "tiktok": "3M+",
+      "instagram": "2M+",
+      "youtube": "5M+",
+      "image": "jarvis.png"
+    },
+    {
+      "name": "MrSavage",
+      "tiktok": "3M+",
+      "instagram": "2M+",
+      "youtube": "2M+",
+      "image": "savage.png"
+    },
+    {
+      "name": "Faze Replays",
+      "tiktok": "750K+",
+      "instagram": "500K+",
+      "youtube": "1.3M+",
+      "image": "replays.png"
+    },
+    {
+      "name": "Jon Sandman",
+      "tiktok": "550K+",
+      "instagram": "100K+",
+      "youtube": "1M+",
+      "image": "jon.png"
+    },
+    {
+      "name": "Gamdom",
+      "description": {
+        "en": "World's biggest on-line casino",
+        "cz": "Největší online kasino na světě"
+      },
+      "image": "gamdom.png"
+    },
+    {
+      "name": "Jiri BJP Prochazka",
+      "description": {
+        "en": "Former UFC Light Heavyweight Champion",
+        "cz": "Bývalý šampion UFC v polotěžké váze"
+      },
+      "image": "jiri.png"
+    },
+    {
+      "name": "Milad Mirg",
+      "tiktok": "6.4M+",
+      "youtube": "6.5M+",
+      "image": "milad.png"
+    },
+    {
+      "name": "The MAG",
+      "description": {
+        "en": "The biggest video magazine in the Czech Republic",
+        "cz": "Největší video magazín v České republice"
+      },
+      "image": "mag.png"
+    },
+    {
+      "name": "Risa Zelinka",
+      "description": {
+        "en": "Czech Scooter Rider",
+        "cz": "Český jezdec na skútru"
+      },
+      "image": "risa.png"
+    },
+    {
+      "name": "Ninjas In Pyjamas",
+      "description": {
+        "en": "One of the biggest gaming organizations",
+        "cz": "Jedna z největších herních organizací"
+      },
+      "image": "ninjas.png"
+    },
+    {
+      "name": "Nyhrox",
+      "description": {
+        "en": "Fortnite World Cup Winner",
+        "cz": "Vítěz Fortnite World Cupu"
+      },
+      "image": "nyhrox.png"
+    }
+  ],
+  "platforms": {
+    "en": {
+      "other": "Followers",
+      "youtube": "Subscribers"
+    },
+    "cz": {
+      "other": "Sledujících",
+      "youtube": "Odběratelů"
+    }
+  },
+  "clients_title": {
+    "en": "Trusted by superstars all<br> around the world",
+    "cz": "Spolupracujeme s hvězdami <br> po celém světě"
+  },
+  "clients_highlight": {
+    "en": "Client highlights, contact us for a full client list.",
+    "cz": "Ukázka klientů, kontaktujte nás pro celý seznam klientů."
+  },
+  "categories_title": {
+    "en": {
+      "media": "SOCIAL MEDIA<br>MANAGMENT",
+      "editing": "VIDEO EDITING",
+      "design": "GRAPHIC DESIGN"
+    },
+    "cz": {
+      "media": "SPRÁVA<br>SOCIÁLNÍCH SÍTÍ",
+      "editing": "STŘIH VIDEA",
+      "design": "GRAFICKÝ DESIGN"
+    }
+  },
+  "categories_description": {
+    "en": {
+      "media": "At DUPSCALED, we make your life easier on social media. We handle your posts, engage with your audience, and ensure your brand stays in the spotlight.<br><br> From catchy captions to perfect timing, we've got it covered. Let us navigate the social world for you, so you can focus on what you do best. With DUPSCALED, your online success is just a post away!",
+      "editing": "We elevate your videos with expert editing. From fine-tuning to adding flair, we make your content stand out. Let us bring your vision to life – your story, our edit.",
+      "design": "Always boosting your brand with graphic design, that just stands out! Our creative team turns ideas into captivating visuals, from logos to social media graphics. Choose us for design that speaks volumes."
+    },
+    "cz": {
+      "media": "Dupscaled vám usnadní život na sociálních sítích. Staráme se o vaše příspěvky, komunikujeme s vaším publikem a zajišťujeme, aby vaše značka zůstala v centru pozornosti.<br><br>Postaráme se o vše, od chytlavých titulků až po dokonalé načasování. Nechte nás, abychom svět sociálních sítí řídili za vás, a vy se tak můžete soustředit na to, co umíte nejlépe.",
+      "editing": "Vaše videa pozvedneme odborným střihem. Od jemného doladění až po přidání stylu. Díky nám váš obsah vynikne. Nechte nás oživit vaši vizi – váš příběh, náš střih.",
+      "design": "Vždy podporujte svou značku grafickým designem, který prostě vynikne! Náš kreativní tým proměňuje nápady v poutavé vizuály, od loga po grafiku pro sociální média. Vyberte si nás pro design, který osloví každého."
+    }
+  },
+  "form_title": {
+    "en": "Let’s get in touch!",
+    "cz": "Spojme se!"
+  },
+  "form_labels": {
+    "en": {
+      "name": "NAME",
+      "email": "EMAIL",
+      "message": "MESSAGE",
+      "submit": {
+        "received": "Received",
+        "sending": "Sending",
+        "submit": "Send message"
+      }
+    },
+    "cz": {
+      "name": "JMÉNO",
+      "email": "EMAIL",
+      "message": "ZPRÁVA",
+      "submit": {
+        "received": "Odesláno",
+        "sending": "Posílám",
+        "submit": "Odeslat zprávu"
+      }
+    }
+  },
+  "form_placeholders": {
+    "en": {
+      "name": "Full name",
+      "email": "youremail@gmail.com",
+      "message": "Type your inquiry here!"
+    },
+    "cz": {
+      "name": "Vaše jméno",
+      "email": "vášemail@gmail.com",
+      "message": "Zde napiš svůj dotaz!"
+    }
+  },
+  "popup": {
+    "en": "Click here to schedule!",
+    "cz": "Sjednat Schůzku"
+  }
+}
