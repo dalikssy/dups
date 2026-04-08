@@ -4,6 +4,7 @@ import Form from "@/components/Form/Form";
 import Landing from "@/components/Landing/Landing";
 import Clients from "@/components/Clients/Clients";
 import References from "@/components/References/References";
+import CaseStudy from "@/components/CaseStudy/CaseStudy";
 
 export default function Home() {
   return (
