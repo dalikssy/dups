@@ -3,14 +3,21 @@ import { useState, useEffect, useCallback } from "react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import Image from "next/image";
 
-/* ============ storage helpers — localStorage ============ */
+/* ============ storage helpers — server KV ============ */
 const sget = async (key) => {
-  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; }
-  catch { return null; }
+  try {
+    const r = await fetch("/api/storage?key=" + encodeURIComponent(key));
+    return r.ok ? await r.json() : null;
+  } catch { return null; }
 };
 const sset = async (key, val) => {
-  try { localStorage.setItem(key, JSON.stringify(val)); return true; }
-  catch { return false; }
+  try {
+    const r = await fetch("/api/storage", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, value: val }) });
+    return r.ok;
+  } catch { return false; }
+};
+const sdel = async (key) => {
+  try { await fetch("/api/storage?key=" + encodeURIComponent(key), { method: "DELETE" }); } catch {}
 };
 
 const genCode = () => {
@@ -141,7 +148,7 @@ function Admin({ settings, setSettings, onLogout }) {
   const deleteClient = async (codeDel) => {
     const idx = (await sget("clients:index")) || [];
     await sset("clients:index", idx.filter((c) => c !== codeDel));
-    try { localStorage.removeItem("client:" + codeDel); } catch {}
+    await sdel("client:" + codeDel);
     setClients((p) => p.filter((c) => c.code !== codeDel));
     setSel(null);
   };
