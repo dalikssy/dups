@@ -26,6 +26,25 @@
   font-size: 14px;
 }
 
+.portalBtn {
+  font-family: ui-monospace, monospace;
+  font-size: 11px !important;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #2bff87 !important;
+  border: 1px solid rgba(43,255,135,.4);
+  border-radius: 4px;
+  padding: 7px 14px;
+  white-space: nowrap;
+  transition: all .2s;
+}
+
+.portalBtn:hover {
+  background: #2bff87;
+  color: #06080a !important;
+}
+
 .landing h1 {
   margin-top: 170px;
   margin-bottom: 55px;
