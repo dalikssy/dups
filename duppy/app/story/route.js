@@ -8,7 +8,7 @@ export async function GET(request) {
     const value = await kv.get(key);
     return Response.json(value ?? null);
   } catch {
-    return Response.json(null);
+    return Response.json(null)
   }
 }
 
