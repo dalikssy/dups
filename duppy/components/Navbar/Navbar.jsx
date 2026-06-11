@@ -27,6 +27,8 @@ export default function Navbar({ language }) {
       <nav className={styles.nav}>
         <a href="#form">{navbar[language]}</a>
 
+        <a href="/onboarding" className={styles.portalBtn}>CLIENT PORTAL</a>
+
         <div className={styles.language}>
           <p>
             <Link
