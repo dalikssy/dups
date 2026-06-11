@@ -1,13 +1,15 @@
+"use client";
 import { useState, useEffect, useCallback } from "react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import Image from "next/image";
 
-/* ============ storage helpers ============ */
+/* ============ storage helpers — localStorage ============ */
 const sget = async (key) => {
-  try { const r = await window.storage.get(key, true); return r ? JSON.parse(r.value) : null; }
+  try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; }
   catch { return null; }
 };
 const sset = async (key, val) => {
-  try { await window.storage.set(key, JSON.stringify(val), true); return true; }
+  try { localStorage.setItem(key, JSON.stringify(val)); return true; }
   catch { return false; }
 };
 
@@ -41,13 +43,12 @@ const emptyOnboarding = {
   notes: "",
 };
 
-/* ============ root ============ */
 export default function App() {
-  const [view, setView] = useState("login"); // login | admin | client
+  const [view, setView] = useState("login");
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
   const [code, setCode] = useState("");
-  const [me, setMe] = useState(null); // client object when client logged in
+  const [me, setMe] = useState(null);
   const [settings, setSettings] = useState(null);
 
   const login = async () => {
@@ -60,7 +61,7 @@ export default function App() {
     if (c === st.adminPin.toUpperCase()) { setView("admin"); setLoading(false); return; }
     const cl = await sget("client:" + c);
     if (cl) { setMe(cl); setView("client"); }
-    else setErr("Kód nenalezen. Zkontroluj ho, nebo napiš Daliborovi.");
+    else setErr("Code not found. Double-check it or contact Dalibor.");
     setLoading(false);
   };
 
@@ -70,9 +71,11 @@ export default function App() {
       {view === "login" && (
         <div className="login-wrap">
           <div className="login-card">
-            <div className="wordmark"><span className="dot" />DUPSCALED</div>
+            <div className="logo-wrap">
+              <Image src="/logo.png" width={160} height={19} alt="DUPSCALED" style={{ filter: "invert(1) brightness(10)" }} />
+            </div>
             <p className="login-sub">CLIENT PORTAL</p>
-            <label className="flabel">Přístupový kód</label>
+            <label className="flabel">Access code</label>
             <input
               className="finput code-input"
               value={code}
@@ -84,9 +87,9 @@ export default function App() {
             />
             {err && <p className="err">{err}</p>}
             <button className="btn solid wide" onClick={login} disabled={loading}>
-              {loading ? "Ověřuju…" : "Vstoupit →"}
+              {loading ? "Verifying…" : "Enter →"}
             </button>
-            <p className="hint">Klienti dostávají kód od DUPSCALED. Admin vstupuje svým PINem.</p>
+            <p className="hint">Clients receive their code from DUPSCALED. Admins use their PIN.</p>
           </div>
         </div>
       )}
@@ -96,10 +99,9 @@ export default function App() {
   );
 }
 
-/* ============ ADMIN ============ */
 function Admin({ settings, setSettings, onLogout }) {
   const [clients, setClients] = useState(null);
-  const [sel, setSel] = useState(null); // selected client code
+  const [sel, setSel] = useState(null);
   const [showNew, setShowNew] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -139,7 +141,7 @@ function Admin({ settings, setSettings, onLogout }) {
   const deleteClient = async (codeDel) => {
     const idx = (await sget("clients:index")) || [];
     await sset("clients:index", idx.filter((c) => c !== codeDel));
-    try { await window.storage.delete("client:" + codeDel, true); } catch {}
+    try { localStorage.removeItem("client:" + codeDel); } catch {}
     setClients((p) => p.filter((c) => c.code !== codeDel));
     setSel(null);
   };
@@ -149,18 +151,18 @@ function Admin({ settings, setSettings, onLogout }) {
   return (
     <div className="shell">
       <TopBar label="ADMIN" onLogout={onLogout} extra={
-        <button className="btn small" onClick={() => setShowSettings(true)}>Nastavení</button>
+        <button className="btn small" onClick={() => setShowSettings(true)}>Settings</button>
       } />
       {!selected ? (
         <div className="page">
           <Stats clients={clients} />
           <div className="row-between">
-            <h2 className="h2">Klienti</h2>
-            <button className="btn solid" onClick={() => setShowNew(true)}>+ Nový klient</button>
+            <h2 className="h2">Clients</h2>
+            <button className="btn solid" onClick={() => setShowNew(true)}>+ New client</button>
           </div>
-          {clients === null ? <p className="mute">Načítám…</p> :
+          {clients === null ? <p className="mute">Loading…</p> :
             clients.length === 0 ? (
-              <div className="empty">Zatím žádní klienti. Vytvoř prvního a pošli mu přístupový kód.</div>
+              <div className="empty">No clients yet. Create the first one and send them their access code.</div>
             ) : (
               <div className="cgrid">
                 {clients.sort((a, b) => b.createdAt - a.createdAt).map((c) => (
@@ -174,7 +176,7 @@ function Admin({ settings, setSettings, onLogout }) {
                     </div>
                     <div className="ccard-foot">
                       <span className={"pill " + (c.stage === "Active" ? "pill-on" : "")}>{c.stage}</span>
-                      <span className="mono-sm">{c.onboardingComplete ? "✓ Onboarding hotov" : "○ Čeká na onboarding"}</span>
+                      <span className="mono-sm">{c.onboardingComplete ? "✓ Onboarding done" : "○ Awaiting onboarding"}</span>
                     </div>
                   </button>
                 ))}
@@ -193,10 +195,10 @@ function Admin({ settings, setSettings, onLogout }) {
 function Stats({ clients }) {
   const c = clients || [];
   const items = [
-    ["Celkem klientů", c.length],
-    ["Aktivní", c.filter((x) => x.stage === "Active").length],
-    ["Čeká onboarding", c.filter((x) => !x.onboardingComplete).length],
-    ["Deliverables v běhu", c.reduce((n, x) => n + (x.deliverables || []).filter((d) => d.status !== "Delivered").length, 0)],
+    ["Total clients", c.length],
+    ["Active", c.filter((x) => x.stage === "Active").length],
+    ["Pending onboarding", c.filter((x) => !x.onboardingComplete).length],
+    ["Deliverables in progress", c.reduce((n, x) => n + (x.deliverables || []).filter((d) => d.status !== "Delivered").length, 0)],
   ];
   return (
     <div className="stats">
@@ -210,12 +212,12 @@ function Stats({ clients }) {
 function NewClientModal({ onClose, onCreate }) {
   const [name, setName] = useState("");
   return (
-    <Modal title="Nový klient" onClose={onClose}>
-      <label className="flabel">Jméno / brand</label>
+    <Modal title="New client" onClose={onClose}>
+      <label className="flabel">Name / brand</label>
       <input className="finput" value={name} onChange={(e) => setName(e.target.value)} autoFocus
-        onKeyDown={(e) => e.key === "Enter" && name.trim() && onCreate(name.trim())} placeholder="např. MrSavage" />
+        onKeyDown={(e) => e.key === "Enter" && name.trim() && onCreate(name.trim())} placeholder="e.g. MrSavage" />
       <button className="btn solid wide" style={{ marginTop: 16 }} disabled={!name.trim()} onClick={() => onCreate(name.trim())}>
-        Vytvořit a vygenerovat kód →
+        Create & generate code →
       </button>
     </Modal>
   );
@@ -228,16 +230,15 @@ function SettingsModal({ settings, setSettings, onClose }) {
     await sset("settings", st); setSettings(st); onClose();
   };
   return (
-    <Modal title="Nastavení" onClose={onClose}>
+    <Modal title="Settings" onClose={onClose}>
       <label className="flabel">Admin PIN</label>
       <input className="finput" value={pin} onChange={(e) => setPin(e.target.value)} />
-      <p className="hint" style={{ marginTop: 10 }}>Výchozí PIN je DUPSCALED — změň si ho hned.</p>
-      <button className="btn solid wide" style={{ marginTop: 16 }} onClick={save}>Uložit</button>
+      <p className="hint" style={{ marginTop: 10 }}>Default PIN is DUPSCALED — change it now.</p>
+      <button className="btn solid wide" style={{ marginTop: 16 }} onClick={save}>Save</button>
     </Modal>
   );
 }
 
-/* ---- client detail (admin) ---- */
 function ClientDetail({ client, save, del, back }) {
   const [tab, setTab] = useState("overview");
   const [copied, setCopied] = useState(false);
@@ -249,15 +250,15 @@ function ClientDetail({ client, save, del, back }) {
 
   return (
     <div className="page">
-      <button className="ghost" onClick={back}>← Zpět na klienty</button>
+      <button className="ghost" onClick={back}>← Back to clients</button>
       <div className="detail-head">
         <div className="ccard-top">
           <div className="avatar lg">{client.name.slice(0, 2).toUpperCase()}</div>
           <div>
             <h2 className="h2" style={{ margin: 0 }}>{client.name}</h2>
             <div className="row" style={{ gap: 10, marginTop: 6 }}>
-              <span className="mono-sm">Kód: {client.code}</span>
-              <button className="ghost small" onClick={copy}>{copied ? "✓ Zkopírováno" : "Kopírovat kód"}</button>
+              <span className="mono-sm">Code: {client.code}</span>
+              <button className="ghost small" onClick={copy}>{copied ? "✓ Copied" : "Copy code"}</button>
             </div>
           </div>
         </div>
@@ -267,42 +268,40 @@ function ClientDetail({ client, save, del, back }) {
       </div>
 
       <div className="tabs">
-        {[["overview", "Přehled"], ["analytics", "Analytics"], ["deliverables", "Deliverables"], ["onboarding", "Onboarding data"], ["notes", "Poznámky"]].map(([k, l]) => (
+        {[["overview", "Overview"], ["analytics", "Analytics"], ["deliverables", "Deliverables"], ["onboarding", "Onboarding data"], ["notes", "Notes"]].map(([k, l]) => (
           <button key={k} className={"tab " + (tab === k ? "on" : "")} onClick={() => setTab(k)}>{l}</button>
         ))}
       </div>
 
       {tab === "overview" && (
         <div className="panel">
-          <Row k="Status onboardingu" v={client.onboardingComplete ? "✓ Dokončen" : "○ Nedokončen"} />
-          <Row k="Kontakt" v={client.onboarding.contactName || "—"} />
+          <Row k="Onboarding status" v={client.onboardingComplete ? "✓ Complete" : "○ Incomplete"} />
+          <Row k="Contact" v={client.onboarding.contactName || "—"} />
           <Row k="Email" v={client.onboarding.email || "—"} />
-          <Row k="Cíle" v={client.onboarding.goals || "—"} />
-          <Row k="Deliverables" v={`${(client.deliverables || []).filter(d => d.status === "Delivered").length} / ${(client.deliverables || []).length} hotovo`} />
+          <Row k="Goals" v={client.onboarding.goals || "—"} />
+          <Row k="Deliverables" v={`${(client.deliverables || []).filter(d => d.status === "Delivered").length} / ${(client.deliverables || []).length} done`} />
           <div style={{ padding: "18px 22px" }}>
             {!confirmDel
-              ? <button className="ghost danger" onClick={() => setConfirmDel(true)}>Smazat klienta</button>
+              ? <button className="ghost danger" onClick={() => setConfirmDel(true)}>Delete client</button>
               : <span className="row" style={{ gap: 12 }}>
-                  <span className="mono-sm" style={{ color: "#ff6b6b" }}>Opravdu smazat? Nejde to vrátit.</span>
-                  <button className="ghost danger" onClick={() => del(client.code)}>Ano, smazat</button>
-                  <button className="ghost" onClick={() => setConfirmDel(false)}>Zrušit</button>
+                  <span className="mono-sm" style={{ color: "#ff6b6b" }}>Really delete? This cannot be undone.</span>
+                  <button className="ghost danger" onClick={() => del(client.code)}>Yes, delete</button>
+                  <button className="ghost" onClick={() => setConfirmDel(false)}>Cancel</button>
                 </span>}
           </div>
         </div>
       )}
 
       {tab === "analytics" && <Analytics client={client} save={save} editable />}
-
       {tab === "deliverables" && <Deliverables client={client} save={save} editable />}
-
       {tab === "onboarding" && <OnboardingView ob={client.onboarding} />}
 
       {tab === "notes" && (
         <div className="panel" style={{ padding: 22 }}>
-          <label className="flabel">Interní poznámky (klient je nevidí)</label>
+          <label className="flabel">Internal notes (client cannot see these)</label>
           <textarea className="finput" rows={8} value={client.adminNotes}
             onChange={(e) => save({ ...client, adminNotes: e.target.value })}
-            placeholder="Pricing, dohody, kontext z callů…" />
+            placeholder="Pricing, agreements, call notes…" />
         </div>
       )}
     </div>
@@ -316,29 +315,28 @@ function Row({ k, v }) {
 function OnboardingView({ ob }) {
   return (
     <div className="panel">
-      <div className="panel-sec">ZÁKLAD & CÍLE</div>
-      <Row k="Kontaktní osoba" v={ob.contactName || "—"} />
+      <div className="panel-sec">BASICS & GOALS</div>
+      <Row k="Contact person" v={ob.contactName || "—"} />
       <Row k="Email" v={ob.email || "—"} />
-      <Row k="Brand / firma" v={ob.company || "—"} />
-      <Row k="Cíle" v={ob.goals || "—"} />
-      <Row k="Cílovka" v={ob.audience || "—"} />
-      <Row k="Konkurence / inspirace" v={ob.competitors || "—"} />
+      <Row k="Brand / company" v={ob.company || "—"} />
+      <Row k="Goals" v={ob.goals || "—"} />
+      <Row k="Target audience" v={ob.audience || "—"} />
+      <Row k="Competitors / inspiration" v={ob.competitors || "—"} />
       <div className="panel-sec">BRAND ASSETS</div>
-      <Row k="Barvy" v={ob.colors || "—"} />
-      <Row k="Fonty" v={ob.fonts || "—"} />
+      <Row k="Colors" v={ob.colors || "—"} />
+      <Row k="Fonts" v={ob.fonts || "—"} />
       <Row k="Logo (link)" v={ob.logoLink || "—"} />
-      <Row k="Další assets (link)" v={ob.assetsLink || "—"} />
-      <Row k="Poznámky ke stylu" v={ob.styleNotes || "—"} />
-      <div className="panel-sec">SOCIÁLNÍ SÍTĚ</div>
+      <Row k="Other assets (link)" v={ob.assetsLink || "—"} />
+      <Row k="Style notes" v={ob.styleNotes || "—"} />
+      <div className="panel-sec">SOCIAL MEDIA</div>
       {(ob.socials || []).map((s, i) => (
-        <Row key={i} k={s.platform} v={(s.handle || "—") + (s.access ? "  ·  přístup: " + s.access : "")} />
+        <Row key={i} k={s.platform} v={(s.handle || "—") + (s.access ? "  ·  access: " + s.access : "")} />
       ))}
-      {ob.notes && <><div className="panel-sec">OSTATNÍ</div><Row k="Poznámka klienta" v={ob.notes} /></>}
+      {ob.notes && <><div className="panel-sec">OTHER</div><Row k="Client note" v={ob.notes} /></>}
     </div>
   );
 }
 
-/* ---- deliverables (shared admin/client; editable flag) ---- */
 function Deliverables({ client, save, editable }) {
   const [title, setTitle] = useState("");
   const list = client.deliverables || [];
@@ -356,11 +354,11 @@ function Deliverables({ client, save, editable }) {
       {editable && (
         <div className="row" style={{ padding: "16px 22px", gap: 10, borderBottom: "1px solid var(--line)" }}>
           <input className="finput" style={{ flex: 1 }} value={title} onChange={(e) => setTitle(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && add()} placeholder="např. 10× short-form clip / týden 24" />
-          <button className="btn small solid" onClick={add}>Přidat</button>
+            onKeyDown={(e) => e.key === "Enter" && add()} placeholder="e.g. 10× short-form clips / week 24" />
+          <button className="btn small solid" onClick={add}>Add</button>
         </div>
       )}
-      {list.length === 0 && <div className="empty" style={{ border: 0 }}>Zatím žádné deliverables.</div>}
+      {list.length === 0 && <div className="empty" style={{ border: 0 }}>No deliverables yet.</div>}
       {list.map((d) => (
         <div className="dlv" key={d.id}>
           <span className="dlv-dot" style={{ background: DSTATUS_COLOR[d.status] }} />
@@ -385,7 +383,6 @@ function Deliverables({ client, save, editable }) {
   );
 }
 
-/* ============ CLIENT PORTAL ============ */
 function ClientPortal({ client, setClient, onLogout }) {
   const [local, setLocal] = useState(client);
   const refresh = useCallback(async () => {
@@ -403,32 +400,31 @@ function ClientPortal({ client, setClient, onLogout }) {
     <div className="shell">
       <TopBar label={local.name} onLogout={onLogout} />
       <div className="page">
-        <p className="eyebrow">VÁŠ PROJEKT</p>
-        <h2 className="h2">Ahoj, {local.onboarding.contactName?.split(" ")[0] || local.name} 👋</h2>
-        <p className="mute" style={{ marginBottom: 28 }}>Tady vidíte stav všech deliverables. Pokud něco chybí, ozvěte se nám.</p>
-        <h3 className="h3" style={{ margin: "0 0 14px" }}>Vaše čísla</h3>
+        <p className="eyebrow">YOUR PROJECT</p>
+        <h2 className="h2">Hey, {local.onboarding.contactName?.split(" ")[0] || local.name} 👋</h2>
+        <p className="mute" style={{ marginBottom: 28 }}>Here you can track all your deliverables. If anything is missing, reach out to us.</p>
+        <h3 className="h3" style={{ margin: "0 0 14px" }}>Your numbers</h3>
         <Analytics client={local} save={save} editable={false} />
         <h3 className="h3" style={{ margin: "40px 0 14px" }}>Deliverables</h3>
         <Deliverables client={local} save={save} editable={false} />
-        <h3 className="h3" style={{ margin: "40px 0 14px" }}>Vaše údaje z onboardingu</h3>
+        <h3 className="h3" style={{ margin: "40px 0 14px" }}>Your onboarding details</h3>
         <OnboardingView ob={local.onboarding} />
         <button className="ghost" style={{ marginTop: 20 }}
           onClick={() => save({ ...local, onboardingComplete: false })}>
-          ✎ Upravit onboarding údaje
+          ✎ Edit onboarding details
         </button>
       </div>
     </div>
   );
 }
 
-/* ---- onboarding wizard ---- */
 function Wizard({ client, save, onLogout }) {
   const [step, setStep] = useState(0);
   const [ob, setOb] = useState(client.onboarding || emptyOnboarding);
   const [saving, setSaving] = useState(false);
   const set = (k, v) => setOb((p) => ({ ...p, [k]: v }));
 
-  const steps = ["Základ & cíle", "Brand assets", "Sociální sítě", "Shrnutí"];
+  const steps = ["Basics & goals", "Brand assets", "Social media", "Summary"];
 
   const finish = async () => {
     setSaving(true);
@@ -448,29 +444,29 @@ function Wizard({ client, save, onLogout }) {
 
         {step === 0 && (
           <div className="form-stack">
-            <Field l="Kontaktní osoba" v={ob.contactName} on={(v) => set("contactName", v)} ph="Jméno a příjmení" />
-            <Field l="Email" v={ob.email} on={(v) => set("email", v)} ph="vas@email.com" type="email" />
-            <Field l="Brand / firma" v={ob.company} on={(v) => set("company", v)} ph="Název brandu" />
-            <Field l="Čeho chcete dosáhnout?" v={ob.goals} on={(v) => set("goals", v)} area ph="Růst followers, views, prodeje, osobní brand…" />
-            <Field l="Kdo je vaše cílovka?" v={ob.audience} on={(v) => set("audience", v)} area ph="Věk, zájmy, platformy…" />
-            <Field l="Konkurence nebo účty, které se vám líbí" v={ob.competitors} on={(v) => set("competitors", v)} area ph="Linky nebo @handles" />
+            <Field l="Contact person" v={ob.contactName} on={(v) => set("contactName", v)} ph="Full name" />
+            <Field l="Email" v={ob.email} on={(v) => set("email", v)} ph="you@email.com" type="email" />
+            <Field l="Brand / company" v={ob.company} on={(v) => set("company", v)} ph="Brand name" />
+            <Field l="What do you want to achieve?" v={ob.goals} on={(v) => set("goals", v)} area ph="Grow followers, views, sales, personal brand…" />
+            <Field l="Who is your target audience?" v={ob.audience} on={(v) => set("audience", v)} area ph="Age, interests, platforms…" />
+            <Field l="Competitors or accounts you like" v={ob.competitors} on={(v) => set("competitors", v)} area ph="Links or @handles" />
           </div>
         )}
 
         {step === 1 && (
           <div className="form-stack">
-            <Field l="Brand barvy" v={ob.colors} on={(v) => set("colors", v)} ph="#06080A, #2BFF87…" />
-            <Field l="Fonty" v={ob.fonts} on={(v) => set("fonts", v)} ph="Archivo, Space Grotesk…" />
-            <Field l="Logo — link ke stažení" v={ob.logoLink} on={(v) => set("logoLink", v)} ph="Google Drive / Dropbox link" />
-            <Field l="Další assets — link" v={ob.assetsLink} on={(v) => set("assetsLink", v)} ph="Fotky, B-roll, brand manuál…" />
-            <Field l="Poznámky ke stylu" v={ob.styleNotes} on={(v) => set("styleNotes", v)} area ph="Co se vám líbí / nelíbí, tone of voice…" />
+            <Field l="Brand colors" v={ob.colors} on={(v) => set("colors", v)} ph="#06080A, #2BFF87…" />
+            <Field l="Fonts" v={ob.fonts} on={(v) => set("fonts", v)} ph="Archivo, Space Grotesk…" />
+            <Field l="Logo — download link" v={ob.logoLink} on={(v) => set("logoLink", v)} ph="Google Drive / Dropbox link" />
+            <Field l="Other assets — link" v={ob.assetsLink} on={(v) => set("assetsLink", v)} ph="Photos, B-roll, brand manual…" />
+            <Field l="Style notes" v={ob.styleNotes} on={(v) => set("styleNotes", v)} area ph="What you like / dislike, tone of voice…" />
           </div>
         )}
 
         {step === 2 && (
           <div className="form-stack">
             <div className="warn">
-              ⚠ Nikdy sem nepište hesla. Do pole „přístup" napište jen způsob, jakým nám přístup dáte (např. „pozvánka přes Meta Business", „heslo pošlu přes 1Password / Signal").
+              ⚠ Never enter passwords here. In the "access" field, only describe how you will grant access (e.g. "Meta Business invite", "I'll send the password via 1Password / Signal").
             </div>
             {ob.socials.map((s, i) => (
               <div className="social-row" key={i}>
@@ -478,26 +474,26 @@ function Wizard({ client, save, onLogout }) {
                   {["Instagram", "TikTok", "YouTube", "X / Twitter", "Facebook", "LinkedIn", "Twitch"].map((p) => <option key={p}>{p}</option>)}
                 </select>
                 <input className="finput" value={s.handle} onChange={(e) => setSocial(i, { handle: e.target.value })} placeholder="@handle" />
-                <input className="finput" value={s.access} onChange={(e) => setSocial(i, { access: e.target.value })} placeholder="Jak předáte přístup" />
+                <input className="finput" value={s.access} onChange={(e) => setSocial(i, { access: e.target.value })} placeholder="How will you grant access" />
                 {ob.socials.length > 1 && <button className="ghost danger small" onClick={() => set("socials", ob.socials.filter((_, j) => j !== i))}>×</button>}
               </div>
             ))}
-            <button className="ghost" onClick={() => set("socials", [...ob.socials, { platform: "TikTok", handle: "", access: "" }])}>+ Přidat platformu</button>
+            <button className="ghost" onClick={() => set("socials", [...ob.socials, { platform: "TikTok", handle: "", access: "" }])}>+ Add platform</button>
           </div>
         )}
 
         {step === 3 && (
           <>
             <OnboardingView ob={ob} />
-            <Field l="Ještě něco, co bychom měli vědět?" v={ob.notes} on={(v) => set("notes", v)} area ph="Volitelné" />
+            <Field l="Anything else we should know?" v={ob.notes} on={(v) => set("notes", v)} area ph="Optional" />
           </>
         )}
 
         <div className="row-between" style={{ marginTop: 28 }}>
-          {step > 0 ? <button className="ghost" onClick={() => setStep(step - 1)}>← Zpět</button> : <span />}
+          {step > 0 ? <button className="ghost" onClick={() => setStep(step - 1)}>← Back</button> : <span />}
           {step < 3
-            ? <button className="btn solid" onClick={() => setStep(step + 1)}>Pokračovat →</button>
-            : <button className="btn solid" onClick={finish} disabled={saving}>{saving ? "Odesílám…" : "Odeslat onboarding ✓"}</button>}
+            ? <button className="btn solid" onClick={() => setStep(step + 1)}>Continue →</button>
+            : <button className="btn solid" onClick={finish} disabled={saving}>{saving ? "Submitting…" : "Submit onboarding ✓"}</button>}
         </div>
       </div>
     </div>
@@ -515,7 +511,6 @@ function Field({ l, v, on, ph, area, type }) {
   );
 }
 
-/* ============ ANALYTICS ============ */
 function Analytics({ client, save, editable }) {
   const entries = [...(client.analytics || [])].sort((a, b) => a.date.localeCompare(b.date));
   const [metric, setMetric] = useState("followers");
@@ -550,7 +545,6 @@ function Analytics({ client, save, editable }) {
 
   return (
     <div>
-      {/* summary cards */}
       <div className="an-cards">
         {PLATFORMS.map((p) => {
           const f = latest ? Number(latest[p.key]?.followers ?? 0) : null;
@@ -571,7 +565,6 @@ function Analytics({ client, save, editable }) {
         })}
       </div>
 
-      {/* toggles */}
       <div className="row-between" style={{ marginBottom: 14 }}>
         <div className="row" style={{ gap: 8, flexWrap: "wrap" }}>
           <div className="seg">
@@ -580,21 +573,20 @@ function Analytics({ client, save, editable }) {
             ))}
           </div>
           <div className="seg">
-            {[["total", "Celkem"], ["delta", "Týdenní +"]].map(([k, l]) => (
+            {[["total", "Total"], ["delta", "Weekly +"]].map(([k, l]) => (
               <button key={k} className={mode === k ? "on" : ""} onClick={() => setMode(k)}>{l}</button>
             ))}
           </div>
         </div>
-        {editable && <button className="btn small solid" onClick={() => setShowForm(true)}>+ Zapsat týden</button>}
+        {editable && <button className="btn small solid" onClick={() => setShowForm(true)}>+ Log week</button>}
       </div>
 
-      {/* chart */}
       <div className="panel" style={{ padding: "22px 12px 10px" }}>
         {chartData.length === 0 ? (
           <div className="empty" style={{ border: 0 }}>
             {mode === "delta" && entries.length === 1
-              ? "Přírůstky se ukážou po druhém týdenním zápisu."
-              : editable ? "Zatím žádná data. Zapiš první týden tlačítkem nahoře." : "Statistiky se objeví, jakmile je tým zapíše."}
+              ? "Weekly growth will show after the second entry."
+              : editable ? "No data yet. Log the first week using the button above." : "Stats will appear once the team logs them."}
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={300}>
@@ -625,10 +617,9 @@ function Analytics({ client, save, editable }) {
         )}
       </div>
 
-      {/* entry log (admin) */}
       {editable && entries.length > 0 && (
         <div style={{ marginTop: 14 }}>
-          <button className="ghost" onClick={() => setShowLog(!showLog)}>{showLog ? "▾ Skrýt zápisy" : "▸ Zobrazit zápisy"} ({entries.length})</button>
+          <button className="ghost" onClick={() => setShowLog(!showLog)}>{showLog ? "▾ Hide entries" : "▸ Show entries"} ({entries.length})</button>
           {showLog && (
             <div className="panel" style={{ marginTop: 10 }}>
               {[...entries].reverse().map((e) => (
@@ -669,10 +660,10 @@ function EntryModal({ onClose, onAdd, latest }) {
     onAdd(entry);
   };
   return (
-    <Modal title="Zapsat týdenní statistiky" onClose={onClose}>
-      <label className="flabel">Datum zápisu</label>
+    <Modal title="Log weekly stats" onClose={onClose}>
+      <label className="flabel">Entry date</label>
       <input className="finput" type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-      <p className="hint" style={{ textAlign: "left", margin: "10px 0 4px" }}>Zadávej celková čísla (kumulativní stav účtu) — přírůstky si graf spočítá sám. Předvyplněno z minulého týdne.</p>
+      <p className="hint" style={{ textAlign: "left", margin: "10px 0 4px" }}>Enter cumulative totals — the chart calculates weekly growth automatically. Pre-filled from last week.</p>
       {PLATFORMS.map((p) => (
         <div key={p.key} style={{ marginTop: 14 }}>
           <span className="an-plat" style={{ color: p.color }}>● {p.label}</span>
@@ -684,19 +675,21 @@ function EntryModal({ onClose, onAdd, latest }) {
           </div>
         </div>
       ))}
-      <button className="btn solid wide" style={{ marginTop: 20 }} onClick={submit}>Uložit zápis ✓</button>
+      <button className="btn solid wide" style={{ marginTop: 20 }} onClick={submit}>Save entry ✓</button>
     </Modal>
   );
 }
 
-/* ============ shared UI ============ */
 function TopBar({ label, onLogout, extra }) {
   return (
     <div className="topbar">
-      <div className="wordmark sm"><span className="dot" />DUPSCALED <span className="bar-label">/ {label}</span></div>
+      <div className="topbar-logo">
+        <Image src="/logo.png" width={120} height={14} alt="DUPSCALED" style={{ filter: "invert(1) brightness(10)", opacity: 0.9 }} />
+        <span className="bar-label">/ {label}</span>
+      </div>
       <div className="row" style={{ gap: 10 }}>
         {extra}
-        <button className="btn small" onClick={onLogout}>Odhlásit</button>
+        <button className="btn small" onClick={onLogout}>Log out</button>
       </div>
     </div>
   );
@@ -716,7 +709,6 @@ function Modal({ title, children, onClose }) {
   );
 }
 
-/* ============ styles ============ */
 function Style() {
   return (
     <style>{`
@@ -735,12 +727,9 @@ button{font:inherit;cursor:pointer;background:none;border:0;color:inherit}
 input,select,textarea{font:inherit;color:var(--text)}
 ::selection{background:var(--signal);color:var(--ink)}
 :focus-visible{outline:2px solid var(--signal);outline-offset:2px;border-radius:2px}
-
-.wordmark{font-weight:800;letter-spacing:.05em;font-size:20px;display:flex;align-items:center;gap:9px;text-transform:uppercase}
-.wordmark.sm{font-size:15px}
-.dot{width:8px;height:8px;background:var(--signal);border-radius:1px;box-shadow:0 0 10px rgba(43,255,135,.8)}
-.bar-label{color:var(--mute);font-weight:400;font-size:12px;font-family:var(--mono);letter-spacing:.14em;margin-left:4px}
-
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.bar-label{color:var(--mute);font-weight:400;font-size:12px;font-family:var(--mono);letter-spacing:.14em}
+.logo-wrap{display:flex;justify-content:center;padding:4px 0 8px}
 .h2{font-size:26px;font-weight:700;text-transform:uppercase;letter-spacing:.01em;margin-bottom:8px}
 .h3{font-size:17px;font-weight:700;text-transform:uppercase}
 .mute{color:var(--mute)}
@@ -748,7 +737,6 @@ input,select,textarea{font:inherit;color:var(--text)}
 .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;color:var(--signal);margin-bottom:10px}
 .row{display:flex;align-items:center}
 .row-between{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px;flex-wrap:wrap}
-
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:12px 20px;border:1px solid var(--signal-line);color:var(--signal);border-radius:3px;transition:all .2s;white-space:nowrap}
 .btn:hover{background:var(--signal);color:var(--ink);box-shadow:0 0 24px rgba(43,255,135,.35)}
 .btn.solid{background:var(--signal);color:var(--ink)}
@@ -759,24 +747,20 @@ input,select,textarea{font:inherit;color:var(--text)}
 .ghost:hover{color:var(--text)}
 .ghost.danger{color:#ff6b6b}
 .ghost.small{padding:4px 8px}
-
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
 .login-card{width:100%;max-width:400px;background:var(--panel2);border:1px solid var(--line);border-radius:4px;padding:38px 34px;display:flex;flex-direction:column;gap:14px}
-.login-sub{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--mute);margin:-6px 0 14px}
+.login-sub{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--mute);margin:-6px 0 14px;text-align:center}
 .code-input{font-family:var(--mono);font-size:22px;letter-spacing:.3em;text-align:center;text-transform:uppercase}
 .err{color:#ff6b6b;font-size:13px}
 .hint{font-size:12px;color:var(--mute);text-align:center;margin-top:4px}
-
 .shell{min-height:100vh}
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,40px);height:60px;border-bottom:1px solid var(--line);background:rgba(6,8,10,.8);position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
 .page{max-width:1060px;margin:0 auto;padding:clamp(24px,5vw,48px) clamp(16px,4vw,40px)}
 .page.narrow{max-width:680px}
-
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:36px}
 .stat-box{background:var(--panel2);padding:20px 18px}
 .stat-box b{display:block;font-family:var(--mono);font-size:30px;color:var(--signal);line-height:1}
 .stat-box span{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);display:block;margin-top:9px}
-
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .ccard{text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:3px;padding:20px;display:flex;flex-direction:column;gap:18px;transition:all .2s;position:relative;overflow:hidden}
 .ccard::before{content:"";position:absolute;top:0;left:0;width:100%;height:2px;background:var(--signal);transform:scaleX(0);transform-origin:left;transition:transform .25s}
@@ -789,27 +773,22 @@ input,select,textarea{font:inherit;color:var(--text)}
 .avatar.lg{width:54px;height:54px;font-size:17px}
 .pill{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--line-strong);color:var(--mute);padding:5px 10px;border-radius:2px}
 .pill-on{border-color:var(--signal-line);color:var(--signal)}
-
 .empty{border:1px dashed var(--line-strong);border-radius:3px;padding:40px;text-align:center;color:var(--mute);font-size:14px}
-
 .detail-head{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:18px 0 26px}
 .stage-sel{max-width:200px}
 .tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:22px;overflow-x:auto}
 .tab{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding:12px 16px;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tab.on{color:var(--signal);border-color:var(--signal)}
-
 .panel{background:var(--panel2);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 .panel-sec{font-family:var(--mono);font-size:9.5px;letter-spacing:.24em;color:var(--signal);padding:16px 22px 8px;border-bottom:1px solid var(--line);background:var(--panel)}
 .krow{display:grid;grid-template-columns:200px 1fr;gap:14px;padding:13px 22px;border-bottom:1px solid var(--line);font-size:14px}
 .krow span{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-top:2px}
 .krow b{font-weight:500;white-space:pre-wrap;word-break:break-word}
 @media(max-width:560px){.krow{grid-template-columns:1fr;gap:4px}}
-
 .dlv{display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
 .dlv-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .dlv-main{flex:1;min-width:160px;display:flex;flex-direction:column;gap:2px}
 .dlv-main b{font-weight:600;font-size:14.5px}
-
 .flabel{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);display:block;margin-bottom:7px}
 .finput{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:12px 14px;font-size:15px;transition:border-color .2s;resize:vertical}
 .finput:focus{outline:none;border-color:var(--signal-line);background:rgba(43,255,135,.03)}
@@ -822,10 +801,8 @@ select.finput{appearance:none;cursor:pointer}
 .social-row{display:grid;grid-template-columns:130px 1fr 1fr auto;gap:8px;align-items:center}
 @media(max-width:640px){.social-row{grid-template-columns:1fr}}
 .warn{border:1px solid rgba(255,201,77,.4);background:rgba(255,201,77,.07);color:#ffc94d;border-radius:3px;padding:14px 16px;font-size:13px;line-height:1.5}
-
 .overlay{position:fixed;inset:0;background:rgba(4,6,8,.8);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:20px;z-index:50;overflow-y:auto}
 .modal{width:100%;max-width:420px;background:var(--panel2);border:1px solid var(--line-strong);border-radius:4px;padding:28px;margin:auto}
-
 .an-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-bottom:18px}
 .an-card{background:var(--panel2);padding:18px 20px;display:flex;flex-direction:column;gap:10px}
 .an-plat{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase}
