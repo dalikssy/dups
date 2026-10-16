@@ -23,7 +23,7 @@ const renderText = (text) => {
 const { main_text, title, main_book, main_references } = data;
 
 const COPY = {
-  kicker: { en: "Short-form content agency", cz: "Agentura na short-form obsah" },
+  kicker: { en: "Shortform content agency", cz: "Agentura na shortform obsah" },
   reel: { en: "Watch the reel", cz: "Pustit showreel" },
   views: { en: "Views generated", cz: "Vygenerovaných zhlédnutí" },
   trusted: { en: "Trusted by", cz: "Důvěřují nám" },

@@ -24,7 +24,7 @@ export default function PixelField() {
         vx: burst ? Math.cos(a) * sp : (Math.random() - 0.5) * 0.25,
         vy: burst ? Math.sin(a) * sp : -0.15 - Math.random() * 0.55,
         c: COLORS[(Math.random() * COLORS.length) | 0],
-        o: 0.25 + Math.random() * 0.6,
+        o: burst ? 0.5 + Math.random() * 0.4 : 0.18 + Math.random() * 0.42,
         life: burst ? 70 + Math.random() * 50 : Infinity,
         tw: Math.random() * Math.PI * 2,
       };
@@ -35,7 +35,7 @@ export default function PixelField() {
       W = window.innerWidth; H = window.innerHeight;
       cv.width = W * dpr; cv.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round(Math.min(150, (W * H) / 11000));
+      const n = Math.round(Math.min(80, (W * H) / 20000));
       P = Array.from({ length: n }, () => spawn(Math.random() * W, Math.random() * H));
     };
 
@@ -48,7 +48,7 @@ export default function PixelField() {
     const onDown = (e) => {
       if (e.target.closest && e.target.closest("a,button,input,textarea,label")) return;
       const t = e.touches ? e.touches[0] : e;
-      for (let i = 0; i < 26; i++) P.push(spawn(t.clientX, t.clientY, true));
+      for (let i = 0; i < 18; i++) P.push(spawn(t.clientX, t.clientY, true));
     };
     const onVis = () => {
       running = !document.hidden;

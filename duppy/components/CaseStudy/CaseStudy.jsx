@@ -6,7 +6,7 @@ import { CountUp } from "../UI/Reveal";
 const phases = [
   {
     number: "01",
-    title: "PHASE 1 — BUILD CREDIBILITY",
+    title: "PHASE 1 · BUILD CREDIBILITY",
     description:
       "We were aware that many fake profiles of Mo existed. From the beginning, our main goal was to establish credibility so people would recognize this as the authentic account. We focused on posting clips mostly featuring Jynxzi, hoping he would repost them and encourage fans to recognize, \"Yes, this is the real account.\"",
     highlight: "Jynxzi",
@@ -18,7 +18,7 @@ const phases = [
   },
   {
     number: "02",
-    title: "PHASE 2 — ANALYZE FANBASE",
+    title: "PHASE 2 · ANALYZE FANBASE",
     description:
       "After thorough research, we discovered that the client's fanbase wasn't interested in fast editing or flashy titles. On the contrary, they valued raw, authentic gameplay. Our goal was to present the gameplay exactly as it should be, without missing any important details. The results spoke for themselves.",
     highlight: null,
@@ -121,14 +121,14 @@ export default function CaseStudy({ language }) {
           <span className={styles.metaDivider} />
           <span className={styles.metaItem}>
             <span className={styles.metaLabel}>Service</span>
-            <span className={styles.metaValue}>Short-form content</span>
+            <span className={styles.metaValue}>Shortform content</span>
           </span>
         </div>
         <h3 className={styles.title}>
           {language === "cz" ? "350K sledujících a 60M zhlédnutí" : "350K followers & 60M views"}
           <br />
           <span className="hl">{language === "cz" ? "za 14 dní" : "in 14 days"}</span>{" "}
-          <span className={styles.from}>{language === "cz" ? "— od nuly" : "— from zero"}</span>
+          <span className={styles.from}>{language === "cz" ? "od nuly" : "from zero"}</span>
         </h3>
       </div>
 
@@ -138,7 +138,7 @@ export default function CaseStudy({ language }) {
           <CountUp value="350,000" duration={2200} className={styles.counterNum} />
           <span className={styles.counterLabel}>{language === "cz" ? "Sledujících" : "Followers"}</span>
           <p className={styles.sub}>
-            {language === "cz" ? "Úplně nový účet · den 0 → den 14" : "Brand-new account · day 0 → day 14"}
+            {language === "cz" ? "Úplně nový účet · den 0 → den 14" : "Brand new account · day 0 → day 14"}
           </p>
         </div>
         <div className={styles.chartCard} data-tilt>

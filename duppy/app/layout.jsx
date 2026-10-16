@@ -26,7 +26,7 @@ const inter = localFont({
 });
 
 export const metadata = {
-  title: "DUPSCALED — Short-form content that scales",
+  title: "DUPSCALED · Shortform content that scales",
   description:
     "DUPSCALED crafts standout brands through social mastery, expert editing, and stunning design. 5B+ views generated for gaming creators, esports orgs and athletes.",
 };

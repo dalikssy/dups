@@ -15,12 +15,7 @@
   gap: 14px;
 }
 
-.head::before {
-  content: "";
-  width: 34px;
-  height: 3px;
-  background: var(--cy);
-}
+
 
 .references {
   display: flex;

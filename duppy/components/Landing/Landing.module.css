@@ -32,7 +32,7 @@
   background: var(--bk2);
   border: 3px solid var(--cy);
   box-shadow: 8px 8px 0 var(--vio);
-  animation: bob 6s ease-in-out infinite;
+  animation: bob 9s ease-in-out infinite;
 }
 
 .tile > span:first-child {
@@ -61,7 +61,7 @@
 
 @keyframes bob {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0 -16px; }
+  50% { translate: 0 -9px; }
 }
 
 /* big letters react individually */
@@ -98,12 +98,7 @@
   gap: 12px;
 }
 
-.kicker::before {
-  content: "";
-  width: 34px;
-  height: 3px;
-  background: var(--cy);
-}
+
 
 .brand {
   color: var(--cy);
@@ -195,7 +190,7 @@
   align-items: center;
   gap: 64px;
   width: max-content;
-  animation: scroll 28s linear infinite;
+  animation: scroll 40s linear infinite;
 }
 
 .logo {

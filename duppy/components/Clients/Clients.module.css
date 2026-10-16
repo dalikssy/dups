@@ -34,7 +34,7 @@
   display: flex;
   gap: 28px;
   width: max-content;
-  animation: roll 48s linear infinite;
+  animation: roll 70s linear infinite;
 }
 
 .roster:hover .rosterTrack {
