@@ -107,6 +107,10 @@ const Landing = ({ language }) => {
           />
           <span>KEYIN</span>
         </div>
+        <div className={`${styles.tile} ${styles.t4}`} data-tilt>
+          <Pixel index={9} size={200} />
+          <span>{ROSTER[9]}</span>
+        </div>
       </div>
       </div>
 
