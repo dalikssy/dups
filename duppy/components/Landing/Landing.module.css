@@ -342,10 +342,10 @@
     zoom: 0.68;
   }
   .proof {
-    padding: 36px 0 32px;
-    flex-direction: row;
-    align-items: center;
-    gap: 18px;
+    padding: 32px 0 28px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
   }
   .big {
     flex: none;
