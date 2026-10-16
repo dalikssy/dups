@@ -79,6 +79,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.bgfield {
+  display: none;
+}
+
 /* ---------- colour field painted straight into the page background ----------
    The four colours are registered so they can animate; <html data-bg> (set by
    BgFlow per section) swaps them and the browser blends old -> new. */
@@ -108,8 +112,8 @@ html {
     background-image: none;
   }
 
-  html::before {
-    content: "";
+  .bgfield {
+    display: block;
     position: fixed;
     left: 0;
     right: 0;
