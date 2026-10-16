@@ -120,14 +120,12 @@ html {
     transform: translateZ(0);
     will-change: transform;
     background-image:
-      radial-gradient(95vw 34lvh at 0% 34%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
-      radial-gradient(90vw 32lvh at 100% 46%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
-      radial-gradient(100vw 34lvh at 25% 66%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 70%),
-      radial-gradient(75vw 28lvh at 100% 74%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 70%);
-    /* colour never touches the top or bottom of the screen, so it melts
-       into the browser bars and the overscroll instead of showing an edge */
-    -webkit-mask-image: linear-gradient(180deg, transparent 12%, #000 30%, #000 70%, transparent 88%);
-    mask-image: linear-gradient(180deg, transparent 12%, #000 30%, #000 70%, transparent 88%);
+      radial-gradient(95vw 24lvh at 0% 38%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 72%),
+      radial-gradient(90vw 22lvh at 100% 48%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 72%),
+      radial-gradient(100vw 24lvh at 25% 62%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 72%),
+      radial-gradient(75vw 20lvh at 100% 70%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 72%);
+    /* blobs sit in the middle and fade before the top/bottom edges
+       (no mask: masks on fixed layers repaint on every scroll frame on iOS) */
   }
 }
 
@@ -733,8 +731,27 @@ html:not(.fx-cursor) .fx-box {
 
 @media only screen and (max-width: 700px) {
   [data-bg]:not([data-bg="hero"]) {
-    padding-top: 64px !important;
-    padding-bottom: 64px !important;
+    padding-top: 96px !important;
+    padding-bottom: 88px !important;
+    position: relative;
+  }
+
+  /* clear break between sections so headings never sit on the previous block */
+  [data-bg]:not([data-bg="hero"])::before {
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: var(--gutter);
+    width: 48px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--vio);
+    opacity: 0.6;
+  }
+
+  .lab {
+    display: block;
+    margin-bottom: 4px;
   }
 
   h3 {

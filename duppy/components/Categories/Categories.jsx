@@ -49,8 +49,11 @@ const Categories = ({ language }) => {
       <div className={styles.grid}>
         {KEYS.map((k, i) => (
           <Reveal key={k} delay={i * 110} className={`${styles.category} ${sel === i ? styles.on : ""}`} data-tilt>
-            <span className={styles.num}>0{i + 1}</span>
-            <h2>{renderText(categories_title[language][k])}</h2>
+            <button type="button" className={styles.row} onClick={() => setSel(sel === i ? -1 : i)} aria-expanded={sel === i}>
+              <span className={styles.num}>0{i + 1}</span>
+              <h2>{renderText(categories_title[language][k])}</h2>
+              <span className={styles.plus} aria-hidden="true" />
+            </button>
             <p>{renderText(categories_description[language][k])}</p>
             <a className={styles.ask} href="#form" onClick={() => ask(k)} data-magnet>
               {language === "cz" ? "Chci nabídku" : "Get a quote"} <span aria-hidden="true">→</span>
