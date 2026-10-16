@@ -8,6 +8,11 @@ function scramble(el) {
   const final = el.dataset.text || el.textContent;
   el.dataset.text = final;
   el.dataset.busy = "1";
+  // freeze the box so wider glyphs can never re-wrap the line and shift the page
+  const r = el.getBoundingClientRect();
+  el.style.minHeight = r.height + "px";
+  el.style.maxHeight = r.height + "px";
+  el.style.overflow = "hidden";
   let f = 0;
   const total = 14;
   const step = () => {
@@ -20,6 +25,7 @@ function scramble(el) {
     if (f < total) requestAnimationFrame(() => setTimeout(step, 28));
     else {
       el.textContent = final;
+      el.style.minHeight = el.style.maxHeight = el.style.overflow = "";
       delete el.dataset.busy;
     }
   };
@@ -35,7 +41,9 @@ export default function FX() {
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    // Touch devices: no cursor, no scramble, no random hiccups. They only
+    // cost frames while scrolling and can nudge the layout under the finger.
+    if (reduce || !fine) return;
 
     let mx = -100, my = -100, bx = -100, by = -100, raf;
     const root = document.documentElement;

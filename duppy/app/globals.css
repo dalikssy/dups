@@ -776,9 +776,17 @@ html:not(.fx-cursor) .fx-box {
     gap: 8px;
     padding: 6px;
     border-radius: 20px;
-    background: var(--panel-solid);
-    border: 1px solid var(--line);
-    box-shadow: 0 12px 40px -12px rgb(var(--fg-rgb) / 0.35);
+    /* transparent on purpose: iOS Safari paints its bottom toolbar with the
+       colour of a fixed bar at the bottom, which showed up as a pale band */
+    background: transparent;
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .mbar .button,
+  .mbar-reel {
+    box-shadow: 0 10px 28px -8px rgb(var(--fg-rgb) / 0.35);
   }
 
   .mbar .button {

@@ -17,7 +17,8 @@ export default function PixelField() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     // Phones: fewer pixels, 30 fps, no finger repel (it fought with scrolling).
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    let W = 0, H = 0, dpr = 1, raf, running = true, last = 0;
+    let W = 0, H = 0, dpr = 1, raf, running = true, last = 0, scrolledAt = 0;
+    const onScroll = () => { scrolledAt = performance.now(); };
     const mouse = { x: -9999, y: -9999, vx: 0, vy: 0 };
     let P = [];
 
@@ -48,7 +49,7 @@ export default function PixelField() {
       cv.style.height = H + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       if (fresh) {
-        const n = Math.round(Math.min(coarse ? 26 : 80, (W * H) / (coarse ? 26000 : 20000)));
+        const n = Math.round(Math.min(coarse ? 18 : 80, (W * H) / (coarse ? 26000 : 20000)));
         P = Array.from({ length: n }, () => spawn(Math.random() * W, Math.random() * H));
       }
     };
@@ -72,7 +73,8 @@ export default function PixelField() {
 
     const tick = (now) => {
       if (!running) return;
-      if (coarse && now - last < 32) {
+      // phones: hold the frame while the user is scrolling, then resume
+      if (coarse && (now - last < 32 || now - scrolledAt < 180)) {
         raf = requestAnimationFrame(tick);
         return;
       }
@@ -119,6 +121,7 @@ export default function PixelField() {
     window.addEventListener("resize", resize);
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("click", onDown, { passive: true });
+    if (coarse) window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     document.addEventListener("visibilitychange", onVis);
     return () => {
@@ -126,6 +129,7 @@ export default function PixelField() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("click", onDown);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", onVis);
     };
