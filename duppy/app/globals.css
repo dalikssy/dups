@@ -118,10 +118,14 @@ html {
     z-index: -1;
     pointer-events: none;
     background-image:
-      radial-gradient(90vw 45lvh at 0% 12%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
-      radial-gradient(85vw 40lvh at 100% 30%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
-      radial-gradient(95vw 45lvh at 20% 82%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 70%),
-      radial-gradient(70vw 35lvh at 100% 92%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 70%);
+      radial-gradient(95vw 34lvh at 0% 34%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
+      radial-gradient(90vw 32lvh at 100% 46%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
+      radial-gradient(100vw 34lvh at 25% 66%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 70%),
+      radial-gradient(75vw 28lvh at 100% 74%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 70%);
+    /* colour never touches the top or bottom of the screen, so it melts
+       into the browser bars and the overscroll instead of showing an edge */
+    -webkit-mask-image: linear-gradient(180deg, transparent 12%, #000 30%, #000 70%, transparent 88%);
+    mask-image: linear-gradient(180deg, transparent 12%, #000 30%, #000 70%, transparent 88%);
   }
 }
 
