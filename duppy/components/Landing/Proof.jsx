@@ -31,7 +31,7 @@ function Wheel({ d, delay, slow }) {
 // number keeps ticking upward like a live stream stat while it is on screen.
 export default function Proof({ views, trusted, logos }) {
   const ref = useRef(null);
-  const [n, setN] = useState(0);
+  const [n, setN] = useState(9_999_999_999); // every wheel starts on 9 so all of them spin in
   const [intro, setIntro] = useState(true);
   const [on, setOn] = useState(false);
 
@@ -42,7 +42,8 @@ export default function Proof({ views, trusted, logos }) {
     const run = () => {
       started = true;
       setOn(true);
-      setN(START);
+      value = START + 100 + Math.floor(Math.random() * 800);
+      setN(value);
       t1 = setTimeout(() => {
         setIntro(false);
         tick = setInterval(() => {
