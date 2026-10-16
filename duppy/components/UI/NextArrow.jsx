@@ -1,19 +1,16 @@
 import styles from "./NextArrow.module.css";
-import Image from "next/image";
 
-export default function NextArrow({ onClickFunction, flip }) {
+export default function NextArrow({ onClickFunction, flip, label = "Next" }) {
   return (
-    <div
-      className={`${(styles.next, flip ? styles.flip : "")}`}
+    <button
+      type="button"
+      className={`${styles.next} ${flip ? styles.flip : ""}`}
       onClick={onClickFunction}
+      aria-label={label}
     >
-      <Image
-        className={styles.next}
-        src="/clients.svg"
-        width={53}
-        height={53}
-        alt="Arrow for clients"
-      />
-    </div>
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+        <path d="M4 11h13M11 4l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="square" />
+      </svg>
+    </button>
   );
 }

@@ -1,48 +1,35 @@
 .form {
-  overflow: hidden;
-  border-top: 1px solid #d4e4fe31;
-  border-radius: 24px;
   position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  padding: 130px var(--gutter) 130px;
   display: flex;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding-top: 120px;
-  padding-bottom: 130px;
-  gap: 51px;
+  gap: 48px;
+  isolation: isolate;
+}
+
+.head {
+  width: 100%;
+  max-width: 723px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .logo {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(calc(-50% - 350px), calc(-50% - 70px));
   z-index: -1;
-}
-
-.form::after {
-  overflow: hidden;
-  content: "";
-  max-width: 700px;
-  width: 90%;
-  height: 1px;
-  top: 0;
-  left: 50%;
-  position: absolute;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(143, 143, 143, 0.67) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  transform: translateX(-50%);
+  right: -60px;
+  bottom: 40px;
+  transform: rotate(-8deg);
 }
 
 .form_input {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .form_upper {
@@ -53,97 +40,98 @@
 
 .message {
   max-width: 723px;
-  padding-top: 22px;
-  height: 264px;
-  background: #060606;
-  border: 1px solid #caecf11a;
   width: 100vw;
-  border-radius: 24px;
-  font-size: 18px;
-  padding-left: 38px;
-  line-height: 27px;
-  font-family: inherit;
+  height: 230px;
+  padding: 20px 24px;
+  background: rgba(11, 7, 22, 0.8);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  font-size: 17px;
+  line-height: 1.55;
+  font-family: var(--font-body);
   color: inherit;
   resize: none;
+  transition: border-color 0.15s ease;
 }
 
 .submit {
-  margin-top: 35px;
+  margin-top: 32px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 23px;
 }
 
-.submit button {
-  color: #000000;
-  background: #d9d9d9;
-  max-width: 176px;
-  width: 100vw;
-  height: 50px;
-  border-radius: 16px;
-  border: 1px solid #434343;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 14px;
-}
-
-.glow {
-  width: 800px;
-  overflow: hidden;
-  height: 800px;
-  z-index: -2;
-  position: absolute;
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    rgba(0, 255, 252, 0.16) 0%,
-    rgba(5, 5, 11, 0) 100%
-  );
-  top: 50%;
-  left: 50%;
-  transform: translate(calc(-50% - 150px), -50%);
-}
-
-.submit .sent {
-  transition: all 0.25s ease-in-out;
-  color: white;
-  background-color: transparent;
-  border: 1px solid #D9D9D9
+.submit path {
+  fill: var(--pur);
+  transition: fill 0.25s ease-in-out;
 }
 
 .submit:hover path {
-  fill: white;
+  fill: var(--vio);
 }
 
-.submit path {
-  transition: all 0.25s ease-in-out;
+.submit button {
+  color: var(--bk);
+  background: var(--cy);
+  min-width: 190px;
+  height: 56px;
+  padding: 0 26px;
+  border-radius: 14px;
+  border: 0;
+  font-family: var(--font-wide-stack);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
 }
 
-.sendingsvg {
-  fill: #00fffc80;
+.submit button:hover:not(:disabled) {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 4px 4px 0 var(--vio);
 }
 
-.sentsvg {
-  fill: #00fffc;
+.submit button:disabled {
+  cursor: default;
+}
+
+.submit .sent {
+  color: var(--cy);
+  background-color: transparent;
+  border: 2px solid var(--cy);
+}
+
+.submit .sendingsvg {
+  fill: rgba(115, 245, 245, 0.5);
+}
+
+.submit .sentsvg {
+  fill: var(--cy);
 }
 
 @media only screen and (max-width: 800px) {
   .form_upper {
     flex-direction: column;
   }
-
   .message {
-    width: 90vw;
+    width: 100%;
   }
 }
 
 @media only screen and (max-width: 650px) {
+  .form {
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
   .submit svg {
     display: none;
   }
-
   .submit button {
-    width: 90vw;
-    max-width: none;
+    width: 100%;
+  }
+  .logo {
+    display: none;
   }
 }

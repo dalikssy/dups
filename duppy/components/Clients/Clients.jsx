@@ -1,47 +1,41 @@
-"use client";
 import data from "@/data.json";
-import { useState } from "react";
 import styles from "./Clients.module.css";
-import Image from "next/image";
 import Client from "./Client";
 import { renderText } from "@/lib/utils";
-import NextArrow from "../UI/NextArrow";
+import { Pixel } from "../UI/Sprites";
+import { ROSTER } from "@/lib/media";
+import Reveal from "../UI/Reveal";
 
 const { clients, clients_title, clients_highlight } = data;
 
 const Clients = ({ language }) => {
-  const [client, setClient] = useState(0);
-
   return (
     <section className={styles.reference} id="references">
-      <h3>{renderText(clients_title[language])}</h3>
+      <div className={styles.head}>
+        <p className="lab">{language === "cz" ? "Spolupracovali jsme s" : "We worked with"}</p>
+        <h3>{renderText(clients_title[language])}</h3>
+      </div>
 
-      <section className={styles.wrapper}>
-        <div className={styles.reference_main}>
-          <ul className={styles.clients}>
-            {clients.map((clientData, index) => (
-              <Client
-                clientData={clientData}
-                index={index}
-                client={client}
-                key={index}
-                totalClients={clients.length}
-                language={language}
-              />
-            ))}
-          </ul>
-
-          <NextArrow
-            onClickFunction={() => {
-              setClient((clientNumber) => (clientNumber + 1) % clients.length);
-            }}
-          />
+      <div className={styles.roster} aria-label="Creators we worked with">
+        <div className={styles.rosterTrack}>
+          {[...ROSTER, ...ROSTER].map((name, i) => (
+            <figure key={i} className={styles.person} aria-hidden={i >= ROSTER.length}>
+              <Pixel index={i % ROSTER.length} size={168} className={styles.px} />
+              <figcaption>{name}</figcaption>
+            </figure>
+          ))}
         </div>
+      </div>
 
-        <p className={styles.reference_side}>{clients_highlight[language]}</p>
-      </section>
+      <ul className={styles.clients}>
+        {clients.map((clientData, index) => (
+          <Reveal as="li" key={index} delay={(index % 4) * 70} className={styles.cell}>
+            <Client clientData={clientData} index={index} language={language} />
+          </Reveal>
+        ))}
+      </ul>
 
-      <div className={styles.radial} />
+      <p className={styles.reference_side}>{clients_highlight[language]}</p>
     </section>
   );
 };

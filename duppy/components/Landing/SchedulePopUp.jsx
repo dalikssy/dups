@@ -22,7 +22,7 @@ const SchedulePopUp = ({ language }) => {
         rootElement={rootElement}
         text={popup[language]}
         textColor="#ffffff"
-        color="#00a2ff"
+        color="#6a45ff"
       />
     )
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./Form.module.css";
-import Image from "next/image";
+import { Logo } from "../UI/Sprites";
 import { useState } from "react";
 import data from "@/data.json";
 import FormDots from "./FormDots";
@@ -23,7 +23,10 @@ const Form = ({ language }) => {
 
   return (
     <section className={styles.form} id="form">
-      <h3>{form_title[language]}</h3>
+      <div className={styles.head}>
+        <p className="lab">{language === "cz" ? "Kontakt" : "Contact"}</p>
+        <h3>{form_title[language]}</h3>
+      </div>
       <form action={checkForm}>
         <div className={styles.form_upper}>
           <div className={styles.form_input}>
@@ -79,15 +82,7 @@ const Form = ({ language }) => {
         </div>
       </form>
 
-      <Image
-        className={styles.logo}
-        src={"/formLogo.svg"}
-        height={492}
-        width={492}
-        alt="dupscaled logo"
-      />
-
-      <div className={styles.glow} />
+      <Logo name="symbol" height={260} color="rgba(106,69,255,.14)" className={styles.logo} />
     </section>
   );
 };

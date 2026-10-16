@@ -1,18 +1,61 @@
+:root {
+  --bk: #05050a;
+  --bk2: #0b0716;
+  --cy: #73f5f5;
+  --vio: #6a45ff;
+  --lv: #a48bff;
+  --pur: #2a1170;
+  --line: rgba(164, 139, 255, 0.22);
+  --muted: rgba(255, 255, 255, 0.62);
+  --font-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
+  --font-wide-stack: var(--font-wide), "Arial Black", sans-serif;
+  --font-body: var(--font-inter), system-ui, -apple-system, sans-serif;
+  /* legacy aliases so older modules keep working */
+  --font-druk: var(--font-display);
+  --font-segoe: var(--font-body);
+  --gutter: clamp(20px, 5vw, 110px);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
+html {
+  background-color: var(--bk);
+  color: #fff;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
-html {
-  background-color: black;
-  color: white;
+body {
   overflow-x: hidden;
+  font-family: var(--font-body);
+  background:
+    radial-gradient(1200px 700px at 12% -10%, rgba(42, 17, 112, 0.55), transparent 60%),
+    radial-gradient(900px 600px at 110% 40%, rgba(106, 69, 255, 0.12), transparent 60%),
+    var(--bk);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* subtle pixel grid, like the promo backgrounds */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(115, 245, 245, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(115, 245, 245, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 80%);
+}
+
+::selection {
+  background: var(--cy);
+  color: var(--bk);
 }
 
 label,
@@ -21,85 +64,113 @@ button {
 }
 
 h1 {
-  font-size: 72px;
-  letter-spacing: -1.8px;
-  font-family: var(--font-druk);
-  background: linear-gradient(
-    95.84deg,
-    rgba(255, 255, 255, 0.27) 32.01%,
-    rgba(255, 255, 255, 0.69) 55%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(56px, 10.5vw, 168px);
+  line-height: 0.92;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #fff;
 }
 
 h2 {
   display: inline-flex;
-  font-family: var(--font-druk);
-  font-size: 32px;
-  line-height: 42px;
-  letter-spacing: -1.8px;
-  text-align: center;
-  background: linear-gradient(
-    95.84deg,
-    rgba(255, 255, 255, 0.27) 32.01%,
-    rgba(255, 255, 255, 0.69) 55%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
 }
 
 h3 {
   display: inline;
-  background: linear-gradient(
-    135deg,
-    #ffffff 30%,
-    rgba(255, 255, 255, 0.5) 100%
-  );
-  font-size: 40px;
+  font-family: var(--font-display);
   font-weight: 400;
-  font-family: var(--font-segoe);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 53px;
-  letter-spacing: -1.4px;
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: #fff;
 }
 
 h4 {
   font-size: 20px;
-  line-height: 21px;
-  font-weight: 400;
+  line-height: 1.1;
+  font-weight: 700;
 }
 
 p {
   font-size: 18px;
   font-weight: 400;
-  line-height: 27px;
-}
-
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: black;
-  font-weight: 600;
-  font-size: 16px;
-  border: 1px solid #434343;
-  width: 176px;
-  height: 50px;
-  border-radius: 16px;
-  background-color: #d9d9d9;
+  line-height: 1.55;
 }
 
 span {
   font-weight: 700;
 }
 
-.blue {
-  color: #00fffc;
+.blue,
+.cy {
+  color: var(--cy);
+}
+
+/* small wide-font label used above headings: "DAY 0", "CASE STUDY" */
+.lab {
+  font-family: var(--font-wide-stack);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lv);
+}
+
+/* solid cyan block behind a word: "ZERO FOLLOWERS." / "IN 2 WEEKS" */
+.hl {
+  display: inline-block;
+  background: var(--cy);
+  color: var(--bk);
+  padding: 0.08em 0.22em 0;
+  line-height: 1;
+}
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: var(--bk);
+  font-family: var(--font-wide-stack);
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 0;
+  min-width: 200px;
+  height: 56px;
+  padding: 0 28px;
+  border-radius: 14px;
+  background-color: var(--cy);
+  box-shadow: 0 0 0 0 rgba(115, 245, 245, 0.5), 0 10px 40px -10px rgba(115, 245, 245, 0.6);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  background-color: #fff;
+  box-shadow: 4px 4px 0 var(--vio), 0 14px 50px -10px rgba(115, 245, 245, 0.7);
+}
+
+.button.ghost {
+  background: transparent;
+  color: #fff;
+  border: 2px solid var(--line);
+  box-shadow: none;
+}
+
+.button.ghost:hover {
+  border-color: var(--cy);
+  color: var(--cy);
+  box-shadow: none;
 }
 
 a {
@@ -108,121 +179,138 @@ a {
 }
 
 input {
-  background: #060606;
-  border: 1px solid #caecf11a;
-  height: 78px;
+  background: rgba(11, 7, 22, 0.8);
+  border: 2px solid var(--line);
+  height: 68px;
   max-width: 349px;
   width: 100vw;
-  border-radius: 24px;
-  font-size: 18px;
-  padding-left: 38px;
-  line-height: 27px;
+  border-radius: 16px;
+  font-size: 17px;
+  font-family: var(--font-body);
+  padding-left: 24px;
   color: inherit;
+  transition: border-color 0.15s ease;
 }
 
-input[type="text"]:focus {
-  border: 1px solid white;
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--cy);
 }
 
 label {
-  font-family: var(--font-druk);
-  font-size: 14px;
+  font-family: var(--font-wide-stack);
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   line-height: 27px;
-  margin-left: 15px;
-  color: #ffffffb1;
+  margin-left: 4px;
+  color: var(--lv);
 }
 
 footer {
   position: relative;
-  border-top: 1px solid #c7d6fe20;
-  height: 377px;
+  border-top: 1px solid var(--line);
+  padding: 80px var(--gutter);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 16px;
-  padding-left: 260px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
   overflow: hidden;
 }
 
-footer::after {
-  content: "";
-  max-width: 700px;
-  width: 90%;
-  height: 1px;
-
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(143, 143, 143, 0.67) 50%,
-    rgba(0, 0, 0, 0) 100%
-  );
-  padding-left: 260px;
-
-  top: 0;
-  left: 0;
-  position: absolute;
-}
-
-footer::before {
-  content: "";
-  max-width: 500px;
-  left: 0;
-  top: 0;
-  transform: translateY(-80px);
-  height: 200px;
-  width: 100%;
-  background: radial-gradient(
-    70.71% 70.71% at 50% 50%,
-    rgba(200, 200, 200, 0.1) 0%,
-    rgba(0, 0, 0, 0) 80%
-  );
-  filter: blur(1.2px);
-  margin-left: 150px;
-  position: absolute;
-}
-
 footer p {
-  color: #eff5ffb1;
-  font-size: 20px;
-  line-height: 16px;
-}
-
-@media only screen and (max-width: 1100px) {
-  footer {
-    padding-left: 0px;
-    align-items: center;
-  }
-
-  footer::before {
-    margin-left: 0px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, calc(-50% - 120px));
-  }
+  color: var(--muted);
+  font-size: 15px;
 }
 
 form {
   margin: 0px 20px;
 }
 
+/* RGB-split glitch, same trick as the promo hits */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.glitch::before {
+  color: #ff2a6d;
+  animation: glitchA 3.2s infinite steps(1);
+}
+
+.glitch::after {
+  color: var(--vio);
+  animation: glitchB 3.2s infinite steps(1);
+}
+
+@keyframes glitchA {
+  0%, 86%, 100% { transform: none; clip-path: inset(0 0 100% 0); }
+  88% { transform: translate(-6px, 2px); clip-path: inset(10% 0 55% 0); }
+  91% { transform: translate(5px, -2px); clip-path: inset(60% 0 8% 0); }
+  94% { transform: translate(-3px, 0); clip-path: inset(30% 0 40% 0); }
+}
+
+@keyframes glitchB {
+  0%, 86%, 100% { transform: none; clip-path: inset(0 0 100% 0); }
+  88% { transform: translate(6px, -2px); clip-path: inset(50% 0 20% 0); }
+  91% { transform: translate(-5px, 3px); clip-path: inset(5% 0 70% 0); }
+  94% { transform: translate(3px, 0); clip-path: inset(70% 0 5% 0); }
+}
+
+/* scroll reveal (toggled by components/UI/Reveal) */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 @media only screen and (max-width: 800px) {
   input {
     max-width: 723px;
-    width: 90vw;
+    width: 100%;
   }
 }
 
-@media only screen and (max-width: 750px) {
-  h1 {
-    font-size: 48px;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  h1 {
-    font-size: 30px;
+@media only screen and (max-width: 700px) {
+  footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 56px 20px;
   }
 }
