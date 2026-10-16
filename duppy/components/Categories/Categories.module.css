@@ -235,3 +235,18 @@
     padding-bottom: 80px;
   }
 }
+
+/* phones: a clean list split by lines instead of four boxes */
+@media only screen and (max-width: 700px) {
+  .grid {
+    gap: 0;
+    border-bottom: 2px solid var(--line);
+  }
+  .category {
+    padding: 22px 0 22px;
+    border: 0;
+    border-top: 2px solid var(--line);
+    border-radius: 0;
+    background: none;
+  }
+}

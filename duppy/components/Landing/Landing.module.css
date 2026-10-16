@@ -496,3 +496,40 @@
     opacity: 1;
   }
 }
+
+/* phones: the live counter is free type on the colour field, no card */
+@media only screen and (max-width: 700px) {
+  .counterCard {
+    padding: 0;
+    gap: 6px;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+  .livePill {
+    height: auto;
+    padding: 0;
+    background: none;
+    color: #ff2a6d;
+    font-size: 12px;
+  }
+  .livePill i {
+    width: 9px;
+    height: 9px;
+    background: #ff2a6d;
+    box-shadow: 0 0 0 4px rgba(255, 42, 109, 0.18);
+  }
+  .odo {
+    font-size: 15.4vw;
+    margin-left: -2px;
+  }
+  .odoLabel {
+    font-size: 15px;
+  }
+  .trusted {
+    margin-top: 18px;
+    padding-top: 20px;
+    border-top: 2px solid var(--line);
+  }
+}
