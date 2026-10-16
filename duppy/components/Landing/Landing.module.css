@@ -178,60 +178,87 @@
   gap: 56px;
 }
 
-.big {
+/* live views counter, styled like a stream overlay stat */
+.counterCard {
+  flex: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  flex: none;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 22px 26px 22px;
+  border-radius: 24px;
+  border: 2px solid var(--line);
+  background: rgb(var(--panel-rgb) / 0.7);
+  box-shadow: 8px 8px 0 var(--vio);
 }
 
-.bigNum {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(96px, 12vw, 190px);
-  line-height: 0.86;
-  color: var(--acc);
-  white-space: pre;
-  min-height: 0.86em;
-  text-shadow: 4px 0 0 rgba(106, 69, 255, 0.8), -4px 0 0 rgba(255, 42, 109, 0.35);
-}
-
-.proofOn .bigNum {
-  animation: punch 0.9s cubic-bezier(0.3, 1.6, 0.5, 1) both;
-}
-
-@keyframes punch {
-  0% { transform: scale(0.7) skewX(-8deg); opacity: 0; }
-  60% { transform: scale(1.06) skewX(2deg); opacity: 1; }
-  100% { transform: none; }
-}
-
-/* live view counter */
-.ticker {
+.livePill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 7px;
+  background: #ff2a6d;
+  color: #fff;
   font-family: var(--font-wide-stack);
-  font-size: clamp(14px, 1.3vw, 19px);
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  color: var(--fg);
+  letter-spacing: 0.14em;
 }
 
-.liveDot {
-  width: 10px;
-  height: 10px;
-  background: #ff2a6d;
-  animation: blink 1.1s steps(2) infinite;
+.livePill i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  animation: blink 1.2s ease-in-out infinite;
 }
 
 @keyframes blink {
-  50% { opacity: 0.2; }
+  50% { opacity: 0.25; }
 }
 
-.typed {
-  white-space: pre;
+.odo {
+  display: inline-flex;
+  font-family: var(--font-display);
+  font-size: clamp(54px, 5.6vw, 92px);
+  line-height: 1;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+.wheel {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+}
+
+.wheelCol {
+  display: flex;
+  flex-direction: column;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.wheelCol span {
+  height: 1em;
+  text-align: center;
+}
+
+/* the last three digits are the ones that move live */
+.odo > .wheel:nth-last-child(-n + 3) {
+  color: var(--acc);
+}
+
+.comma {
+  opacity: 0.35;
+  margin: 0 0.02em;
+}
+
+.odoLabel {
+  font-size: 15px;
+  color: var(--muted);
 }
 
 /* client logos pop in one by one */
@@ -434,16 +461,17 @@
     align-items: stretch;
     gap: 16px;
   }
-  .big {
-    flex: none;
+  .counterCard {
+    padding: 18px 16px 18px;
+    border-radius: 20px;
+    box-shadow: 6px 6px 0 var(--vio);
+    gap: 10px;
   }
-  .bigNum {
-    font-size: 36vw;
-    margin-left: -4px;
+  .odo {
+    font-size: 13.4vw;
   }
-  .ticker {
-    font-size: 17px;
-    margin: 4px 0 2px;
+  .odoLabel {
+    font-size: 14px;
   }
   .trusted {
     min-width: 0;
