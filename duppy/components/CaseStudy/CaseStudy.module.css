@@ -334,6 +334,9 @@
 }
 
 @media only screen and (max-width: 700px) {
+  .line {
+    filter: none;
+  }
   .casestudy {
     gap: 26px;
     background: none;

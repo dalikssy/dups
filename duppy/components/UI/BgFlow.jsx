@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 // Fluid colour field behind the page. Each section carries data-bg;
 // whichever section owns the middle of the viewport sets <html data-bg>,
 // and the html background (globals.css) blends to that palette.
+const PALS = ["hero", "refs", "clients", "services", "case", "form"];
+
 export default function BgFlow() {
   const path = usePathname();
 
@@ -14,7 +16,7 @@ export default function BgFlow() {
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) root.dataset.bg = e.target.dataset.bg;
+          if (e.isIntersecting && root.dataset.bg !== e.target.dataset.bg) root.dataset.bg = e.target.dataset.bg;
         });
       },
       { rootMargin: "-45% 0px -45% 0px" }
@@ -40,5 +42,12 @@ export default function BgFlow() {
 
   // Phones get a real fixed element (iOS Safari lets a fixed pseudo-element
   // on <html> scroll away, which left colour only at the top of the page).
-  return <div className="bgfield" aria-hidden="true" />;
+  // One pre-painted layer per palette; phones only cross-fade their opacity.
+  return (
+    <div className="bgfield" aria-hidden="true">
+      {PALS.map((p) => (
+        <i key={p} data-pal={p} />
+      ))}
+    </div>
+  );
 }
