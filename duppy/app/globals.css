@@ -587,3 +587,12 @@ html:not(.fx-cursor) .fx-box {
   color: #fff;
   transform: rotate(-12deg);
 }
+
+/* Calendly "schedule" badge always on top (cursor stays above it) */
+.calendly-badge-widget {
+  z-index: 9990 !important;
+}
+
+.calendly-overlay {
+  z-index: 10000 !important;
+}
