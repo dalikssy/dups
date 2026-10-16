@@ -15,7 +15,9 @@ export default function PixelField() {
     const cv = ref.current;
     const ctx = cv.getContext("2d");
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let W = 0, H = 0, dpr = 1, raf, running = true;
+    // Phones: fewer pixels, 30 fps, no finger repel (it fought with scrolling).
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    let W = 0, H = 0, dpr = 1, raf, running = true, last = 0;
     const mouse = { x: -9999, y: -9999, vx: 0, vy: 0 };
     let P = [];
 
@@ -34,32 +36,47 @@ export default function PixelField() {
     };
 
     const resize = () => {
-      dpr = Math.min(2, window.devicePixelRatio || 1);
-      W = window.innerWidth; H = window.innerHeight;
+      const w = window.innerWidth;
+      // Mobile toolbars change the height on every scroll: never respawn for
+      // that, only grow the canvas so pixels keep flying where they were.
+      const h = coarse ? Math.max(H, window.innerHeight, Math.round(window.screen.height || 0)) : window.innerHeight;
+      if (w === W && h === H) return;
+      const fresh = w !== W;
+      dpr = coarse ? 1 : Math.min(2, window.devicePixelRatio || 1);
+      W = w; H = h;
       cv.width = W * dpr; cv.height = H * dpr;
+      cv.style.height = H + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round(Math.min(80, (W * H) / 20000));
-      P = Array.from({ length: n }, () => spawn(Math.random() * W, Math.random() * H));
+      if (fresh) {
+        const n = Math.round(Math.min(coarse ? 26 : 80, (W * H) / (coarse ? 26000 : 20000)));
+        P = Array.from({ length: n }, () => spawn(Math.random() * W, Math.random() * H));
+      }
     };
 
     const onMove = (e) => {
+      if (e.pointerType && e.pointerType !== "mouse") return;
       const t = e.touches ? e.touches[0] : e;
       mouse.vx = t.clientX - mouse.x; mouse.vy = t.clientY - mouse.y;
       mouse.x = t.clientX; mouse.y = t.clientY;
     };
     const onLeave = () => { mouse.x = mouse.y = -9999; };
+    // A real click/tap (not the start of a scroll) blows a burst of pixels.
     const onDown = (e) => {
-      if (e.target.closest && e.target.closest("a,button,input,textarea,label")) return;
-      const t = e.touches ? e.touches[0] : e;
-      for (let i = 0; i < 18; i++) P.push(spawn(t.clientX, t.clientY, true));
+      if (e.target.closest && e.target.closest("a,button,input,textarea,label,select")) return;
+      for (let i = 0; i < (coarse ? 12 : 18); i++) P.push(spawn(e.clientX, e.clientY, true));
     };
     const onVis = () => {
       running = !document.hidden;
       if (running) { cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
     };
 
-    const tick = () => {
+    const tick = (now) => {
       if (!running) return;
+      if (coarse && now - last < 32) {
+        raf = requestAnimationFrame(tick);
+        return;
+      }
+      last = now;
       ctx.clearRect(0, 0, W, H);
       const pal = document.documentElement.dataset.theme === "dark" ? PALETTE.dark : PALETTE.light;
       for (let i = P.length - 1; i >= 0; i--) {
@@ -101,14 +118,14 @@ export default function PixelField() {
     raf = requestAnimationFrame(tick);
     window.addEventListener("resize", resize);
     window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("click", onDown, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     document.addEventListener("visibilitychange", onVis);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("click", onDown);
       document.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", onVis);
     };
@@ -118,7 +135,7 @@ export default function PixelField() {
     <canvas
       ref={ref}
       aria-hidden="true"
-      style={{ position: "fixed", inset: 0, width: "100vw", height: "100vh", zIndex: 0, pointerEvents: "none" }}
+      style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 0, pointerEvents: "none" }}
     />
   );
 }

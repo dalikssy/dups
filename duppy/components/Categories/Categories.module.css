@@ -163,8 +163,19 @@
   .category {
     flex: 0 0 80%;
     scroll-snap-align: center;
-    padding: 26px 22px 28px;
-    gap: 16px;
+    padding: 22px 20px 22px;
+    gap: 12px;
+    min-height: 330px;
+  }
+  .category h2 {
+    font-size: 34px;
+  }
+  .category p {
+    font-size: 15px;
+  }
+  .ask {
+    width: 100%;
+    justify-content: center;
   }
   .num {
     font-size: 56px;

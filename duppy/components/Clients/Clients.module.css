@@ -208,21 +208,29 @@
     flex: 0 0 82%;
     scroll-snap-align: center;
   }
+  .cell {
+    display: flex;
+  }
   .channel {
+    width: 100%;
     flex-direction: column;
     align-items: flex-start;
-    padding: 22px;
-    min-height: 220px;
+    gap: 14px;
+    padding: 20px;
+    height: 230px;
   }
   .channel img {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
   }
   .channel_info h4 {
-    font-size: 34px;
+    font-size: 30px;
+    line-height: 1.05;
   }
   .channel_info p {
-    font-size: 15px;
+    font-size: 14.5px;
+    line-height: 1.45;
   }
   .swipeHint {
     display: block !important;

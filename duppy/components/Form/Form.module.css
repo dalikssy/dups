@@ -142,8 +142,18 @@
 
 @media only screen and (max-width: 650px) {
   .form {
-    padding-top: 90px;
-    padding-bottom: 90px;
+    gap: 26px;
+  }
+  .form_upper {
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .message {
+    height: 170px;
+    padding: 16px 18px;
+  }
+  .submit {
+    margin-top: 18px;
   }
   .px {
     display: none;
