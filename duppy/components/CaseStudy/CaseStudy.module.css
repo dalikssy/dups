@@ -333,11 +333,49 @@
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   .casestudy {
-    padding-top: 90px;
-    padding-bottom: 90px;
-    gap: 40px;
+    gap: 26px;
+    background: none;
+  }
+  .header {
+    gap: 14px;
+  }
+  .meta {
+    gap: 6px 12px;
+  }
+  .metaDivider {
+    display: none;
+  }
+  .title {
+    font-size: 38px;
+  }
+  /* counter + chart become one card */
+  .hero {
+    gap: 6px;
+    padding: 22px 18px 10px;
+    border-radius: 24px;
+    border: 2px solid rgba(106, 69, 255, 0.45);
+    background: rgb(var(--panel-rgb) / 0.75);
+  }
+  .counter {
+    gap: 2px;
+  }
+  .counterNum {
+    font-size: 64px;
+  }
+  .counterLabel {
+    font-size: 28px;
+  }
+  .sub {
+    margin-top: 8px;
+    font-size: 11px;
+  }
+  .chartCard {
+    padding: 8px 0 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
   }
   .tabs {
     width: 100%;
@@ -345,43 +383,43 @@
   .tab {
     flex: 1;
     justify-content: center;
-    padding: 12px 8px;
+    padding: 12px 6px;
   }
   .tabLabel {
     font-size: 10px;
   }
-  .cta {
-    display: none;
-  }
-  .header {
+  .content {
     gap: 18px;
   }
-  .meta {
+  .contentLeft {
     gap: 10px;
   }
-  .metaDivider {
-    display: none;
+  .phaseTitle {
+    font-size: 28px;
   }
+  .phaseDesc {
+    font-size: 15px;
+  }
+  /* three stats side by side, no sideways scrolling */
   .statsBar {
-    flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    margin: 0 calc(-1 * var(--gutter));
-    padding: 0 var(--gutter) 10px;
-  }
-  .statsBar::-webkit-scrollbar {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
   .stat {
-    flex: 0 0 62%;
-    scroll-snap-align: start;
     flex-direction: column;
-    gap: 6px;
-    padding: 20px;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 14px 12px;
+    border-radius: 16px;
   }
-  .chartCard {
-    padding: 18px 10px 6px;
-    border-radius: 22px;
+  .statValue {
+    font-size: 30px;
+  }
+  .statLabel {
+    font-size: 13px;
+  }
+  .cta {
+    display: none;
   }
 }

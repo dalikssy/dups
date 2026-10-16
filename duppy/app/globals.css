@@ -117,6 +117,8 @@ html {
     height: 120lvh;
     z-index: -1;
     pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
     background-image:
       radial-gradient(95vw 34lvh at 0% 34%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
       radial-gradient(90vw 32lvh at 100% 46%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
@@ -757,10 +759,8 @@ html:not(.fx-cursor) .fx-box {
     gap: 8px;
     padding: 6px;
     border-radius: 20px;
-    background: rgb(var(--panel-rgb) / 0.78);
+    background: var(--panel-solid);
     border: 1px solid var(--line);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 12px 40px -12px rgb(var(--fg-rgb) / 0.35);
   }
 
@@ -906,5 +906,26 @@ html:not(.fx-cursor) .fx-box {
   footer {
     padding: 48px 20px 36px;
     gap: 20px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  input {
+    height: 56px;
+    font-size: 16px;
+    padding-left: 18px;
+    border-radius: 14px;
+  }
+  label {
+    font-size: 11px;
+    line-height: 22px;
+  }
+  /* no hover-tilt jank while scrolling */
+  [data-tilt] {
+    transition: none;
+    will-change: auto;
+  }
+  [data-tilt]::before {
+    display: none;
   }
 }
