@@ -5,16 +5,12 @@ export default function Reference({ refer, language, refNumber, index }) {
   const { name, description, img, link } = refer;
 
   return (
-    <li
-      className={`${styles.reference_profile} ${
-        refNumber === index ? styles.active : styles.unactive
-      }`}
-    >
-      <a className={styles.img} href={link} target="_blank">
-        <Image src={`/referals/${img}`} width={78} height={78} alt={name} />
+    <li className={`${styles.reference_profile} ${refNumber === index ? styles.active : styles.unactive}`}>
+      <a className={styles.img} href={link} target="_blank" rel="noreferrer">
+        <Image src={`/referals/${img}`} width={76} height={76} alt={name} />
       </a>
       <div>
-        <h4>{name}</h4>
+        <h4 data-scramble>{name}</h4>
         <p>{description[language]}</p>
       </div>
     </li>

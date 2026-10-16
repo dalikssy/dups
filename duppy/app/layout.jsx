@@ -1,33 +1,62 @@
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import PixelField from "@/components/UI/PixelField";
+import FX from "@/components/UI/FX";
+import BgFlow from "@/components/UI/BgFlow";
 
-const druk = localFont({
-  src: "./fonts/Druk-Wide-Bold.ttf",
+// Self-hosted (OFL) and subset to Latin + Latin Extended-A for Czech.
+const anton = localFont({
+  src: "./fonts/Anton.woff2",
+  weight: "400",
   display: "swap",
-  variable: "--font-druk",
-  subsets: ["latin"],
+  variable: "--font-anton",
 });
 
-const segoe = localFont({
-  src: "./fonts/Segoe-UI.ttf",
+const unbounded = localFont({
+  src: "./fonts/Unbounded.woff2",
+  weight: "200 900",
   display: "swap",
-  variable: "--font-segoe",
-  subsets: ["latin"],
+  variable: "--font-wide",
 });
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = localFont({
+  src: "./fonts/Inter.woff2",
+  weight: "100 900",
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata = {
-  title: "Dupscaled",
+  title: "DUPSCALED · All in one content & brand agency",
   description:
-    "crafts standout brands through social mastery, expert editing, and stunning design. We've sparked over a billion views for global stars. Join us to elevate your online presence.",
+    "DUPSCALED is an all-in-one content & brand agency: content, brand, social and web under one roof. 5B+ views generated for creators, esports orgs and athletes.",
+};
+
+export const viewport = {
+  themeColor: "#05050a",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${druk.variable} ${segoe.variable}`}>
-      <body className={inter.className}>{children}</body>
+    <html
+      lang="en"
+      data-theme="light"
+      suppressHydrationWarning
+      className={`${anton.variable} ${unbounded.variable} ${inter.variable}`}
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=sessionStorage.getItem("dups-theme-s");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}`,
+          }}
+        />
+      </head>
+      <body>
+        <BgFlow />
+        <PixelField />
+        {children}
+        <FX />
+      </body>
     </html>
   );
 }

@@ -4,6 +4,7 @@ import Footer from "@/components/Footer/Footer";
 import Form from "@/components/Form/Form";
 import Landing from "@/components/Landing/Landing";
 import References from "@/components/References/References";
+import CaseStudy from "@/components/CaseStudy/CaseStudy";
 import { notFound } from "next/navigation";
 
 export default function Page({ params: { language } }) {
@@ -15,6 +16,7 @@ export default function Page({ params: { language } }) {
       <References language={language} />
       <Clients language={language} />
       <Categories language={language} />
+      <CaseStudy language={language} />
       <Form language={language} />
       <Footer language={language} />
     </main>

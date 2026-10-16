@@ -1,9 +1,12 @@
 import styles from "./Landing.module.css";
-import Image from "next/image";
 
 import SchedulePopUp from "./SchedulePopUp";
+import HelloPopup from "../UI/HelloPopup";
 import Navbar from "../Navbar/Navbar";
 import data from "@/data.json";
+import { ReelButton } from "./HeroMedia";
+import { Logo, Pixel } from "../UI/Sprites";
+import { ROSTER, PX_KEYIN } from "@/lib/media";
 
 const renderText = (text) => {
   return text.map((item, index) => {
@@ -20,28 +23,106 @@ const renderText = (text) => {
 
 const { main_text, title, main_book, main_references } = data;
 
+const COPY = {
+  kicker: { en: "All in one content & brand agency", cz: "All in one content & brand agency" },
+  reel: { en: "Watch the reel", cz: "Pustit showreel" },
+  views: { en: "Views generated", cz: "Vygenerovaných zhlédnutí" },
+  trusted: { en: "Trusted by", cz: "Důvěřují nám" },
+};
+
+const TRUSTED = ["gamdom", "nba", "ewc", "livesport", "mag", "forbes"];
+
 const Landing = ({ language }) => {
+  const [before, after] = title[language].split("DUPSCALED");
+
   return (
-    <section className={styles.landing}>
+    <section className={styles.landing} data-bg="hero">
       <SchedulePopUp language={language} />
+      <HelloPopup language={language} />
       <Navbar language={language} />
-      <h1>{title[language]}</h1>
 
-      <p className={styles.main_text}>{renderText(main_text[language])}</p>
+      <div className={styles.heroWrap}>
+      <div className={styles.hero}>
+        <p className={`lab ${styles.kicker}`} data-scramble>{COPY.kicker[language]}</p>
+        <h1 aria-label={title[language]}>
+          <span aria-hidden="true">
+            {before.trim().split("").map((ch, i) => (
+              <span key={i} className={styles.ltr}>
+                {ch === " " ? "\u00a0" : ch}
+              </span>
+            ))}
+            <br />
+            <span className={`glitch ${styles.brand}`} data-text="DUPSCALED">
+              {"DUPSCALED".split("").map((ch, i) => (
+                <span key={i} className={styles.ltr}>
+                  {ch}
+                </span>
+              ))}
+            </span>
+            {after}
+          </span>
+        </h1>
 
-      <div className={styles.buttons}>
-        <a
-          className="button"
-          href="https://calendly.com/dupscaled/free-meeting"
-          target="blank_"
-        >
-          {main_book[language]}
-        </a>
+        <p className={styles.main_text}>{renderText(main_text[language])}</p>
 
-        <a className={styles.reference} href="#references">
-          <p>{main_references[language]}</p>
-          <Image src="/reference.svg" width={8} height={16} alt="arrow icon" />
-        </a>
+        <div className={styles.buttons}>
+          <a
+            className="button"
+            href="https://calendly.com/dupscaled/free-meeting"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {main_book[language]}
+          </a>
+          <ReelButton label={COPY.reel[language]} />
+          <a className={styles.reference} href="#references" data-scramble>
+            {main_references[language]} ↓
+          </a>
+        </div>
+      </div>
+
+      <div className={styles.stack} aria-hidden="true">
+        <div className={`${styles.tile} ${styles.t0}`} data-tilt>
+          <Pixel index={0} size={200} />
+          <span>{ROSTER[0]}</span>
+        </div>
+        <div className={`${styles.tile} ${styles.t1}`} data-tilt>
+          <span className={styles.brandTile}>
+            <Logo name="livesport" height={22} color="#fff" />
+          </span>
+          <span>LIVESPORT</span>
+        </div>
+        <div className={`${styles.tile} ${styles.t2}`} data-tilt>
+          <Pixel index={10} size={200} />
+          <span>{ROSTER[10]}</span>
+        </div>
+        <div className={`${styles.tile} ${styles.t3}`} data-tilt>
+          <span
+            className={styles.keyin}
+            style={{ backgroundImage: `url(${PX_KEYIN})` }}
+            role="img"
+            aria-label="Keyin"
+          />
+          <span>KEYIN</span>
+        </div>
+      </div>
+      </div>
+
+      <div className={styles.proof}>
+        <div className={styles.big}>
+          <span className={styles.bigNum}>5B+</span>
+          <span className="lab">{COPY.views[language]}</span>
+        </div>
+        <div className={styles.trusted}>
+          <span className="lab">{COPY.trusted[language]}</span>
+          <div className={styles.marquee}>
+            <div className={styles.track}>
+              {[...TRUSTED, ...TRUSTED].map((n, i) => (
+                <Logo key={i} name={n} height={n === "nba" ? 54 : 30} className={styles.logo} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

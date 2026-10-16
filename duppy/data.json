@@ -9,24 +9,23 @@
   },
   "main_text": {
     "en": [
-      { "type": "span", "className": "blue", "text": "DUPSCALED" },
       {
         "type": "text",
-        "text": " crafts standout brands through social mastery, expert editing, and stunning design. We've sparked "
-      },
-      { "type": "span", "text": "over a billion views" },
-      { "type": "text", "text": " for global stars. " },
-      { "type": "span", "text": "Join us to elevate your online presence." }
-    ],
-    "cz": [
-      { "type": "span", "className": "blue", "text": "DUPSCALED" },
-      {
-        "type": "text",
-        "text": " exceluje ve vytváření vynikajícího kontentu a zdokonalování značek díky svým znalostem sociálních sítí, profesionálním střihem a designem. S globálními hvězdami jsme již "
+        "text": "Content, brand, social and web under one roof. "
       },
       {
         "type": "span",
-        "text": "dosáhli více než miliardy zhlédnutí. Připojte se k nám a zvedněte svou online prezentaci na novou úroveň!"
+        "text": "Built to stop the scroll."
+      }
+    ],
+    "cz": [
+      {
+        "type": "text",
+        "text": "Obsah, brand, sociální sítě i web pod jednou střechou. "
+      },
+      {
+        "type": "span",
+        "text": "Postavené tak, aby zastavily scroll."
       }
     ]
   },
@@ -50,7 +49,7 @@
         "en": "Dalik has been very professional and has been able to get me great results quickly, he has put in extra effort and is my go-to person for short-form content",
         "cz": "Dalik byl velmi profesionální a dokázal mi rychle dosáhnout skvělých výsledků, vynaložil další úsilí a je mým hlavním člověkem pro krátký obsah"
       },
-        "link": "https://x.com/benjyfishy"   
+      "link": "https://x.com/benjyfishy"
     },
     {
       "name": "Replays",
@@ -63,7 +62,7 @@
         "en": "I am super happy that I spoke to you about editing clips for me! Your editing is amazing and It's been way easier for me to post clips knowing that you're there to help!",
         "cz": "Jsem strašně rád, že jsem s Vámi mluvil o stříhání videí! Váš přístup je úžasný a je pro mě mnohem jednodušší zveřejňovat klipy s vědomím, že jste tu, abyste mi pomohli!"
       },
-         "link": "https://x.com/replays"   
+      "link": "https://x.com/replays"
     }
   ],
   "clients": [
@@ -98,7 +97,7 @@
     {
       "name": "Gamdom",
       "description": {
-        "en": "World's biggest on-line casino",
+        "en": "World's biggest online casino",
         "cz": "Největší online kasino na světě"
       },
       "image": "gamdom.png"
@@ -170,26 +169,30 @@
   },
   "categories_title": {
     "en": {
-      "media": "SOCIAL MEDIA<br>MANAGMENT",
-      "editing": "VIDEO EDITING",
-      "design": "GRAPHIC DESIGN"
+      "content": "CONTENT &<br>SHORTFORM",
+      "brand": "BRAND &<br>DESIGN",
+      "social": "SOCIAL<br>MEDIA",
+      "web": "WEB &<br>DIGITAL"
     },
     "cz": {
-      "media": "SPRÁVA<br>SOCIÁLNÍCH SÍTÍ",
-      "editing": "STŘIH VIDEA",
-      "design": "GRAFICKÝ DESIGN"
+      "content": "CONTENT &<br>SHORTFORM",
+      "brand": "BRAND &<br>DESIGN",
+      "social": "SOCIÁLNÍ<br>SÍTĚ",
+      "web": "WEB &<br>DIGITÁL"
     }
   },
   "categories_description": {
     "en": {
-      "media": "At DUPSCALED, we make your life easier on social media. We handle your posts, engage with your audience, and ensure your brand stays in the spotlight.<br><br> From catchy captions to perfect timing, we've got it covered. Let us navigate the social world for you, so you can focus on what you do best. With DUPSCALED, your online success is just a post away!",
-      "editing": "We elevate your videos with expert editing. From fine-tuning to adding flair, we make your content stand out. Let us bring your vision to life – your story, our edit.",
-      "design": "Always boosting your brand with graphic design, that just stands out! Our creative team turns ideas into captivating visuals, from logos to social media graphics. Choose us for design that speaks volumes."
+      "content": "Clips, Reels, TikToks and Shorts. Production and editing built for retention.",
+      "brand": "Identity, logos, visuals and thumbnails that make you recognizable.",
+      "social": "Strategy, posting and community. Your accounts, fully handled.",
+      "web": "Websites, landing pages and UX/UI that turn attention into clients."
     },
     "cz": {
-      "media": "Dupscaled vám usnadní život na sociálních sítích. Staráme se o vaše příspěvky, komunikujeme s vaším publikem a zajišťujeme, aby vaše značka zůstala v centru pozornosti.<br><br>Postaráme se o vše, od chytlavých titulků až po dokonalé načasování. Nechte nás, abychom svět sociálních sítí řídili za vás, a vy se tak můžete soustředit na to, co umíte nejlépe.",
-      "editing": "Vaše videa pozvedneme odborným střihem. Od jemného doladění až po přidání stylu. Díky nám váš obsah vynikne. Nechte nás oživit vaši vizi – váš příběh, náš střih.",
-      "design": "Vždy podporujte svou značku grafickým designem, který prostě vynikne! Náš kreativní tým proměňuje nápady v poutavé vizuály, od loga po grafiku pro sociální média. Vyberte si nás pro design, který osloví každého."
+      "content": "Klipy, Reels, TikToky a Shorts. Produkce a střih postavený na retenci.",
+      "brand": "Identita, logo, vizuály a thumbnaily, díky kterým vás poznají.",
+      "social": "Strategie, posting a komunita. Vaše účty kompletně v našich rukou.",
+      "web": "Weby, landing pages a UX/UI, které mění pozornost v klienty."
     }
   },
   "form_title": {
