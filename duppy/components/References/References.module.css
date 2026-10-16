@@ -178,15 +178,3 @@
     justify-content: flex-start !important;
   }
 }
-
-/* phones: the quote is plain type with an accent rule, not a box */
-@media only screen and (max-width: 700px) {
-  .reference_text {
-    padding: 2px 0 2px 18px;
-    border: 0;
-    border-left: 3px solid var(--acc);
-    border-radius: 0;
-    background: none;
-    font-size: 19px;
-  }
-}
