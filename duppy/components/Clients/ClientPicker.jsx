@@ -38,6 +38,8 @@ export default function ClientPicker({ language }) {
         ))}
       </ul>
 
+      <p className={styles.swipeHint}>{language === "cz" ? "← Swipe → " : "← Swipe →"} · {clients.length}</p>
+
       <div className={styles.pager}>
         <button onClick={() => setSel((sel - 1 + clients.length) % clients.length)} aria-label="Previous">←</button>
         <span>

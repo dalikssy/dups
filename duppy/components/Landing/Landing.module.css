@@ -227,7 +227,7 @@
 .modal {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: 10001;
   background: rgba(5, 5, 10, 0.92);
   backdrop-filter: blur(6px);
   display: flex;
@@ -316,5 +316,44 @@
   }
   .track {
     gap: 40px;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  .hero {
+    margin-top: 56px;
+  }
+  .hero h1 {
+    font-size: 19vw;
+  }
+  .main_text {
+    margin-top: 20px;
+    font-size: 16px;
+  }
+  .buttons {
+    display: none;
+  }
+  .stack {
+    margin-top: 28px;
+    gap: 14px;
+  }
+  .tile {
+    zoom: 0.68;
+  }
+  .proof {
+    padding: 36px 0 32px;
+    flex-direction: row;
+    align-items: center;
+    gap: 18px;
+  }
+  .big {
+    flex: none;
+  }
+  .bigNum {
+    font-size: 60px;
+  }
+  .trusted {
+    min-width: 0;
+    gap: 10px;
   }
 }

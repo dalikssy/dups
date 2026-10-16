@@ -109,18 +109,32 @@
 }
 
 @media only screen and (max-width: 700px) {
-  .tabs {
-    display: flex !important;
-    width: 100%;
+  .categories {
+    padding-left: 0;
+    padding-right: 0;
   }
-  .category {
+  .head {
+    padding: 0 var(--gutter);
+  }
+  .grid {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 4px var(--gutter) 18px;
+  }
+  .grid::-webkit-scrollbar {
     display: none;
   }
-  .category.on {
-    display: flex;
-    border-color: var(--cy);
-    box-shadow: 8px 8px 0 var(--vio);
-    animation: pop 0.35s cubic-bezier(0.3, 1.4, 0.5, 1);
+  .category {
+    flex: 0 0 80%;
+    scroll-snap-align: center;
+    padding: 26px 22px 28px;
+    gap: 16px;
+  }
+  .num {
+    font-size: 56px;
   }
 }
 
