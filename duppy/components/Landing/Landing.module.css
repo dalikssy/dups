@@ -230,7 +230,7 @@
 
 .wheel {
   display: inline-block;
-  height: 1em;
+  height: 1.2em;
   overflow: hidden;
 }
 
@@ -242,7 +242,8 @@
 }
 
 .wheelCol span {
-  height: 1em;
+  height: 1.2em;
+  line-height: 1.2em;
   text-align: center;
 }
 
@@ -252,6 +253,7 @@
 }
 
 .comma {
+  line-height: 1.2em;
   opacity: 0.35;
   margin: 0 0.02em;
 }
