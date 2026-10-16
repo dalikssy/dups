@@ -12,7 +12,7 @@ export default function ThemeToggle() {
     const next = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     try {
-      localStorage.setItem("dups-theme", next);
+      sessionStorage.setItem("dups-theme-s", next);
     } catch (e) {}
     setTheme(next);
   };

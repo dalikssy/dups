@@ -23,7 +23,7 @@ export default function HelloPopup({ language = "en" }) {
   useEffect(() => {
     let seen = false;
     try {
-      seen = localStorage.getItem("dups-hello") === "1";
+      seen = sessionStorage.getItem("dups-hello-s") === "1";
     } catch (e) {}
     if (seen) return;
     const id = setTimeout(() => setOpen(true), 1400);
@@ -40,7 +40,7 @@ export default function HelloPopup({ language = "en" }) {
   const close = () => {
     setOpen(false);
     try {
-      localStorage.setItem("dups-hello", "1");
+      sessionStorage.setItem("dups-hello-s", "1");
     } catch (e) {}
   };
 
