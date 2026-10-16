@@ -5,6 +5,7 @@ import HelloPopup from "../UI/HelloPopup";
 import Navbar from "../Navbar/Navbar";
 import data from "@/data.json";
 import { ReelButton } from "./HeroMedia";
+import Proof from "./Proof";
 import { Logo, Pixel } from "../UI/Sprites";
 import { ROSTER, PX_KEYIN } from "@/lib/media";
 
@@ -123,22 +124,7 @@ const Landing = ({ language }) => {
       </div>
       </div>
 
-      <div className={styles.proof}>
-        <div className={styles.big}>
-          <span className={styles.bigNum}>5B+</span>
-          <span className="lab">{COPY.views[language]}</span>
-        </div>
-        <div className={styles.trusted}>
-          <span className="lab">{COPY.trusted[language]}</span>
-          <div className={styles.marquee}>
-            <div className={styles.track}>
-              {[...TRUSTED, ...TRUSTED].map((n, i) => (
-                <Logo key={i} name={n} height={n === "nba" ? 54 : 30} className={styles.logo} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <Proof views={COPY.views[language]} trusted={COPY.trusted[language]} logos={TRUSTED} />
     </section>
   );
 };
