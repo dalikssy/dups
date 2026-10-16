@@ -53,3 +53,24 @@
     align-items: center;
   }
 }
+
+.portal {
+  display: inline-flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 16px;
+  border-radius: 14px;
+  border: 2px solid var(--line);
+  font-family: var(--font-wide-stack);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.portal:hover {
+  background: var(--cy);
+  border-color: var(--cy);
+  color: var(--bk);
+}

@@ -58,7 +58,7 @@
 
 .category:hover .num {
   color: var(--acc);
-  -webkit-text-stroke-color: var(--cy);
+  -webkit-text-stroke-color: var(--acc);
   transform: translateX(6px) skewX(-8deg);
 }
 
@@ -79,7 +79,7 @@
   font-size: 72px;
   line-height: 0.8;
   color: transparent;
-  -webkit-text-stroke: 2px var(--cy);
+  -webkit-text-stroke: 2px var(--acc);
 }
 
 .category h2 {

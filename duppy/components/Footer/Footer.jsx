@@ -17,6 +17,9 @@ const Footer = ({ language }) => {
       </div>
 
       <div className={styles.socials}>
+        <a className={styles.portal} href="/onboarding" data-scramble>
+          {language === "cz" ? "Klientský portál" : "Client portal"}
+        </a>
         <a
           className={styles.socail}
           href="https://www.twitter.com/dupscaled"
