@@ -13,10 +13,10 @@ const Client = ({ clientData, index, language }) => {
   };
 
   return (
-    <div className={`${styles.channel} ${index % 2 ? styles.alt : ""}`}>
+    <div className={`${styles.channel} ${index % 2 ? styles.alt : ""}`} data-tilt>
       <Image src={`/channels/${clientData.image}`} width={84} height={84} alt={clientData.name} />
       <div className={styles.channel_info}>
-        <h4>{clientData.name}</h4>
+        <h4 data-scramble>{clientData.name}</h4>
         {clientData.description ? (
           <p>{clientData.description[language]}</p>
         ) : (

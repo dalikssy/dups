@@ -9,34 +9,81 @@
   isolation: isolate;
 }
 
-.media {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(900px 600px at 70% 30%, rgba(106, 69, 255, 0.25), transparent 60%), var(--bk);
-}
-
-.bgVideo {
-  position: absolute;
-  inset: 0;
+.heroWrap {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.26;
-  filter: saturate(1.1);
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
 }
 
-.shade {
+/* floating pixel portraits */
+.stack {
+  position: relative;
+  height: 560px;
+  margin-top: clamp(90px, 14vh, 170px);
+}
+
+.tile {
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg, rgba(5, 5, 10, 0.55) 0%, rgba(5, 5, 10, 0.2) 35%, rgba(5, 5, 10, 0.85) 75%, var(--bk) 100%),
-    linear-gradient(90deg, rgba(5, 5, 10, 0.85) 0%, rgba(5, 5, 10, 0.2) 70%);
+  padding: 10px 10px 14px;
+  border-radius: 22px;
+  background: var(--bk2);
+  border: 3px solid var(--cy);
+  box-shadow: 8px 8px 0 var(--vio);
+  animation: bob 6s ease-in-out infinite;
+}
+
+.tile > span:first-child {
+  border-radius: 14px;
+}
+
+.tile > span:last-child {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1;
+  text-align: center;
+}
+
+.tile:hover {
+  z-index: 5;
+  border-color: #fff;
+  box-shadow: 12px 12px 0 var(--cy);
+}
+
+.t0 { left: 4%; top: 0; rotate: -6deg; }
+.t1 { right: 0; top: 60px; rotate: 5deg; border-color: var(--vio); box-shadow: 8px 8px 0 var(--cy); animation-delay: -1.5s; }
+.t2 { left: 22%; top: 280px; rotate: 3deg; animation-delay: -3s; }
+.t3 { right: 4%; top: 330px; rotate: -4deg; border-color: var(--lv); animation-delay: -4.5s; }
+
+@keyframes bob {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -16px; }
+}
+
+/* big letters react individually */
+.ltr {
+  display: inline-block;
+  font-weight: 400;
+  transition: transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1), color 0.15s, text-shadow 0.15s;
+}
+
+.ltr:hover {
+  transform: translateY(-0.1em) rotate(-6deg) scale(1.08);
+  color: var(--cy);
+  text-shadow: 0.06em 0.06em 0 var(--vio);
+}
+
+.brand .ltr:hover {
+  color: #fff;
 }
 
 .hero {
   width: 100%;
-  max-width: 1400px;
+  min-width: 0;
   margin-top: clamp(90px, 14vh, 170px);
   display: flex;
   flex-direction: column;
@@ -200,6 +247,15 @@
 .close:hover {
   border-color: var(--cy);
   color: var(--cy);
+}
+
+@media only screen and (max-width: 1100px) {
+  .heroWrap {
+    grid-template-columns: 1fr;
+  }
+  .stack {
+    display: none;
+  }
 }
 
 @media only screen and (max-width: 900px) {

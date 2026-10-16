@@ -316,3 +316,169 @@ form {
     padding: 56px 20px;
   }
 }
+
+/* ---------- interaction layer ---------- */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.fx-cursor,
+.fx-cursor * {
+  cursor: none !important;
+}
+
+.fx-dot,
+.fx-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.fx-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--cy);
+}
+
+.fx-box {
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border: 2px solid rgba(115, 245, 245, 0.7);
+  mix-blend-mode: difference;
+  transition: width 0.18s, height 0.18s, margin 0.18s, background 0.18s, border-color 0.18s;
+}
+
+.fx-box.fx-hot {
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: #fff;
+  border-color: #fff;
+}
+
+html:not(.fx-cursor) .fx-dot,
+html:not(.fx-cursor) .fx-box {
+  display: none;
+}
+
+/* tilt cards get a cursor spotlight + pixel grid on hover */
+[data-tilt] {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s, box-shadow 0.2s;
+  will-change: transform;
+}
+
+[data-tilt]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s;
+  background:
+    radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(115, 245, 245, 0.22), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(115, 245, 245, 0.07) 0 2px, transparent 2px 8px),
+    repeating-linear-gradient(90deg, rgba(115, 245, 245, 0.07) 0 2px, transparent 2px 8px);
+  -webkit-mask-image: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), #000 30%, transparent 75%);
+  mask-image: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), #000 30%, transparent 75%);
+}
+
+[data-tilt].tilting::before,
+[data-tilt]:hover::before {
+  opacity: 1;
+}
+
+.button {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, translate 0.15s ease-out;
+}
+
+/* pixel wipe on primary buttons */
+.button:not(.ghost) {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.button:not(.ghost)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    conic-gradient(from 90deg at 50% 50%, var(--vio) 25%, transparent 0 50%, var(--vio) 0 75%, transparent 0) 0 0 / 12px 12px;
+  transform: translateY(102%);
+  transition: transform 0.35s steps(6);
+}
+
+.button:not(.ghost):hover::after {
+  transform: none;
+}
+
+.button:not(.ghost):hover {
+  color: #fff;
+  background-color: var(--pur);
+}
+
+/* horizontal snap rail used on phones instead of long columns */
+.rail {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rail::-webkit-scrollbar {
+  display: none;
+}
+
+.rail > * {
+  scroll-snap-align: start;
+  flex: none;
+}
+
+/* chip selector */
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex: none;
+  font-family: var(--font-wide-stack);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  background: rgba(11, 7, 22, 0.8);
+  color: rgba(255, 255, 255, 0.7);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.chip[aria-selected="true"] {
+  background: var(--cy);
+  border-color: var(--cy);
+  color: var(--bk);
+}
+
+.reveal.in[data-tilt] {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.7s ease, border-color 0.2s, box-shadow 0.2s;
+}

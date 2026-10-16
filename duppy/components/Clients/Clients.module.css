@@ -78,11 +78,20 @@
 }
 
 /* client cards */
-.clients {
-  list-style: none;
+.picker {
   width: 100%;
   max-width: 1400px;
   padding: 0 var(--gutter);
+}
+
+.chipRow,
+.pager {
+  display: none !important;
+}
+
+.clients {
+  list-style: none;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
@@ -106,8 +115,16 @@
 
 .channel:hover {
   border-color: var(--cy);
-  transform: translateY(-3px);
-  box-shadow: 5px 5px 0 var(--vio);
+  box-shadow: 8px 8px 0 var(--vio);
+}
+
+.channel:hover img {
+  transform: scale(1.12) rotate(-6deg);
+  image-rendering: pixelated;
+}
+
+.channel img {
+  transition: transform 0.25s cubic-bezier(0.3, 1.6, 0.5, 1);
 }
 
 .channel img {
@@ -152,6 +169,76 @@
   padding: 0 var(--gutter);
   font-size: 15px;
   color: rgba(255, 255, 255, 0.45);
+}
+
+@media only screen and (max-width: 700px) {
+  .chipRow {
+    display: flex !important;
+    margin: 0 calc(-1 * var(--gutter)) 14px;
+    padding: 0 var(--gutter);
+  }
+  .clients {
+    display: block;
+  }
+  .cell {
+    display: none;
+  }
+  .cellOn {
+    display: block;
+    animation: pop 0.35s cubic-bezier(0.3, 1.4, 0.5, 1);
+  }
+  .cellOn .channel {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 26px;
+    min-height: 260px;
+    border-color: var(--cy);
+    box-shadow: 8px 8px 0 var(--vio);
+  }
+  .cellOn .channel img {
+    width: 96px;
+    height: 96px;
+  }
+  .cellOn .channel_info h4 {
+    font-size: 40px;
+  }
+  .cellOn .channel_info p {
+    font-size: 16px;
+  }
+  .pager {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 22px;
+    font-family: var(--font-wide-stack);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+  }
+  .pager button {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: 2px solid var(--line);
+    background: var(--bk2);
+    color: #fff;
+    font-size: 20px;
+  }
+  .pager button:active {
+    background: var(--cy);
+    color: var(--bk);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media only screen and (max-width: 600px) {

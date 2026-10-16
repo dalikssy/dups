@@ -59,6 +59,11 @@
   display: block;
 }
 
+.from {
+  color: var(--lv);
+  font-weight: 400;
+}
+
 .title :global(.hl) {
   font-weight: 400;
   margin-top: 10px;
@@ -266,10 +271,7 @@
 .statsBar {
   display: flex;
   flex-direction: column;
-  border-radius: 26px;
-  border: 2px solid rgba(106, 69, 255, 0.55);
-  background: linear-gradient(180deg, rgba(42, 17, 112, 0.5), rgba(10, 6, 24, 0.7));
-  overflow: hidden;
+  gap: 12px;
 }
 
 .stat {
@@ -277,11 +279,19 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  padding: 22px 30px;
+  padding: 20px 28px;
+  border-radius: 22px;
+  border: 2px solid rgba(106, 69, 255, 0.55);
+  background: linear-gradient(180deg, rgba(42, 17, 112, 0.5), rgba(10, 6, 24, 0.7));
 }
 
-.stat:not(:last-child) {
-  border-bottom: 1px solid var(--line);
+.stat:hover {
+  border-color: var(--cy);
+  box-shadow: 8px 8px 0 var(--vio);
+}
+
+.stat:hover .statValue {
+  color: var(--cy);
 }
 
 .statValue {
@@ -333,8 +343,23 @@
     flex-direction: column;
     width: 100%;
   }
+  .statsBar {
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin: 0 calc(-1 * var(--gutter));
+    padding: 0 var(--gutter) 10px;
+  }
+  .statsBar::-webkit-scrollbar {
+    display: none;
+  }
   .stat {
-    padding: 18px 20px;
+    flex: 0 0 62%;
+    scroll-snap-align: start;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px;
   }
   .chartCard {
     padding: 18px 10px 6px;

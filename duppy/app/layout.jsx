@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import PixelField from "@/components/UI/PixelField";
+import FX from "@/components/UI/FX";
 
 // Self-hosted (OFL) and subset to Latin + Latin Extended-A for Czech.
 const anton = localFont({
@@ -39,7 +41,11 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${anton.variable} ${unbounded.variable} ${inter.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <PixelField />
+        {children}
+        <FX />
+      </body>
     </html>
   );
 }

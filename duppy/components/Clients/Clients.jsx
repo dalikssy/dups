@@ -1,10 +1,9 @@
 import data from "@/data.json";
 import styles from "./Clients.module.css";
-import Client from "./Client";
 import { renderText } from "@/lib/utils";
 import { Pixel } from "../UI/Sprites";
 import { ROSTER } from "@/lib/media";
-import Reveal from "../UI/Reveal";
+import ClientPicker from "./ClientPicker";
 
 const { clients, clients_title, clients_highlight } = data;
 
@@ -27,13 +26,7 @@ const Clients = ({ language }) => {
         </div>
       </div>
 
-      <ul className={styles.clients}>
-        {clients.map((clientData, index) => (
-          <Reveal as="li" key={index} delay={(index % 4) * 70} className={styles.cell}>
-            <Client clientData={clientData} index={index} language={language} />
-          </Reveal>
-        ))}
-      </ul>
+      <ClientPicker language={language} />
 
       <p className={styles.reference_side}>{clients_highlight[language]}</p>
     </section>

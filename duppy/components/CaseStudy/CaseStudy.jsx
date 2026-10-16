@@ -125,9 +125,10 @@ export default function CaseStudy({ language }) {
           </span>
         </div>
         <h3 className={styles.title}>
-          Brand-new account.
+          {language === "cz" ? "350K sledujících a 60M zhlédnutí" : "350K followers & 60M views"}
           <br />
-          <span className="hl">Zero followers.</span>
+          <span className="hl">{language === "cz" ? "za 14 dní" : "in 14 days"}</span>{" "}
+          <span className={styles.from}>{language === "cz" ? "— od nuly" : "— from zero"}</span>
         </h3>
       </div>
 
@@ -136,12 +137,11 @@ export default function CaseStudy({ language }) {
           <span className="lab">{language === "cz" ? "Den 14 / 14" : "Day 14 / 14"}</span>
           <CountUp value="350,000" duration={2200} className={styles.counterNum} />
           <span className={styles.counterLabel}>{language === "cz" ? "Sledujících" : "Followers"}</span>
-          <span className={`hl ${styles.weeks}`}>{language === "cz" ? "Za 2 týdny" : "In 2 weeks"}</span>
           <p className={styles.sub}>
-            {language === "cz" ? "+ 60M zhlédnutí. Od nuly." : "+ 60M views. From zero."}
+            {language === "cz" ? "Úplně nový účet · den 0 → den 14" : "Brand-new account · day 0 → day 14"}
           </p>
         </div>
-        <div className={styles.chartCard}>
+        <div className={styles.chartCard} data-tilt>
           <GrowthChart />
         </div>
       </div>
@@ -176,7 +176,7 @@ export default function CaseStudy({ language }) {
 
         <div className={styles.statsBar}>
           {phase.stats.map((s, i) => (
-            <div key={i} className={styles.stat}>
+            <div key={i} className={styles.stat} data-tilt>
               <CountUp value={s.value} className={styles.statValue} />
               <span className={styles.statLabel}>{s.label}</span>
             </div>

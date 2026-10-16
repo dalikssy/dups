@@ -15,29 +15,6 @@ function useReelSrc() {
   return src;
 }
 
-// Muted promo loop behind the hero.
-export function HeroVideo() {
-  const src = useReelSrc();
-  const [reduce, setReduce] = useState(false);
-  useEffect(() => {
-    setReduce(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-  }, []);
-  if (!src || reduce) return null;
-  return (
-    <video
-      key={src}
-      className={styles.bgVideo}
-      src={src}
-      autoPlay
-      muted
-      loop
-      playsInline
-      preload="metadata"
-      aria-hidden="true"
-    />
-  );
-}
-
 // "Watch the reel" button + full-screen player with sound.
 export function ReelButton({ label }) {
   const [open, setOpen] = useState(false);
