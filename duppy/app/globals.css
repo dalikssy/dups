@@ -759,8 +759,8 @@ html:not(.fx-cursor) .fx-box {
 
 @media only screen and (max-width: 700px) {
   [data-bg]:not([data-bg="hero"]) {
-    padding-top: 96px !important;
-    padding-bottom: 88px !important;
+    padding-top: 84px !important;
+    padding-bottom: 64px !important;
     position: relative;
   }
 
@@ -768,7 +768,7 @@ html:not(.fx-cursor) .fx-box {
   [data-bg]:not([data-bg="hero"])::before {
     content: "";
     position: absolute;
-    top: 40px;
+    top: 36px;
     left: var(--gutter);
     width: 48px;
     height: 4px;

@@ -420,7 +420,10 @@
     font-size: 30px;
   }
   .statLabel {
-    font-size: 13px;
+    font-family: var(--font-wide-stack);
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
   }
   .cta {
     display: none;
