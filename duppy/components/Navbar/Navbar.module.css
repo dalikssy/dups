@@ -90,7 +90,19 @@
 
 @media only screen and (max-width: 700px) {
   .header {
-    padding: 0 10px 0 16px;
+    padding: 0 8px 0 14px;
+    gap: 8px;
+  }
+  .nav {
+    gap: 6px;
+  }
+  .portalBtn {
+    padding: 10px 10px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .language a {
+    padding: 7px 6px;
   }
   .link {
     display: none;
