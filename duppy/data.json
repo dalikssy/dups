@@ -10,32 +10,22 @@
   "main_text": {
     "en": [
       {
-        "type": "span",
-        "className": "blue",
-        "text": "DUPSCALED"
-      },
-      {
         "type": "text",
-        "text": " makes shortform content that "
+        "text": "Content, brand, social and web under one roof. "
       },
       {
         "type": "span",
-        "text": "stops the scroll."
+        "text": "Built to stop the scroll."
       }
     ],
     "cz": [
       {
-        "type": "span",
-        "className": "blue",
-        "text": "DUPSCALED"
-      },
-      {
         "type": "text",
-        "text": " tvoří shortform obsah, který "
+        "text": "Obsah, brand, sociální sítě i web pod jednou střechou. "
       },
       {
         "type": "span",
-        "text": "zastaví scroll."
+        "text": "Postavené tak, aby zastavily scroll."
       }
     ]
   },
@@ -179,26 +169,30 @@
   },
   "categories_title": {
     "en": {
-      "media": "SOCIAL MEDIA<br>MANAGMENT",
-      "editing": "VIDEO EDITING",
-      "design": "GRAPHIC DESIGN"
+      "content": "CONTENT &<br>SHORTFORM",
+      "brand": "BRAND &<br>DESIGN",
+      "social": "SOCIAL<br>MEDIA",
+      "web": "WEB &<br>DIGITAL"
     },
     "cz": {
-      "media": "SPRÁVA<br>SOCIÁLNÍCH SÍTÍ",
-      "editing": "STŘIH VIDEA",
-      "design": "GRAFICKÝ DESIGN"
+      "content": "CONTENT &<br>SHORTFORM",
+      "brand": "BRAND &<br>DESIGN",
+      "social": "SOCIÁLNÍ<br>SÍTĚ",
+      "web": "WEB &<br>DIGITÁL"
     }
   },
   "categories_description": {
     "en": {
-      "media": "Posting, community and strategy. Fully handled.",
-      "editing": "Edits built for retention. Every second earns the next.",
-      "design": "Thumbnails, branding and graphics that pop."
+      "content": "Clips, Reels, TikToks and Shorts. Production and editing built for retention.",
+      "brand": "Identity, logos, visuals and thumbnails that make you recognizable.",
+      "social": "Strategy, posting and community. Your accounts, fully handled.",
+      "web": "Websites, landing pages and UX/UI that turn attention into clients."
     },
     "cz": {
-      "media": "Posting, komunita i strategie. Postaráme se o všechno.",
-      "editing": "Střih postavený na retenci. Každá vteřina drží další.",
-      "design": "Thumbnaily, branding a grafika, která vynikne."
+      "content": "Klipy, Reels, TikToky a Shorts. Produkce a střih postavený na retenci.",
+      "brand": "Identita, logo, vizuály a thumbnaily, díky kterým vás poznají.",
+      "social": "Strategie, posting a komunita. Vaše účty kompletně v našich rukou.",
+      "web": "Weby, landing pages a UX/UI, které mění pozornost v klienty."
     }
   },
   "form_title": {

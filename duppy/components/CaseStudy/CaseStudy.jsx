@@ -109,7 +109,7 @@ export default function CaseStudy({ language }) {
   };
 
   return (
-    <section className={styles.casestudy} id="casestudy">
+    <section className={styles.casestudy} id="casestudy" data-bg="case">
       <div className={styles.header}>
         <div className={styles.meta}>
           <span className="lab" data-scramble>Case study</span>

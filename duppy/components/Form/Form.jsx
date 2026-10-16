@@ -21,7 +21,7 @@ const Form = ({ language }) => {
   };
 
   return (
-    <section className={styles.form} id="form">
+    <section className={styles.form} id="form" data-bg="form">
       <div className={styles.head}>
         <p className="lab" data-scramble>{language === "cz" ? "Kontakt" : "Contact"}</p>
         <h3>{form_title[language]}</h3>

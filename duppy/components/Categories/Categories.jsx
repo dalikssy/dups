@@ -6,22 +6,22 @@ import data from "@/data.json";
 import Reveal from "../UI/Reveal";
 
 const { categories_title, categories_description } = data;
-const KEYS = ["media", "editing", "design"];
+const KEYS = ["content", "brand", "social", "web"];
 
 const Categories = ({ language }) => {
   const [sel, setSel] = useState(0);
   return (
-    <section className={styles.categories} id="services">
+    <section className={styles.categories} id="services" data-bg="services">
       <div className={styles.head}>
         <p className="lab" data-scramble>{language === "cz" ? "Co děláme" : "What we do"}</p>
         <h3>
           {language === "cz" ? (
             <>
-              Obsah, který <span className="hl">roste.</span>
+              Vše pro vaši značku. <span className="hl">Jeden tým.</span>
             </>
           ) : (
             <>
-              Content that <span className="hl">scales.</span>
+              Everything your brand needs. <span className="hl">One team.</span>
             </>
           )}
         </h3>
@@ -30,7 +30,7 @@ const Categories = ({ language }) => {
       <div className={`chips ${styles.tabs}`} role="tablist">
         {KEYS.map((k, i) => (
           <button key={k} role="tab" className="chip" aria-selected={sel === i} onClick={() => setSel(i)}>
-            0{i + 1} · {categories_title[language][k].replace("<br>", " ")}
+            0{i + 1} · {categories_title[language][k].replace(/<br>/g, " ")}
           </button>
         ))}
       </div>

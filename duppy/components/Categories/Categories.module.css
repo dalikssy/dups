@@ -23,7 +23,7 @@
   width: 100%;
   max-width: 1400px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
@@ -91,6 +91,12 @@
   font-size: 15.5px;
   line-height: 1.6;
   color: var(--muted);
+}
+
+@media only screen and (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media only screen and (max-width: 1000px) {

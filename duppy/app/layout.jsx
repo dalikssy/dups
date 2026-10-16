@@ -2,6 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import PixelField from "@/components/UI/PixelField";
 import FX from "@/components/UI/FX";
+import BgFlow from "@/components/UI/BgFlow";
 
 // Self-hosted (OFL) and subset to Latin + Latin Extended-A for Czech.
 const anton = localFont({
@@ -26,9 +27,9 @@ const inter = localFont({
 });
 
 export const metadata = {
-  title: "DUPSCALED · Shortform content that scales",
+  title: "DUPSCALED · All in one content & brand agency",
   description:
-    "DUPSCALED crafts standout brands through social mastery, expert editing, and stunning design. 5B+ views generated for gaming creators, esports orgs and athletes.",
+    "DUPSCALED is an all-in-one content & brand agency: content, brand, social and web under one roof. 5B+ views generated for creators, esports orgs and athletes.",
 };
 
 export const viewport = {
@@ -51,6 +52,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <BgFlow />
         <PixelField />
         {children}
         <FX />

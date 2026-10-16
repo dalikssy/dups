@@ -11,7 +11,7 @@ const Footer = ({ language }) => {
           <Logo name="wordmark" height={16} />
           <p className={styles.copy}>
             © {new Date().getFullYear()} DUPSCALED ·{" "}
-            {language === "cz" ? "Shortform obsah, který škáluje." : "Shortform content that scales."}
+            {language === "cz" ? "All in one content & brand agency." : "All in one content & brand agency."}
           </p>
         </div>
       </div>

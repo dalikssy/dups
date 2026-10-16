@@ -91,14 +91,7 @@ body::after {
 }
 
 body::before {
-  inset: -20vmax;
-  background:
-    radial-gradient(40vmax 32vmax at 22% 26%, var(--a1), transparent 68%),
-    radial-gradient(36vmax 28vmax at 84% 22%, var(--a2), transparent 68%),
-    radial-gradient(32vmax 26vmax at 68% 82%, var(--a3), transparent 68%),
-    radial-gradient(28vmax 24vmax at 12% 88%, var(--a4), transparent 68%),
-    radial-gradient(30vmax 22vmax at 50% 55%, var(--a5), transparent 70%);
-  animation: aurora 38s ease-in-out infinite alternate;
+  display: none;
 }
 
 body::after {
@@ -595,4 +588,74 @@ html:not(.fx-cursor) .fx-box {
 
 .calendly-overlay {
   z-index: 10000 !important;
+}
+
+/* ---------- scroll-driven colour field ---------- */
+.bgflow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--flow-o);
+  animation: flowDrift 30s ease-in-out infinite alternate;
+}
+
+.bgflow i {
+  position: absolute;
+  width: 62vmax;
+  height: 62vmax;
+  border-radius: 50%;
+  filter: blur(var(--flow-blur));
+  transition: background-color 1.6s ease, transform 2.2s cubic-bezier(0.45, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.bgflow .b1 { left: -18vmax; top: -22vmax; background-color: var(--f1); transform: translate(var(--p1)); }
+.bgflow .b2 { right: -22vmax; top: -12vmax; background-color: var(--f2); transform: translate(var(--p2)); }
+.bgflow .b3 { left: 18vw; bottom: -30vmax; background-color: var(--f3); transform: translate(var(--p3)); }
+.bgflow .b4 { right: -10vmax; bottom: -26vmax; width: 44vmax; height: 44vmax; background-color: var(--f4); transform: translate(var(--p4)); }
+
+@keyframes flowDrift {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(3vmax, -2vmax, 0) scale(1.06); }
+  100% { transform: translate3d(-2vmax, 2vmax, 0) scale(1.02); }
+}
+
+:root,
+[data-theme="light"] {
+  --flow-o: 0.42;
+  --flow-blur: 90px;
+}
+
+[data-theme="dark"] {
+  --flow-o: 0.5;
+  --flow-blur: 110px;
+}
+
+/* palettes per section */
+:root,
+[data-bg="hero"] {
+  --f1: #6a45ff; --f2: #3fd9e8; --f3: #b44cff; --f4: #2a1170;
+  --p1: 0, 0; --p2: 0, 0; --p3: 0, 0; --p4: 0, 0;
+}
+[data-bg="refs"] {
+  --f1: #ff5fa2; --f2: #6a45ff; --f3: #ffb36b; --f4: #b44cff;
+  --p1: 18vw, 10vh; --p2: -10vw, 20vh; --p3: -8vw, -6vh; --p4: -20vw, 0;
+}
+[data-bg="clients"] {
+  --f1: #73f5f5; --f2: #2b6bff; --f3: #6a45ff; --f4: #00c2a8;
+  --p1: 40vw, 30vh; --p2: -30vw, 40vh; --p3: 10vw, -20vh; --p4: -10vw, -30vh;
+}
+[data-bg="services"] {
+  --f1: #6a45ff; --f2: #ff6fd8; --f3: #3fd9e8; --f4: #3a1aa8;
+  --p1: 10vw, 40vh; --p2: -40vw, 10vh; --p3: 20vw, -30vh; --p4: -30vw, -10vh;
+}
+[data-bg="case"] {
+  --f1: #00e0c6; --f2: #6a45ff; --f3: #2b6bff; --f4: #73f5f5;
+  --p1: 50vw, 10vh; --p2: -20vw, 50vh; --p3: -10vw, -10vh; --p4: -40vw, -20vh;
+}
+[data-bg="form"] {
+  --f1: #ff7a59; --f2: #6a45ff; --f3: #ff5fa2; --f4: #ffd36b;
+  --p1: 20vw, 30vh; --p2: -15vw, 30vh; --p3: 0, -20vh; --p4: -20vw, -30vh;
 }

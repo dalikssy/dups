@@ -9,7 +9,7 @@ const { clients, clients_title, clients_highlight } = data;
 
 const Clients = ({ language }) => {
   return (
-    <section className={styles.reference} id="references">
+    <section className={styles.reference} id="references" data-bg="clients">
       <div className={styles.head}>
         <p className="lab" data-scramble>{language === "cz" ? "Spolupracovali jsme s" : "We worked with"}</p>
         <h3>{renderText(clients_title[language])}</h3>

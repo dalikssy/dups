@@ -23,7 +23,7 @@ const renderText = (text) => {
 const { main_text, title, main_book, main_references } = data;
 
 const COPY = {
-  kicker: { en: "Shortform content agency", cz: "Agentura na shortform obsah" },
+  kicker: { en: "All in one content & brand agency", cz: "All in one content & brand agency" },
   reel: { en: "Watch the reel", cz: "Pustit showreel" },
   views: { en: "Views generated", cz: "Vygenerovaných zhlédnutí" },
   trusted: { en: "Trusted by", cz: "Důvěřují nám" },
@@ -35,7 +35,7 @@ const Landing = ({ language }) => {
   const [before, after] = title[language].split("DUPSCALED");
 
   return (
-    <section className={styles.landing}>
+    <section className={styles.landing} data-bg="hero">
       <SchedulePopUp language={language} />
       <Navbar language={language} />
 

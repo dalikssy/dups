@@ -15,7 +15,7 @@ export default function References({ language }) {
   const next = () => setRefNumber((n) => (n + 1) % references.length);
 
   return (
-    <div className={styles.references_wrapper}>
+    <div className={styles.references_wrapper} data-bg="refs">
       <p className={`lab ${styles.head}`}>
         {language === "cz" ? "Co říkají klienti" : "What clients say"} · 0{refNumber + 1} / 0
         {references.length}
