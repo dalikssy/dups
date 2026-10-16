@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 // Fluid colour field behind the page. Each section carries data-bg;
 // whichever section owns the middle of the viewport sets <html data-bg>,
-// and CSS swaps the blob palette + positions with long transitions.
+// and the html background (globals.css) blends to that palette.
 export default function BgFlow() {
   const path = usePathname();
 
@@ -38,12 +38,5 @@ export default function BgFlow() {
     };
   }, [path]);
 
-  return (
-    <div className="bgflow" aria-hidden="true">
-      <i className="b1" />
-      <i className="b2" />
-      <i className="b3" />
-      <i className="b4" />
-    </div>
-  );
+  return null;
 }

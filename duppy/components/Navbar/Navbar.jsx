@@ -3,6 +3,7 @@ import Link from "next/link";
 import data from "@/data.json";
 import { Logo } from "../UI/Sprites";
 import ThemeToggle from "../UI/ThemeToggle";
+import MobileMenu from "./MobileMenu";
 
 export default function Navbar({ language }) {
   const { navbar } = data;
@@ -35,6 +36,7 @@ export default function Navbar({ language }) {
           </Link>
         </div>
         <ThemeToggle />
+        <MobileMenu language={language} />
       </nav>
     </header>
   );

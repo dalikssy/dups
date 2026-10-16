@@ -2,6 +2,7 @@ import styles from "./Landing.module.css";
 
 import SchedulePopUp from "./SchedulePopUp";
 import HelloPopup from "../UI/HelloPopup";
+import MobileBar from "../UI/MobileBar";
 import Navbar from "../Navbar/Navbar";
 import data from "@/data.json";
 import { ReelButton } from "./HeroMedia";
@@ -39,6 +40,7 @@ const Landing = ({ language }) => {
     <section className={styles.landing} data-bg="hero">
       <SchedulePopUp language={language} />
       <HelloPopup language={language} />
+      <MobileBar language={language} />
       <Navbar language={language} />
 
       <div className={styles.heroWrap}>
@@ -104,6 +106,10 @@ const Landing = ({ language }) => {
             aria-label="Keyin"
           />
           <span>KEYIN</span>
+        </div>
+        <div className={`${styles.tile} ${styles.t4}`} data-tilt>
+          <Pixel index={9} size={200} />
+          <span>{ROSTER[9]}</span>
         </div>
       </div>
       </div>

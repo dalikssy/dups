@@ -5,12 +5,18 @@ export default function ThemeToggle() {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    setTheme(document.documentElement.dataset.theme || "light");
+    const t = document.documentElement.dataset.theme || "light";
+    setTheme(t);
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = t === "dark" ? "#05050a" : "#f4f1fa";
   }, []);
 
   const flip = () => {
     const next = theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
+    // keep the phone's browser bars the same colour as the page edges
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = next === "dark" ? "#05050a" : "#f4f1fa";
     try {
       sessionStorage.setItem("dups-theme-s", next);
     } catch (e) {}

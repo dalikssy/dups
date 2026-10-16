@@ -117,3 +117,14 @@
     display: none;
   }
 }
+
+@media only screen and (max-width: 700px) {
+  .language,
+  .portalBtn {
+    display: none !important;
+  }
+  .header {
+    height: 60px;
+    margin-top: 14px;
+  }
+}

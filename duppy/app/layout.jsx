@@ -33,7 +33,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: "#05050a",
+  themeColor: "#f4f1fa",
 };
 
 export default function RootLayout({ children }) {
@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var t=sessionStorage.getItem("dups-theme-s");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}`,
+            __html: `try{var t=sessionStorage.getItem("dups-theme-s");if(t==="dark"||t==="light"){document.documentElement.dataset.theme=t;if(t==="dark"){var m=document.querySelector('meta[name="theme-color"]');if(m)m.content="#05050a"}}}catch(e){}`,
           }}
         />
       </head>

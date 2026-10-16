@@ -25,7 +25,9 @@ export default function HelloPopup({ language = "en" }) {
     try {
       seen = sessionStorage.getItem("dups-hello-s") === "1";
     } catch (e) {}
-    if (seen) return;
+    // Only on computers: the tip is about hovering with a mouse.
+    const desktop = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    if (seen || !desktop) return;
     const id = setTimeout(() => setOpen(true), 1400);
     return () => clearTimeout(id);
   }, []);
