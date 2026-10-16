@@ -153,23 +153,18 @@
   }
 }
 
-/* phones: clean accordion list instead of cards */
+/* phones: four compact cards, everything visible, nothing to tap open */
 @media only screen and (max-width: 700px) {
   .grid {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    border-top: 2px solid var(--line);
+    gap: 12px;
   }
   .category {
-    padding: 0;
     gap: 0;
-    border: 0;
-    border-bottom: 2px solid var(--line);
-    border-radius: 0;
-    background: none;
+    padding: 20px 18px 18px;
+    border-radius: 20px;
     box-shadow: none !important;
-    overflow: visible;
   }
   .category::after {
     display: none;
@@ -178,72 +173,31 @@
     flex-direction: row;
     align-items: center;
     gap: 14px;
-    padding: 20px 2px;
-    cursor: pointer;
+    pointer-events: none;
   }
   .num {
-    font-size: 30px;
+    font-size: 34px;
     flex: none;
-    width: 40px;
+    width: 46px;
   }
   .category h2 {
     min-height: 0;
-    font-size: 30px;
-    flex: 1;
+    font-size: 27px;
+    line-height: 1.05;
   }
   .category h2 br {
     display: none;
   }
-  .plus {
-    display: block;
-    position: relative;
-    width: 34px;
-    height: 34px;
-    flex: none;
-    border-radius: 10px;
-    background: var(--cy);
-    transition: transform 0.3s cubic-bezier(0.3, 1.4, 0.5, 1), background 0.2s;
+  .category p {
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.55;
   }
-  .plus::before,
-  .plus::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 14px;
-    height: 3px;
-    margin: -1.5px 0 0 -7px;
-    background: var(--bk);
-  }
-  .plus::after {
-    transform: rotate(90deg);
-    transition: transform 0.3s;
-  }
-  .on .plus {
-    background: var(--vio);
-    transform: rotate(180deg);
-  }
-  .on .plus::before,
-  .on .plus::after {
-    background: #fff;
-  }
-  .on .plus::after {
-    transform: rotate(0deg);
-  }
-  .category p,
   .ask {
-    display: none;
-  }
-  .on p {
-    display: block;
-    padding: 0 2px 14px 54px;
-    font-size: 15.5px;
-    animation: pop 0.3s ease;
-  }
-  .on .ask {
-    display: inline-flex;
-    margin: 0 0 22px 54px;
-    animation: pop 0.3s ease;
+    margin-top: 16px;
+    height: 42px;
+    padding: 0 16px;
+    font-size: 11px;
   }
 }
 

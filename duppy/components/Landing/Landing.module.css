@@ -19,6 +19,10 @@
 }
 
 /* floating pixel portraits */
+.dup {
+  display: none !important;
+}
+
 .stack {
   position: relative;
   height: 720px;
@@ -344,14 +348,30 @@
   .kicker {
     margin-bottom: 14px;
   }
+  /* tiles roll by on their own instead of a swipe slider */
   .stack {
-    margin-top: 30px;
+    margin: 30px calc(-1 * var(--gutter)) 0;
+    padding: 6px 0 18px;
+    display: block;
+    overflow: hidden;
+    scroll-snap-type: none;
+    pointer-events: none;
+  }
+  .stackTrack {
+    display: flex;
     gap: 12px;
-    padding-bottom: 18px;
+    width: max-content;
+    padding-right: 12px; /* keeps the loop seamless: half the track = one full set */
+    animation: scroll 26s linear infinite;
+    will-change: transform;
+  }
+  .dup {
+    display: block !important;
   }
   .tile {
     zoom: 0.6;
     rotate: 0deg !important;
+    margin-right: 0;
   }
   .proof {
     padding: 32px 0 28px;

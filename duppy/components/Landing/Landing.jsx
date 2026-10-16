@@ -32,6 +32,38 @@ const COPY = {
 
 const TRUSTED = ["gamdom", "nba", "ewc", "livesport", "mag", "forbes"];
 
+const TILE_CLASS = [styles.t0, styles.t1, styles.t2, styles.t3, styles.t4];
+
+function Tiles({ dup }) {
+  const cls = (i) => `${styles.tile} ${TILE_CLASS[i]} ${dup ? styles.dup : ""}`;
+  return (
+    <>
+      <div className={cls(0)} data-tilt>
+        <Pixel index={0} size={200} />
+        <span>{ROSTER[0]}</span>
+      </div>
+      <div className={cls(1)} data-tilt>
+        <span className={styles.brandTile}>
+          <Logo name="livesport" height={22} color="#fff" />
+        </span>
+        <span>LIVESPORT</span>
+      </div>
+      <div className={cls(2)} data-tilt>
+        <Pixel index={10} size={200} />
+        <span>{ROSTER[10]}</span>
+      </div>
+      <div className={cls(3)} data-tilt>
+        <span className={styles.keyin} style={{ backgroundImage: `url(${PX_KEYIN})` }} role="img" aria-label="Keyin" />
+        <span>KEYIN</span>
+      </div>
+      <div className={cls(4)} data-tilt>
+        <Pixel index={9} size={200} />
+        <span>{ROSTER[9]}</span>
+      </div>
+    </>
+  );
+}
+
 const Landing = ({ language }) => {
   const [before, after] = title[language].split("DUPSCALED");
 
@@ -82,32 +114,11 @@ const Landing = ({ language }) => {
       </div>
 
       <div className={styles.stack} aria-hidden="true">
-        <div className={`${styles.tile} ${styles.t0}`} data-tilt>
-          <Pixel index={0} size={200} />
-          <span>{ROSTER[0]}</span>
-        </div>
-        <div className={`${styles.tile} ${styles.t1}`} data-tilt>
-          <span className={styles.brandTile}>
-            <Logo name="livesport" height={22} color="#fff" />
-          </span>
-          <span>LIVESPORT</span>
-        </div>
-        <div className={`${styles.tile} ${styles.t2}`} data-tilt>
-          <Pixel index={10} size={200} />
-          <span>{ROSTER[10]}</span>
-        </div>
-        <div className={`${styles.tile} ${styles.t3}`} data-tilt>
-          <span
-            className={styles.keyin}
-            style={{ backgroundImage: `url(${PX_KEYIN})` }}
-            role="img"
-            aria-label="Keyin"
-          />
-          <span>KEYIN</span>
-        </div>
-        <div className={`${styles.tile} ${styles.t4}`} data-tilt>
-          <Pixel index={9} size={200} />
-          <span>{ROSTER[9]}</span>
+        {/* phones: the tiles roll by on their own; the copy closes the loop */}
+        <div className={styles.stackTrack}>
+          {[0, 1].map((copy) => (
+            <Tiles key={copy} dup={copy === 1} />
+          ))}
         </div>
       </div>
       </div>
