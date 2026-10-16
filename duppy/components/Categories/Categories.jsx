@@ -10,6 +10,17 @@ const KEYS = ["content", "brand", "social", "web"];
 
 const Categories = ({ language }) => {
   const [sel, setSel] = useState(0);
+
+  // Jump to the form with the chosen service already written in.
+  const ask = (k) => {
+    const name = categories_title[language][k].replace(/<br>/g, " ");
+    const msg = document.getElementById("message");
+    if (msg && !msg.value.trim()) {
+      msg.value = language === "cz" ? `Mám zájem o: ${name}\n\n` : `I'm interested in: ${name}\n\n`;
+    }
+    setTimeout(() => msg && msg.focus({ preventScroll: true }), 700);
+  };
+
   return (
     <section className={styles.categories} id="services" data-bg="services">
       <div className={styles.head}>
@@ -41,6 +52,9 @@ const Categories = ({ language }) => {
             <span className={styles.num}>0{i + 1}</span>
             <h2>{renderText(categories_title[language][k])}</h2>
             <p>{renderText(categories_description[language][k])}</p>
+            <a className={styles.ask} href="#form" onClick={() => ask(k)} data-magnet>
+              {language === "cz" ? "Chci nabídku" : "Get a quote"} <span aria-hidden="true">→</span>
+            </a>
           </Reveal>
         ))}
       </div>

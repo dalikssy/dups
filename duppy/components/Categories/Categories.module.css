@@ -91,6 +91,39 @@
   font-size: 15.5px;
   line-height: 1.6;
   color: var(--muted);
+  flex: 1;
+}
+
+.ask {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 12px;
+  background: var(--fg);
+  color: var(--bg);
+  font-family: var(--font-wide-stack);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.15s, color 0.15s, box-shadow 0.15s, translate 0.15s ease-out;
+}
+
+.ask span {
+  transition: transform 0.2s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.ask:hover {
+  background: var(--cy);
+  color: var(--bk);
+  box-shadow: 4px 4px 0 var(--vio);
+}
+
+.ask:hover span {
+  transform: translateX(5px);
 }
 
 @media only screen and (max-width: 1200px) {

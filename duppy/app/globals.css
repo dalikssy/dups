@@ -123,7 +123,7 @@ h1 {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(64px, 10.5vw, 168px);
-  line-height: 0.92;
+  line-height: 1.02;
   letter-spacing: 0;
   text-transform: uppercase;
   color: var(--fg);
@@ -134,7 +134,7 @@ h2 {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(34px, 4vw, 52px);
-  line-height: 1;
+  line-height: 1.1;
   text-transform: uppercase;
   color: var(--fg);
 }
@@ -144,7 +144,7 @@ h3 {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(40px, 6vw, 88px);
-  line-height: 0.95;
+  line-height: 1.06;
   text-transform: uppercase;
   color: var(--fg);
 }
@@ -185,7 +185,7 @@ span {
   display: inline-block;
   background: var(--cy);
   color: var(--bk);
-  padding: 0.08em 0.22em 0;
+  padding: 0.14em 0.22em 0.02em;
   line-height: 1;
 }
 
@@ -818,7 +818,7 @@ html:not(.fx-cursor) .fx-box {
   .mm a {
     font-family: var(--font-display);
     font-size: 48px;
-    line-height: 1.05;
+    line-height: 1.15;
     text-transform: uppercase;
     color: var(--fg);
     display: flex;
