@@ -94,7 +94,32 @@ export default function FX() {
 
     window.addEventListener("pointermove", onMove, { passive: true });
     document.addEventListener("pointerover", onOver);
+
+    // Every so often something on screen hiccups for a split second.
+    const POOL = "h1 [class*=ltr], h2, h3, .lab, [data-scramble], [data-tilt], .button, img";
+    let glitchTimer;
+    const inView = (el) => {
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.bottom > 0 && r.top < window.innerHeight && r.right > 0 && r.left < window.innerWidth;
+    };
+    const hiccup = () => {
+      if (!document.hidden && !document.querySelector(".hello")) {
+        const els = [...document.querySelectorAll(POOL)].filter(inView);
+        if (els.length) {
+          const el = els[(Math.random() * els.length) | 0];
+          if (el.hasAttribute("data-scramble") && Math.random() < 0.5) scramble(el);
+          else {
+            el.classList.add("micro-glitch");
+            setTimeout(() => el.classList.remove("micro-glitch"), 340);
+          }
+        }
+      }
+      glitchTimer = setTimeout(hiccup, 4500 + Math.random() * 6000);
+    };
+    glitchTimer = setTimeout(hiccup, 5000);
+
     return () => {
+      clearTimeout(glitchTimer);
       cancelAnimationFrame(raf);
       root.classList.remove("fx-cursor");
       window.removeEventListener("pointermove", onMove);

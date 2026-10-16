@@ -659,3 +659,92 @@ html:not(.fx-cursor) .fx-box {
   --f1: #ff7a59; --f2: #6a45ff; --f3: #ff5fa2; --f4: #ffd36b;
   --p1: 20vw, 30vh; --p2: -15vw, 30vh; --p3: 0, -20vh; --p4: -20vw, -30vh;
 }
+
+/* ---------- hello popup ---------- */
+.hello {
+  position: fixed;
+  inset: 0;
+  z-index: 9995;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgb(var(--fg-rgb) / 0.18);
+  backdrop-filter: blur(4px);
+  animation: helloFade 0.3s ease;
+}
+
+.hello-card {
+  width: min(440px, 100%);
+  padding: 30px 28px 28px;
+  border-radius: 26px;
+  background: var(--panel-solid);
+  border: 3px solid var(--cy);
+  box-shadow: 10px 10px 0 var(--vio);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  animation: helloPop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.hello-card h2 {
+  font-size: clamp(40px, 7vw, 56px);
+}
+
+.hello-body {
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.hello-card .button {
+  margin-top: 6px;
+}
+
+.hello-px {
+  display: grid;
+  grid-template-columns: repeat(5, 10px);
+  gap: 3px;
+  margin-bottom: 4px;
+}
+
+.hello-px i {
+  width: 10px;
+  height: 10px;
+  background: var(--vio);
+  animation: helloPx 1.6s steps(2) infinite;
+}
+
+.hello-px i:nth-child(3n) {
+  background: var(--cy);
+}
+
+@keyframes helloPx {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+@keyframes helloFade {
+  from { opacity: 0; }
+}
+
+@keyframes helloPop {
+  from {
+    opacity: 0;
+    transform: translateY(30px) rotate(-4deg) scale(0.9);
+  }
+}
+
+/* ---------- tiny random glitches ---------- */
+.micro-glitch {
+  animation: microGlitch 0.32s steps(1) 1 !important;
+}
+
+@keyframes microGlitch {
+  0% { translate: 0 0; filter: none; }
+  20% { translate: -3px 1px; filter: drop-shadow(2px 0 0 #ff2a6d) drop-shadow(-2px 0 0 var(--cy)); clip-path: inset(10% 0 40% 0); }
+  40% { translate: 2px -1px; filter: hue-rotate(60deg); clip-path: inset(50% 0 5% 0); }
+  60% { translate: -1px 0; filter: drop-shadow(-2px 0 0 #ff2a6d); clip-path: none; }
+  80% { translate: 1px 1px; filter: none; }
+  100% { translate: 0 0; filter: none; clip-path: none; }
+}

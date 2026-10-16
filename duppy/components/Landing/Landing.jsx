@@ -1,6 +1,7 @@
 import styles from "./Landing.module.css";
 
 import SchedulePopUp from "./SchedulePopUp";
+import HelloPopup from "../UI/HelloPopup";
 import Navbar from "../Navbar/Navbar";
 import data from "@/data.json";
 import { ReelButton } from "./HeroMedia";
@@ -37,6 +38,7 @@ const Landing = ({ language }) => {
   return (
     <section className={styles.landing} data-bg="hero">
       <SchedulePopUp language={language} />
+      <HelloPopup language={language} />
       <Navbar language={language} />
 
       <div className={styles.heroWrap}>
