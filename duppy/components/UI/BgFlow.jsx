@@ -38,5 +38,7 @@ export default function BgFlow() {
     };
   }, [path]);
 
-  return null;
+  // Phones get a real fixed element (iOS Safari lets a fixed pseudo-element
+  // on <html> scroll away, which left colour only at the top of the page).
+  return <div className="bgfield" aria-hidden="true" />;
 }
