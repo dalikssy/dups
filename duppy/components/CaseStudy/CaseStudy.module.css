@@ -37,7 +37,7 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgb(var(--fg-rgb) / 0.4);
 }
 
 .metaValue {
@@ -46,7 +46,7 @@
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--fg);
 }
 
 .metaDivider {
@@ -91,7 +91,7 @@
   font-weight: 400;
   font-size: clamp(72px, 9vw, 150px);
   line-height: 0.95;
-  color: var(--cy);
+  color: var(--acc);
   font-variant-numeric: tabular-nums;
 }
 
@@ -125,7 +125,7 @@
   border-radius: 30px;
   padding: 26px 22px 12px;
   border: 2px solid rgba(106, 69, 255, 0.55);
-  background: linear-gradient(180deg, rgba(42, 17, 112, 0.45), rgba(10, 6, 24, 0.6));
+  background: linear-gradient(180deg, rgb(var(--tint-rgb) / 0.45), rgb(var(--panel-rgb) / 0.6));
   box-shadow: 0 0 60px rgba(106, 69, 255, 0.25);
 }
 
@@ -138,13 +138,13 @@
 
 .axis {
   font: 700 13px var(--font-body);
-  fill: rgba(255, 255, 255, 0.55);
+  fill: rgb(var(--fg-rgb) / 0.55);
 }
 
 .week {
   font: 800 12px var(--font-body);
   letter-spacing: 2px;
-  fill: var(--cy);
+  fill: var(--acc);
 }
 
 .week2 {
@@ -154,7 +154,7 @@
 .line {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
-  filter: drop-shadow(0 0 8px #73f5f5);
+  filter: drop-shadow(0 0 8px var(--acc));
 }
 
 .area,
@@ -180,7 +180,7 @@
   padding: 6px;
   border-radius: 18px;
   border: 2px solid var(--line);
-  background: rgba(11, 7, 22, 0.7);
+  background: rgb(var(--panel-rgb) / 0.7);
 }
 
 .tab {
@@ -191,12 +191,12 @@
   border-radius: 12px;
   background: transparent;
   border: 0;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgb(var(--fg-rgb) / 0.55);
   transition: background 0.15s, color 0.15s;
 }
 
 .tab:hover {
-  color: #fff;
+  color: var(--fg);
 }
 
 .tabActive {
@@ -260,11 +260,11 @@
 }
 
 .phaseExtra {
-  color: rgba(255, 255, 255, 0.82);
+  color: rgb(var(--fg-rgb) / 0.82);
 }
 
 .highlight {
-  color: var(--cy);
+  color: var(--acc);
   font-weight: 700;
 }
 
@@ -282,7 +282,7 @@
   padding: 20px 28px;
   border-radius: 22px;
   border: 2px solid rgba(106, 69, 255, 0.55);
-  background: linear-gradient(180deg, rgba(42, 17, 112, 0.5), rgba(10, 6, 24, 0.7));
+  background: linear-gradient(180deg, rgb(var(--tint-rgb) / 0.5), rgb(var(--panel-rgb) / 0.7));
 }
 
 .stat:hover {
@@ -291,7 +291,7 @@
 }
 
 .stat:hover .statValue {
-  color: var(--cy);
+  color: var(--acc);
 }
 
 .statValue {
@@ -299,7 +299,7 @@
   font-weight: 400;
   font-size: clamp(54px, 6vw, 92px);
   line-height: 0.95;
-  color: #fff;
+  color: var(--fg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -307,7 +307,7 @@
   font-family: var(--font-display);
   font-size: clamp(26px, 2.4vw, 38px);
   line-height: 1;
-  color: var(--cy);
+  color: var(--acc);
 }
 
 .cta {

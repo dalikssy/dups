@@ -1,7 +1,10 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-const COLORS = ["#73f5f5", "#6a45ff", "#a48bff", "#ffffff"];
+const PALETTE = {
+  dark: ["#73f5f5", "#6a45ff", "#a48bff", "#ffffff"],
+  light: ["#6a45ff", "#0b8b93", "#a48bff", "#2a1170"],
+};
 
 // Full-screen canvas of drifting pixels. Pixels flee the cursor,
 // and a click/tap blows a burst of new ones out of that spot.
@@ -23,7 +26,7 @@ export default function PixelField() {
         x, y, s,
         vx: burst ? Math.cos(a) * sp : (Math.random() - 0.5) * 0.25,
         vy: burst ? Math.sin(a) * sp : -0.15 - Math.random() * 0.55,
-        c: COLORS[(Math.random() * COLORS.length) | 0],
+        ci: (Math.random() * 4) | 0,
         o: burst ? 0.5 + Math.random() * 0.4 : 0.18 + Math.random() * 0.42,
         life: burst ? 70 + Math.random() * 50 : Infinity,
         tw: Math.random() * Math.PI * 2,
@@ -58,6 +61,7 @@ export default function PixelField() {
     const tick = () => {
       if (!running) return;
       ctx.clearRect(0, 0, W, H);
+      const pal = document.documentElement.dataset.theme === "dark" ? PALETTE.dark : PALETTE.light;
       for (let i = P.length - 1; i >= 0; i--) {
         const p = P[i];
         const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
@@ -80,7 +84,7 @@ export default function PixelField() {
         }
         const fade = p.life === Infinity ? 1 : Math.min(1, p.life / 40);
         ctx.globalAlpha = p.o * fade * (0.7 + 0.3 * Math.sin(p.tw));
-        ctx.fillStyle = p.c;
+        ctx.fillStyle = pal[p.ci];
         ctx.fillRect(Math.round(p.x), Math.round(p.y), p.s, p.s);
       }
       ctx.globalAlpha = 1;
@@ -91,7 +95,7 @@ export default function PixelField() {
     resize();
     if (reduce) {
       // static scatter only
-      P.forEach((p) => { ctx.globalAlpha = p.o * 0.6; ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s); });
+      P.forEach((p) => { ctx.globalAlpha = p.o * 0.6; ctx.fillStyle = PALETTE.light[p.ci]; ctx.fillRect(p.x, p.y, p.s, p.s); });
       return;
     }
     raf = requestAnimationFrame(tick);

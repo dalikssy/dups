@@ -1,7 +1,6 @@
 "use client";
 
 import styles from "./Form.module.css";
-import { Logo } from "../UI/Sprites";
 import { useState } from "react";
 import data from "@/data.json";
 import FormDots from "./FormDots";
@@ -24,7 +23,7 @@ const Form = ({ language }) => {
   return (
     <section className={styles.form} id="form">
       <div className={styles.head}>
-        <p className="lab">{language === "cz" ? "Kontakt" : "Contact"}</p>
+        <p className="lab" data-scramble>{language === "cz" ? "Kontakt" : "Contact"}</p>
         <h3>{form_title[language]}</h3>
       </div>
       <form action={checkForm}>
@@ -82,7 +81,6 @@ const Form = ({ language }) => {
         </div>
       </form>
 
-      <Logo name="symbol" height={260} color="rgba(106,69,255,.14)" className={styles.logo} />
     </section>
   );
 };

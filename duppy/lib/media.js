@@ -12,11 +12,14 @@ export const LOGOS = {
   nba: { y: 174, w: 124, h: 300, label: "NBA" },
   ewc: { y: 484, w: 700, h: 132, label: "Esports World Cup" },
   livesport: { y: 626, w: 700, h: 87, label: "Livesport" },
-  mag: { y: 723, w: 700, h: 264, label: "Magnifi" },
+  mag: { y: 723, w: 700, h: 264, label: "The MAG" },
   forbes: { y: 997, w: 700, h: 176, label: "Forbes" },
   symbol: { y: 1183, w: 700, h: 293, label: "DUPSCALED" },
   wordmark: { y: 1486, w: 700, h: 63, label: "DUPSCALED" },
 };
+
+// Keyin as a standalone pixel portrait (504px).
+export const PX_KEYIN = `${CDN}/983d7b19-ef45-4fe8-b40c-6c5648928ebf.png`;
 
 // Pixel-art portraits, 252px tiles laid out horizontally.
 export const PX_SPRITE = `${CDN}/02f0d8f3-11f2-403a-b094-d9b8b8346765.png`;

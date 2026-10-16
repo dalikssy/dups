@@ -11,7 +11,7 @@ const Clients = ({ language }) => {
   return (
     <section className={styles.reference} id="references">
       <div className={styles.head}>
-        <p className="lab">{language === "cz" ? "Spolupracovali jsme s" : "We worked with"}</p>
+        <p className="lab" data-scramble>{language === "cz" ? "Spolupracovali jsme s" : "We worked with"}</p>
         <h3>{renderText(clients_title[language])}</h3>
       </div>
 
@@ -28,7 +28,6 @@ const Clients = ({ language }) => {
 
       <ClientPicker language={language} />
 
-      <p className={styles.reference_side}>{clients_highlight[language]}</p>
     </section>
   );
 };

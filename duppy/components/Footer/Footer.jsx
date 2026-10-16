@@ -6,7 +6,7 @@ const Footer = ({ language }) => {
   return (
     <footer>
       <div className={styles.brand}>
-        <Logo name="symbol" height={30} color="#73f5f5" />
+        <Logo name="symbol" height={30} color="var(--brand)" />
         <div>
           <Logo name="wordmark" height={16} />
           <p className={styles.copy}>

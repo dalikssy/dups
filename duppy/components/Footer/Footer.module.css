@@ -27,8 +27,16 @@
   justify-content: center;
   align-items: center;
   border: 2px solid var(--line);
-  background: rgba(11, 7, 22, 0.7);
+  background: rgb(var(--panel-rgb) / 0.7);
   transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.socail img {
+  filter: var(--icon-filter);
+}
+
+.socail:hover img {
+  filter: none;
 }
 
 .socail:hover {

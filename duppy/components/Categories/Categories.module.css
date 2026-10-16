@@ -35,7 +35,7 @@
   padding: 34px 30px 36px;
   border-radius: 26px;
   border: 2px solid var(--line);
-  background: linear-gradient(180deg, rgba(42, 17, 112, 0.45), rgba(10, 6, 24, 0.7));
+  background: linear-gradient(180deg, rgb(var(--tint-rgb) / 0.45), rgb(var(--panel-rgb) / 0.7));
   overflow: hidden;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
@@ -57,7 +57,7 @@
 }
 
 .category:hover .num {
-  color: var(--cy);
+  color: var(--acc);
   -webkit-text-stroke-color: var(--cy);
   transform: translateX(6px) skewX(-8deg);
 }

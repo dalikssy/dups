@@ -43,7 +43,7 @@
   width: 100vw;
   height: 230px;
   padding: 20px 24px;
-  background: rgba(11, 7, 22, 0.8);
+  background: rgb(var(--panel-rgb) / 0.8);
   border: 2px solid var(--line);
   border-radius: 16px;
   font-size: 17px;
@@ -62,13 +62,39 @@
   gap: 23px;
 }
 
-.submit path {
-  fill: var(--pur);
-  transition: fill 0.25s ease-in-out;
+.px {
+  display: flex;
+  gap: 6px;
 }
 
-.submit:hover path {
-  fill: var(--vio);
+.px i {
+  width: 12px;
+  height: 12px;
+  background: var(--line);
+  transition: background 0.2s;
+}
+
+.submit:hover .px i {
+  animation: ripple 0.9s steps(2) infinite;
+}
+
+.pxSending i {
+  animation: march 0.84s steps(1) infinite !important;
+}
+
+.pxSent i {
+  background: var(--acc);
+  animation: none !important;
+}
+
+@keyframes ripple {
+  0%, 100% { background: var(--line); transform: none; }
+  50% { background: var(--vio); transform: translateY(-4px); }
+}
+
+@keyframes march {
+  0%, 100% { background: var(--line); }
+  50% { background: var(--acc); }
 }
 
 .submit button {
@@ -98,18 +124,12 @@
 }
 
 .submit .sent {
-  color: var(--cy);
+  color: var(--acc);
   background-color: transparent;
   border: 2px solid var(--cy);
 }
 
-.submit .sendingsvg {
-  fill: rgba(115, 245, 245, 0.5);
-}
 
-.submit .sentsvg {
-  fill: var(--cy);
-}
 
 @media only screen and (max-width: 800px) {
   .form_upper {
@@ -125,7 +145,7 @@
     padding-top: 90px;
     padding-bottom: 90px;
   }
-  .submit svg {
+  .px {
     display: none;
   }
   .submit button {

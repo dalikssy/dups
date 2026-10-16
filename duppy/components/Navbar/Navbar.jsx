@@ -2,6 +2,7 @@ import styles from "./Navbar.module.css";
 import Link from "next/link";
 import data from "@/data.json";
 import { Logo } from "../UI/Sprites";
+import ThemeToggle from "../UI/ThemeToggle";
 
 export default function Navbar({ language }) {
   const { navbar } = data;
@@ -9,15 +10,15 @@ export default function Navbar({ language }) {
   return (
     <header className={styles.header}>
       <Link href={language === "cz" ? "/cz" : "/"} className={styles.brand} aria-label="DUPSCALED home">
-        <Logo name="symbol" height={22} color="#73f5f5" />
+        <Logo name="symbol" height={22} color="var(--brand)" />
         <Logo name="wordmark" height={15} className={styles.wordmark} />
       </Link>
 
       <nav className={styles.nav}>
-        <a className={styles.link} href="#casestudy">
-          {language === "cz" ? "Case study" : "Case study"}
+        <a className={styles.link} href="#casestudy" data-scramble>
+          Case study
         </a>
-        <a className={styles.link} href="#form">
+        <a className={styles.link} href="#form" data-scramble>
           {navbar[language]}
         </a>
 
@@ -33,6 +34,7 @@ export default function Navbar({ language }) {
             CZ
           </Link>
         </div>
+        <ThemeToggle />
       </nav>
     </header>
   );

@@ -5,7 +5,7 @@ import Navbar from "../Navbar/Navbar";
 import data from "@/data.json";
 import { ReelButton } from "./HeroMedia";
 import { Logo, Pixel } from "../UI/Sprites";
-import { ROSTER } from "@/lib/media";
+import { ROSTER, PX_KEYIN } from "@/lib/media";
 
 const renderText = (text) => {
   return text.map((item, index) => {
@@ -80,12 +80,29 @@ const Landing = ({ language }) => {
       </div>
 
       <div className={styles.stack} aria-hidden="true">
-        {[0, 2, 10, 1].map((ix, i) => (
-          <div key={ix} className={`${styles.tile} ${styles["t" + i]}`} data-tilt>
-            <Pixel index={ix} size={200} />
-            <span>{ROSTER[ix]}</span>
-          </div>
-        ))}
+        <div className={`${styles.tile} ${styles.t0}`} data-tilt>
+          <Pixel index={0} size={200} />
+          <span>{ROSTER[0]}</span>
+        </div>
+        <div className={`${styles.tile} ${styles.t1}`} data-tilt>
+          <span className={styles.brandTile}>
+            <Logo name="livesport" height={22} color="#fff" />
+          </span>
+          <span>LIVESPORT</span>
+        </div>
+        <div className={`${styles.tile} ${styles.t2}`} data-tilt>
+          <Pixel index={10} size={200} />
+          <span>{ROSTER[10]}</span>
+        </div>
+        <div className={`${styles.tile} ${styles.t3}`} data-tilt>
+          <span
+            className={styles.keyin}
+            style={{ backgroundImage: `url(${PX_KEYIN})` }}
+            role="img"
+            aria-label="Keyin"
+          />
+          <span>KEYIN</span>
+        </div>
       </div>
       </div>
 

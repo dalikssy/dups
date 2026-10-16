@@ -10,7 +10,7 @@ export default function Reference({ refer, language, refNumber, index }) {
         <Image src={`/referals/${img}`} width={76} height={76} alt={name} />
       </a>
       <div>
-        <h4>{name}</h4>
+        <h4 data-scramble>{name}</h4>
         <p>{description[language]}</p>
       </div>
     </li>

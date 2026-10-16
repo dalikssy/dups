@@ -9,7 +9,7 @@ import {
 
 // One logo mark from the sprite, scaled to a given height.
 // Rendered as a CSS mask so it can take any brand color.
-export function Logo({ name, height = 40, color = "#fff", className, style }) {
+export function Logo({ name, height = 40, color = "var(--fg)", className, style }) {
   const L = LOGOS[name];
   const s = height / L.h;
   const size = `${LOGO_SPRITE_W * s}px auto`;

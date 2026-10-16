@@ -13,7 +13,7 @@ const Categories = ({ language }) => {
   return (
     <section className={styles.categories} id="services">
       <div className={styles.head}>
-        <p className="lab">{language === "cz" ? "Co děláme" : "What we do"}</p>
+        <p className="lab" data-scramble>{language === "cz" ? "Co děláme" : "What we do"}</p>
         <h3>
           {language === "cz" ? (
             <>

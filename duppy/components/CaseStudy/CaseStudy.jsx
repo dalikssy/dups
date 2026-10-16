@@ -8,7 +8,7 @@ const phases = [
     number: "01",
     title: "PHASE 1 · BUILD CREDIBILITY",
     description:
-      "We were aware that many fake profiles of Mo existed. From the beginning, our main goal was to establish credibility so people would recognize this as the authentic account. We focused on posting clips mostly featuring Jynxzi, hoping he would repost them and encourage fans to recognize, \"Yes, this is the real account.\"",
+      "Fake Mo accounts were everywhere. We built credibility first, clipping Jynxzi moments so fans knew which account was real.",
     highlight: "Jynxzi",
     stats: [
       { value: "8.5M", label: "VIEWS" },
@@ -20,11 +20,11 @@ const phases = [
     number: "02",
     title: "PHASE 2 · ANALYZE FANBASE",
     description:
-      "After thorough research, we discovered that the client's fanbase wasn't interested in fast editing or flashy titles. On the contrary, they valued raw, authentic gameplay. Our goal was to present the gameplay exactly as it should be, without missing any important details. The results spoke for themselves.",
+      "His fans wanted raw gameplay, not flashy edits. So that is exactly what we posted.",
     highlight: null,
     extra:
-      "We launched TikTok live streaming, set everything up, and were ready to go. On a brand-new 12-day-old account, we averaged 21,000 viewers!",
-    extraHighlight: ["TikTok live streaming", "averaged 21,000 viewers"],
+      "Then we launched TikTok LIVE: averaged 21,000 viewers on a 12 day old account.",
+    extraHighlight: ["TikTok LIVE", "averaged 21,000 viewers"],
     stats: [
       { value: "57.5M", label: "VIEWS" },
       { value: "355K", label: "FOLLOWERS" },
@@ -63,13 +63,13 @@ function GrowthChart() {
     <svg ref={ref} className={`${styles.chart} ${on ? styles.chartOn : ""}`} viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Followers grew from 0 to 350K over 14 days">
       <defs>
         <linearGradient id="csArea" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#73f5f5" stopOpacity=".4" />
-          <stop offset="1" stopColor="#73f5f5" stopOpacity="0" />
+          <stop offset="0" style={{ stopColor: "var(--acc)" }} stopOpacity=".35" />
+          <stop offset="1" style={{ stopColor: "var(--acc)" }} stopOpacity="0" />
         </linearGradient>
       </defs>
       {[0, 100, 200, 300].map((v) => (
         <g key={v}>
-          <line x1={L} x2={W - R} y1={y(v)} y2={y(v)} stroke="rgba(255,255,255,.1)" strokeWidth="1.5" />
+          <line x1={L} x2={W - R} y1={y(v)} y2={y(v)} style={{ stroke: "rgb(var(--fg-rgb) / .12)" }} strokeWidth="1.5" />
           <text x={L - 12} y={y(v) + 5} textAnchor="end" className={styles.axis}>
             {v ? `${v}K` : "0"}
           </text>
@@ -82,8 +82,8 @@ function GrowthChart() {
         <text key={d} x={x(d)} y={H - 14} textAnchor="middle" className={styles.axis}>DAY {d}</text>
       ))}
       <polygon points={area} fill="url(#csArea)" className={styles.area} />
-      <polyline points={pts} fill="none" stroke="#73f5f5" strokeWidth="5" strokeLinejoin="round" strokeLinecap="round" pathLength="1" className={styles.line} />
-      <circle cx={x(14)} cy={y(350)} r="9" fill="#fff" stroke="#73f5f5" strokeWidth="4" className={styles.dot} />
+      <polyline points={pts} fill="none" style={{ stroke: "var(--acc)" }} strokeWidth="5" strokeLinejoin="round" strokeLinecap="round" pathLength="1" className={styles.line} />
+      <circle cx={x(14)} cy={y(350)} r="9" style={{ fill: "var(--panel-solid)", stroke: "var(--acc)" }} strokeWidth="4" className={styles.dot} />
     </svg>
   );
 }
@@ -112,7 +112,7 @@ export default function CaseStudy({ language }) {
     <section className={styles.casestudy} id="casestudy">
       <div className={styles.header}>
         <div className={styles.meta}>
-          <span className="lab">Case study</span>
+          <span className="lab" data-scramble>Case study</span>
           <span className={styles.metaDivider} />
           <span className={styles.metaItem}>
             <span className={styles.metaLabel}>Client</span>
@@ -156,7 +156,7 @@ export default function CaseStudy({ language }) {
             onClick={() => setActivePhase(i)}
           >
             <span className={styles.tabNum}>{p.number}</span>
-            <span className={styles.tabLabel}>{i === 0 ? "Build credibility" : "Analyze fanbase"}</span>
+            <span className={styles.tabLabel} data-scramble>{i === 0 ? "Build credibility" : "Analyze fanbase"}</span>
           </button>
         ))}
       </div>

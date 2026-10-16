@@ -12,7 +12,7 @@
   padding: 0 14px 0 26px;
   border-radius: 18px;
   border: 1px solid var(--line);
-  background: rgba(11, 7, 22, 0.55);
+  background: rgb(var(--panel-rgb) / 0.55);
   backdrop-filter: blur(12px);
 }
 
@@ -36,12 +36,12 @@
   text-transform: uppercase;
   padding: 10px 14px;
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgb(var(--fg-rgb) / 0.8);
   transition: color 0.15s, background 0.15s;
 }
 
 .link:hover {
-  color: var(--cy);
+  color: var(--acc);
   background: rgba(115, 245, 245, 0.06);
 }
 
@@ -80,7 +80,7 @@
   letter-spacing: 0.1em;
   padding: 7px 9px;
   border-radius: 7px;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgb(var(--fg-rgb) / 0.45);
 }
 
 .language a.activeLanguage {
