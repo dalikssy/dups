@@ -110,6 +110,7 @@ html {
      viewport, so no seams and nothing shows when the toolbar slides */
   html {
     background-image: none;
+    transition: background-color 0.4s ease;
   }
 
   .bgfield {
@@ -121,15 +122,32 @@ html {
     height: 120lvh;
     z-index: -1;
     pointer-events: none;
-    transform: translateZ(0);
-    will-change: transform;
+    contain: strict;
+  }
+
+  /* one pre-painted layer per section palette; switching sections only
+     cross-fades opacity, which the GPU does without repainting anything
+     (animating the colours themselves re-styled the whole page every frame) */
+  .bgfield i {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.1s ease;
     background-image:
-      radial-gradient(95vw 24lvh at 0% 38%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 72%),
-      radial-gradient(90vw 22lvh at 100% 48%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 72%),
-      radial-gradient(100vw 24lvh at 25% 62%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 72%),
-      radial-gradient(75vw 20lvh at 100% 70%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 72%);
-    /* blobs sit in the middle and fade before the top/bottom edges
-       (no mask: masks on fixed layers repaint on every scroll frame on iOS) */
+      radial-gradient(125vw 58lvh at 6% 16%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
+      radial-gradient(115vw 52lvh at 98% 32%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
+      radial-gradient(125vw 58lvh at 26% 88%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 70%),
+      radial-gradient(100vw 46lvh at 96% 74%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 70%);
+  }
+
+  html[data-bg="hero"] .bgfield [data-pal="hero"],
+  html:not([data-bg]) .bgfield [data-pal="hero"],
+  html[data-bg="refs"] .bgfield [data-pal="refs"],
+  html[data-bg="clients"] .bgfield [data-pal="clients"],
+  html[data-bg="services"] .bgfield [data-pal="services"],
+  html[data-bg="case"] .bgfield [data-pal="case"],
+  html[data-bg="form"] .bgfield [data-pal="form"] {
+    opacity: 1;
   }
 }
 
@@ -618,22 +636,28 @@ html:not(.fx-cursor) .fx-box {
 
 /* palettes per section */
 :root,
-[data-bg="hero"] {
+[data-bg="hero"],
+[data-pal="hero"] {
   --f1: #6a45ff; --f2: #3fd9e8; --f3: #b44cff; --f4: #2a1170;
 }
-[data-bg="refs"] {
+[data-bg="refs"],
+[data-pal="refs"] {
   --f1: #ff5fa2; --f2: #6a45ff; --f3: #ffb36b; --f4: #b44cff;
 }
-[data-bg="clients"] {
+[data-bg="clients"],
+[data-pal="clients"] {
   --f1: #73f5f5; --f2: #2b6bff; --f3: #6a45ff; --f4: #00c2a8;
 }
-[data-bg="services"] {
+[data-bg="services"],
+[data-pal="services"] {
   --f1: #6a45ff; --f2: #ff6fd8; --f3: #3fd9e8; --f4: #3a1aa8;
 }
-[data-bg="case"] {
+[data-bg="case"],
+[data-pal="case"] {
   --f1: #00e0c6; --f2: #6a45ff; --f3: #2b6bff; --f4: #73f5f5;
 }
-[data-bg="form"] {
+[data-bg="form"],
+[data-pal="form"] {
   --f1: #ff7a59; --f2: #6a45ff; --f3: #ff5fa2; --f4: #ffd36b;
 }
 
@@ -735,8 +759,8 @@ html:not(.fx-cursor) .fx-box {
 
 @media only screen and (max-width: 700px) {
   [data-bg]:not([data-bg="hero"]) {
-    padding-top: 96px !important;
-    padding-bottom: 88px !important;
+    padding-top: 84px !important;
+    padding-bottom: 64px !important;
     position: relative;
   }
 
@@ -744,7 +768,7 @@ html:not(.fx-cursor) .fx-box {
   [data-bg]:not([data-bg="hero"])::before {
     content: "";
     position: absolute;
-    top: 40px;
+    top: 36px;
     left: var(--gutter);
     width: 48px;
     height: 4px;
@@ -956,5 +980,36 @@ html:not(.fx-cursor) .fx-box {
   }
   [data-tilt]::before {
     display: none;
+  }
+}
+
+/* ---------- phone performance pass ----------
+   Touch screens: nothing animates forever, nothing blends, nothing is
+   masked or blurred while you scroll. */
+@media (hover: none), (max-width: 820px) {
+  .glitch::before,
+  .glitch::after {
+    display: none;
+  }
+  .reveal {
+    transform: translate3d(0, 18px, 0);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .reveal.in {
+    transform: none;
+  }
+  .mm {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgb(var(--panel-rgb) / 0.97);
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0s linear 0.25s;
+  }
+  .mm.mm-open {
+    visibility: visible;
+    transition: opacity 0.25s ease;
+  }
+  .hello {
+    backdrop-filter: none;
   }
 }

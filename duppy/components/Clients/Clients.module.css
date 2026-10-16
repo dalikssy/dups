@@ -184,11 +184,14 @@
 }
 
 @media only screen and (max-width: 700px) {
-  .head > p {
-    display: none;
+  .roster {
+    mask-image: none;
+  }
+  .rosterTrack {
+    will-change: transform;
   }
   .person {
-    zoom: 0.68;
+    zoom: 0.58;
   }
   .picker {
     padding: 0;
@@ -257,6 +260,6 @@
     gap: 18px;
   }
   .person figcaption {
-    font-size: 18px;
+    font-size: 28px;
   }
 }

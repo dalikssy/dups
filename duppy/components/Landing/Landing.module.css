@@ -334,27 +334,52 @@
   .buttons {
     display: none;
   }
+  .hero h1 {
+    line-height: 0.98;
+  }
+  .kicker {
+    margin-bottom: 14px;
+  }
   .stack {
-    margin-top: 28px;
-    gap: 14px;
+    margin-top: 30px;
+    gap: 12px;
+    padding-bottom: 18px;
   }
   .tile {
-    zoom: 0.68;
+    zoom: 0.6;
+    rotate: 0deg !important;
   }
+  /* 5B+ and the logo strip become one tidy card */
   .proof {
-    padding: 32px 0 28px;
+    margin: 8px 0 40px;
+    padding: 20px 18px 18px;
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
+    gap: 14px;
+    border-radius: 22px;
+    border: 2px solid var(--line);
+    background: rgb(var(--panel-rgb) / 0.72);
   }
   .big {
     flex: none;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 12px;
   }
   .bigNum {
-    font-size: 60px;
+    font-size: 56px;
   }
   .trusted {
     min-width: 0;
     gap: 10px;
+    padding: 14px 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .track {
+    gap: 34px;
+    will-change: transform;
+  }
+  .marquee {
+    mask-image: none;
   }
 }

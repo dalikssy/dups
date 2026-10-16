@@ -7,18 +7,27 @@ const phases = [
   {
     number: "01",
     title: "PHASE 1 · BUILD CREDIBILITY",
+    titleCz: "FÁZE 1 · DŮVĚRYHODNOST",
+    tab: ["Build credibility", "Důvěryhodnost"],
+    descriptionCz:
+      "Falešných účtů Mo bylo všude plno. Nejdřív jsme budovali důvěru: klipy s Jynxzim, aby fanoušci věděli, který účet je ten pravý.",
     description:
       "Fake Mo accounts were everywhere. We built credibility first, clipping Jynxzi moments so fans knew which account was real.",
     highlight: "Jynxzi",
     stats: [
-      { value: "8.5M", label: "VIEWS" },
-      { value: "94K", label: "FOLLOWERS" },
-      { value: "665K", label: "LIKES" },
+      { value: "8.5M", label: "VIEWS", cz: "ZHLÉDNUTÍ" },
+      { value: "94K", label: "FOLLOWERS", cz: "SLEDUJÍCÍ" },
+      { value: "665K", label: "LIKES", cz: "LAJKŮ" },
     ],
   },
   {
     number: "02",
     title: "PHASE 2 · ANALYZE FANBASE",
+    titleCz: "FÁZE 2 · ANALÝZA FANOUŠKŮ",
+    tab: ["Analyze fanbase", "Analýza fanoušků"],
+    descriptionCz: "Fanoušci chtěli čistý gameplay, ne efektní střih. Tak jsme jim ho dali.",
+    extraCz: "Pak jsme spustili TikTok LIVE: průměrně 21 000 diváků na 12 dní starém účtu.",
+    extraHighlightCz: ["TikTok LIVE", "průměrně 21 000 diváků"],
     description:
       "His fans wanted raw gameplay, not flashy edits. So that is exactly what we posted.",
     highlight: null,
@@ -26,9 +35,9 @@ const phases = [
       "Then we launched TikTok LIVE: averaged 21,000 viewers on a 12 day old account.",
     extraHighlight: ["TikTok LIVE", "averaged 21,000 viewers"],
     stats: [
-      { value: "57.5M", label: "VIEWS" },
-      { value: "355K", label: "FOLLOWERS" },
-      { value: "2.7M", label: "LIKES" },
+      { value: "57.5M", label: "VIEWS", cz: "ZHLÉDNUTÍ" },
+      { value: "355K", label: "FOLLOWERS", cz: "SLEDUJÍCÍ" },
+      { value: "2.7M", label: "LIKES", cz: "LAJKŮ" },
     ],
   },
 ];
@@ -90,7 +99,10 @@ function GrowthChart() {
 
 export default function CaseStudy({ language }) {
   const [activePhase, setActivePhase] = useState(0);
+  const cz = language === "cz";
   const phase = phases[activePhase];
+  const desc = cz ? phase.descriptionCz : phase.description;
+  const extra = cz ? phase.extraCz : phase.extra;
 
   const renderWithHighlight = (text, highlights) => {
     if (!highlights || highlights.length === 0) return text;
@@ -115,13 +127,13 @@ export default function CaseStudy({ language }) {
           <span className="lab" data-scramble>Case study</span>
           <span className={styles.metaDivider} />
           <span className={styles.metaItem}>
-            <span className={styles.metaLabel}>Client</span>
+            <span className={styles.metaLabel}>{cz ? "Klient" : "Client"}</span>
             <span className={styles.metaValue}>Mohamed Light</span>
           </span>
           <span className={styles.metaDivider} />
           <span className={styles.metaItem}>
-            <span className={styles.metaLabel}>Service</span>
-            <span className={styles.metaValue}>Shortform content</span>
+            <span className={styles.metaLabel}>{cz ? "Služba" : "Service"}</span>
+            <span className={styles.metaValue}>{cz ? "Krátká videa" : "Shortform content"}</span>
           </span>
         </div>
         <h3 className={styles.title}>
@@ -156,20 +168,20 @@ export default function CaseStudy({ language }) {
             onClick={() => setActivePhase(i)}
           >
             <span className={styles.tabNum}>{p.number}</span>
-            <span className={styles.tabLabel} data-scramble>{i === 0 ? "Build credibility" : "Analyze fanbase"}</span>
+            <span className={styles.tabLabel} data-scramble>{p.tab[cz ? 1 : 0]}</span>
           </button>
         ))}
       </div>
 
       <div className={styles.content} key={activePhase}>
         <div className={styles.contentLeft}>
-          <h2 className={styles.phaseTitle}>{phase.title}</h2>
+          <h2 className={styles.phaseTitle}>{cz ? phase.titleCz : phase.title}</h2>
           <p className={styles.phaseDesc}>
-            {phase.highlight ? renderWithHighlight(phase.description, [phase.highlight]) : phase.description}
+            {phase.highlight ? renderWithHighlight(desc, [phase.highlight]) : desc}
           </p>
-          {phase.extra && (
+          {extra && (
             <p className={`${styles.phaseDesc} ${styles.phaseExtra}`}>
-              {renderWithHighlight(phase.extra, phase.extraHighlight)}
+              {renderWithHighlight(extra, cz ? phase.extraHighlightCz : phase.extraHighlight)}
             </p>
           )}
         </div>
@@ -178,7 +190,7 @@ export default function CaseStudy({ language }) {
           {phase.stats.map((s, i) => (
             <div key={i} className={styles.stat} data-tilt>
               <CountUp value={s.value} className={styles.statValue} />
-              <span className={styles.statLabel}>{s.label}</span>
+              <span className={styles.statLabel}>{cz ? s.cz : s.label}</span>
             </div>
           ))}
         </div>
