@@ -27,7 +27,7 @@ const { main_text, title, main_book, main_references } = data;
 const COPY = {
   kicker: { en: "All in one content & brand agency", cz: "All in one content & brand agency" },
   reel: { en: "Watch the reel", cz: "Pustit showreel" },
-  views: { en: "Views generated", cz: "Vygenerovaných zhlédnutí" },
+  views: { en: "views generated for our clients", cz: "zhlédnutí, která jsme vygenerovali klientům" },
   trusted: { en: "Trusted by", cz: "Důvěřují nám" },
 };
 

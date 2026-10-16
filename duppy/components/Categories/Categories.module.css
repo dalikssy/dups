@@ -175,10 +175,27 @@
     gap: 14px;
     pointer-events: none;
   }
+  /* small solid badge instead of the outlined numeral */
   .num {
-    font-size: 34px;
     flex: none;
-    width: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--cy);
+    color: var(--bk);
+    -webkit-text-stroke: 0;
+    font-family: var(--font-wide-stack);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .category:nth-child(even) .num {
+    background: var(--vio);
+    color: #fff;
   }
   .category h2 {
     min-height: 0;
