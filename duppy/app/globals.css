@@ -113,41 +113,19 @@ html {
     transition: background-color 0.4s ease;
   }
 
+  /* phones: the colour field is part of the page itself (one absolutely
+     placed sheet behind all sections, painted once by BgFlow). It scrolls
+     with the content, so it also sits under the Safari toolbar: no fixed
+     layer, no edge, no seam, nothing to repaint while scrolling. */
   .bgfield {
     display: block;
-    position: fixed;
+    position: absolute;
+    top: 0;
     left: 0;
-    right: 0;
-    top: -10lvh;
-    height: 120lvh;
+    width: 100%;
     z-index: -1;
     pointer-events: none;
-    contain: strict;
-  }
-
-  /* one pre-painted layer per section palette; switching sections only
-     cross-fades opacity, which the GPU does without repainting anything
-     (animating the colours themselves re-styled the whole page every frame) */
-  .bgfield i {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 1.1s ease;
-    background-image:
-      radial-gradient(125vw 58lvh at 6% 16%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
-      radial-gradient(115vw 52lvh at 98% 32%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
-      radial-gradient(125vw 58lvh at 26% 88%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 70%),
-      radial-gradient(100vw 46lvh at 96% 74%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 70%);
-  }
-
-  html[data-bg="hero"] .bgfield [data-pal="hero"],
-  html:not([data-bg]) .bgfield [data-pal="hero"],
-  html[data-bg="refs"] .bgfield [data-pal="refs"],
-  html[data-bg="clients"] .bgfield [data-pal="clients"],
-  html[data-bg="services"] .bgfield [data-pal="services"],
-  html[data-bg="case"] .bgfield [data-pal="case"],
-  html[data-bg="form"] .bgfield [data-pal="form"] {
-    opacity: 1;
+    background-repeat: no-repeat;
   }
 }
 
@@ -636,28 +614,22 @@ html:not(.fx-cursor) .fx-box {
 
 /* palettes per section */
 :root,
-[data-bg="hero"],
-[data-pal="hero"] {
+[data-bg="hero"] {
   --f1: #6a45ff; --f2: #3fd9e8; --f3: #b44cff; --f4: #2a1170;
 }
-[data-bg="refs"],
-[data-pal="refs"] {
+[data-bg="refs"] {
   --f1: #ff5fa2; --f2: #6a45ff; --f3: #ffb36b; --f4: #b44cff;
 }
-[data-bg="clients"],
-[data-pal="clients"] {
+[data-bg="clients"] {
   --f1: #73f5f5; --f2: #2b6bff; --f3: #6a45ff; --f4: #00c2a8;
 }
-[data-bg="services"],
-[data-pal="services"] {
+[data-bg="services"] {
   --f1: #6a45ff; --f2: #ff6fd8; --f3: #3fd9e8; --f4: #3a1aa8;
 }
-[data-bg="case"],
-[data-pal="case"] {
+[data-bg="case"] {
   --f1: #00e0c6; --f2: #6a45ff; --f3: #2b6bff; --f4: #73f5f5;
 }
-[data-bg="form"],
-[data-pal="form"] {
+[data-bg="form"] {
   --f1: #ff7a59; --f2: #6a45ff; --f3: #ff5fa2; --f4: #ffd36b;
 }
 
@@ -790,9 +762,7 @@ html:not(.fx-cursor) .fx-box {
     display: none !important;
   }
 
-  body {
-    padding-bottom: 84px;
-  }
+
 
   .mbar {
     position: fixed;

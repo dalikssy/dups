@@ -332,6 +332,10 @@
     font-size: 16px;
   }
   .buttons {
+    margin-top: 26px;
+    gap: 10px;
+  }
+  .reference {
     display: none;
   }
   .hero h1 {
@@ -349,35 +353,24 @@
     zoom: 0.6;
     rotate: 0deg !important;
   }
-  /* 5B+ and the logo strip become one tidy card */
   .proof {
-    margin: 8px 0 40px;
-    padding: 20px 18px 18px;
+    padding: 32px 0 28px;
     flex-direction: column;
     align-items: stretch;
-    gap: 14px;
-    border-radius: 22px;
-    border: 2px solid var(--line);
-    background: rgb(var(--panel-rgb) / 0.72);
+    gap: 16px;
   }
   .big {
     flex: none;
-    flex-direction: row;
-    align-items: baseline;
-    gap: 12px;
   }
   .bigNum {
-    font-size: 56px;
+    font-size: 60px;
   }
   .trusted {
     min-width: 0;
     gap: 10px;
-    padding: 14px 0 0;
-    border-top: 1px solid var(--line);
   }
   .track {
     gap: 34px;
-    will-change: transform;
   }
   .marquee {
     mask-image: none;
