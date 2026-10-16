@@ -66,7 +66,7 @@ button {
 h1 {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(56px, 10.5vw, 168px);
+  font-size: clamp(64px, 10.5vw, 168px);
   line-height: 0.92;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -232,7 +232,9 @@ footer p {
 }
 
 form {
-  margin: 0px 20px;
+  margin: 0;
+  width: 100%;
+  max-width: 723px;
 }
 
 /* RGB-split glitch, same trick as the promo hits */
