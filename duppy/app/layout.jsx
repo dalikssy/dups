@@ -26,10 +26,37 @@ const inter = localFont({
   variable: "--font-inter",
 });
 
+const TITLE = "DUPSCALED · All in one content & brand agency";
+const DESC =
+  "DUPSCALED is an all-in-one content & brand agency: content, brand, social and web under one roof. 5B+ views generated for creators, esports orgs and athletes.";
+// Link preview card (iMessage, WhatsApp, Slack, X...): branded image instead
+// of whatever photo the crawler finds first on the page.
+const OG_IMAGE = {
+  url: "https://d2ol7oe51mr4n9.cloudfront.net/user_3HPxrGsPuGeZcLUulgUMU2YDdgp/eb902d46-6d52-4fd5-bd1f-c9f6a73f700a.jpg",
+  width: 1200,
+  height: 630,
+  alt: "We are DUPSCALED · All in one content & brand agency",
+};
+
 export const metadata = {
-  title: "DUPSCALED · All in one content & brand agency",
-  description:
-    "DUPSCALED is an all-in-one content & brand agency: content, brand, social and web under one roof. 5B+ views generated for creators, esports orgs and athletes.",
+  metadataBase: new URL("https://dupscaled.com"),
+  title: TITLE,
+  description: DESC,
+  openGraph: {
+    type: "website",
+    url: "https://dupscaled.com",
+    siteName: "DUPSCALED",
+    title: TITLE,
+    description: DESC,
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@dupscaled",
+    title: TITLE,
+    description: DESC,
+    images: [OG_IMAGE.url],
+  },
 };
 
 export const viewport = {
