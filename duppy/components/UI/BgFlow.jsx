@@ -72,6 +72,38 @@ export default function BgFlow() {
     }
 
     root.dataset.bg = "hero";
+
+    // The blobs drift with the scroll: each follows its own slow wave, and the
+    // position eases toward the target so the motion glides instead of jumping.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const WAVES = [
+      [8, 24, 0.8, 0, 8, 26, 0.6, 1],
+      [92, -24, 0.7, 0.5, 20, 30, 0.5, 0],
+      [30, 30, 0.6, 2, 96, -32, 0.7, 0],
+      [90, -30, 0.9, 1, 86, -26, 0.8, 2],
+    ];
+    const target = (t) =>
+      WAVES.flatMap(([x, ax, kx, px, y, ay, ky, py]) => [x + ax * Math.sin(t * kx + px), y + ay * Math.sin(t * ky + py)]);
+    let cur = target(0), raf = 0;
+    const glide = () => {
+      const goal = target(window.scrollY / window.innerHeight);
+      let moving = false;
+      cur = cur.map((v, i) => {
+        const n = v + (goal[i] - v) * 0.08;
+        if (Math.abs(goal[i] - n) > 0.05) moving = true;
+        return n;
+      });
+      cur.forEach((v, i) => root.style.setProperty(`--${i % 2 ? "y" : "x"}${(i >> 1) + 1}`, v.toFixed(2) + "%"));
+      raf = moving ? requestAnimationFrame(glide) : 0;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(glide);
+    };
+    if (!reduce) {
+      window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -96,6 +128,8 @@ export default function BgFlow() {
     return () => {
       io.disconnect();
       mo.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(raf);
     };
   }, [path]);
 

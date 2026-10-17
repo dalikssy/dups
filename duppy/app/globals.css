@@ -91,13 +91,24 @@ body {
 @property --f3 { syntax: "<color>"; inherits: true; initial-value: #b44cff; }
 @property --f4 { syntax: "<color>"; inherits: true; initial-value: #2a1170; }
 
+/* blob positions: BgFlow glides them around as you scroll (desktop).
+   Not inherited, so updating them only restyles <html>, not the page. */
+@property --x1 { syntax: "<percentage>"; inherits: false; initial-value: 8%; }
+@property --y1 { syntax: "<percentage>"; inherits: false; initial-value: 6%; }
+@property --x2 { syntax: "<percentage>"; inherits: false; initial-value: 96%; }
+@property --y2 { syntax: "<percentage>"; inherits: false; initial-value: 18%; }
+@property --x3 { syntax: "<percentage>"; inherits: false; initial-value: 30%; }
+@property --y3 { syntax: "<percentage>"; inherits: false; initial-value: 100%; }
+@property --x4 { syntax: "<percentage>"; inherits: false; initial-value: 92%; }
+@property --y4 { syntax: "<percentage>"; inherits: false; initial-value: 92%; }
+
 html {
   background-color: var(--bg);
   background-image:
-    radial-gradient(55vmax 45vmax at 8% 6%, color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
-    radial-gradient(50vmax 42vmax at 96% 18%, color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
-    radial-gradient(52vmax 44vmax at 30% 100%, color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 70%),
-    radial-gradient(40vmax 36vmax at 92% 92%, color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 70%);
+    radial-gradient(55vmax 45vmax at var(--x1) var(--y1), color-mix(in srgb, var(--f1) var(--mix), transparent), transparent 70%),
+    radial-gradient(50vmax 42vmax at var(--x2) var(--y2), color-mix(in srgb, var(--f2) var(--mix), transparent), transparent 70%),
+    radial-gradient(52vmax 44vmax at var(--x3) var(--y3), color-mix(in srgb, var(--f3) var(--mix), transparent), transparent 70%),
+    radial-gradient(40vmax 36vmax at var(--x4) var(--y4), color-mix(in srgb, var(--f4) var(--mix), transparent), transparent 70%);
   background-attachment: fixed;
   background-repeat: no-repeat;
   transition: --f1 1.6s ease, --f2 1.6s ease, --f3 1.6s ease, --f4 1.6s ease, background-color 0.4s ease;
