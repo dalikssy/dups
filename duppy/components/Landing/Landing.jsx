@@ -28,6 +28,7 @@ const COPY = {
   kicker: { en: "All in one content & brand agency", cz: "All in one content & brand agency" },
   reel: { en: "Watch the reel", cz: "Pustit showreel" },
   views: { en: "views generated for our clients", cz: "zhlédnutí, která jsme vygenerovali klientům" },
+  short: { en: "Views generated", cz: "Vygenerovaných zhlédnutí" },
   trusted: { en: "Trusted by", cz: "Důvěřují nám" },
 };
 
@@ -124,7 +125,7 @@ const Landing = ({ language }) => {
       </div>
       </div>
 
-      <Proof views={COPY.views[language]} trusted={COPY.trusted[language]} logos={TRUSTED} />
+      <Proof views={COPY.views[language]} short={COPY.short[language]} trusted={COPY.trusted[language]} logos={TRUSTED} />
     </section>
   );
 };

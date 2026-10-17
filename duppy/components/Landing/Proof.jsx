@@ -29,7 +29,7 @@ function Wheel({ d, delay, slow }) {
 // Headline proof: total views generated for clients as a live counter.
 // Scrolls into view -> every digit spins up from zero, left to right; then the
 // number keeps ticking upward like a live stream stat while it is on screen.
-export default function Proof({ views, trusted, logos }) {
+export default function Proof({ views, short, trusted, logos }) {
   const ref = useRef(null);
   const [n, setN] = useState(9_999_999_999); // every wheel starts on 9 so all of them spin in
   const [intro, setIntro] = useState(true);
@@ -73,6 +73,12 @@ export default function Proof({ views, trusted, logos }) {
 
   return (
     <div ref={ref} className={`${styles.proof} ${on ? styles.proofOn : ""}`}>
+      {/* desktop: the classic big 5B+ */}
+      <div className={styles.big}>
+        <span className={styles.bigNum}>5B+</span>
+        <span className="lab">{short}</span>
+      </div>
+      {/* phones: live counter */}
       <div className={styles.counterCard}>
         <span className={styles.livePill}>
           <i /> LIVE
