@@ -153,69 +153,102 @@
   }
 }
 
-/* phones: four compact cards, everything visible, nothing to tap open */
+.mob {
+  display: none;
+}
+
+/* phones: pick a service from four tiles, one big panel shows it */
 @media only screen and (max-width: 700px) {
   .grid {
+    display: none;
+  }
+  .categories {
+    gap: 28px;
+  }
+  .mob {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: 100%;
   }
-  .category {
-    gap: 0;
-    padding: 20px 18px 18px;
-    border-radius: 20px;
-    box-shadow: none !important;
+  .picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
-  .category::after {
-    display: none;
-  }
-  .row {
-    flex-direction: row;
-    align-items: center;
+  .pick {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: 14px;
-    pointer-events: none;
+    min-height: 92px;
+    padding: 14px 14px 13px;
+    border-radius: 18px;
+    border: 2px solid var(--line);
+    background: rgb(var(--panel-rgb) / 0.7);
+    color: var(--fg);
+    text-align: left;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
   }
-  /* small solid badge instead of the outlined numeral */
-  .num {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 38px;
-    height: 30px;
-    border-radius: 9px;
-    background: var(--cy);
-    color: var(--bk);
-    -webkit-text-stroke: 0;
+  .pickOn {
+    background: var(--fg);
+    border-color: var(--fg);
+    color: var(--bg);
+  }
+  .pickNum {
     font-family: var(--font-wide-stack);
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    line-height: 1;
-  }
-  .category:nth-child(even) .num {
-    background: var(--vio);
-    color: #fff;
-  }
-  .category h2 {
-    min-height: 0;
-    font-size: 27px;
-    line-height: 1.05;
-  }
-  .category h2 br {
-    display: none;
-  }
-  .category p {
-    margin-top: 12px;
-    font-size: 15px;
-    line-height: 1.55;
-  }
-  .ask {
-    margin-top: 16px;
-    height: 42px;
-    padding: 0 16px;
     font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    opacity: 0.55;
   }
+  .pickName {
+    font-family: var(--font-display);
+    font-size: 21px;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+  /* shows how long until the next service rolls in */
+  .pickBar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 100%;
+    background: var(--cy);
+    transform-origin: left;
+    animation: fill 4.5s linear forwards;
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    min-height: 236px;
+    padding: 24px 20px 22px;
+    border-radius: 22px;
+    border: 2px solid var(--line);
+    background: linear-gradient(180deg, rgb(var(--tint-rgb) / 0.45), rgb(var(--panel-rgb) / 0.75));
+    animation: pop 0.35s ease;
+  }
+  .panel h2 {
+    font-size: 40px;
+    line-height: 0.98;
+  }
+  .panel p {
+    flex: 1;
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+}
+
+@keyframes fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 @keyframes pop {
@@ -233,20 +266,5 @@
   .categories {
     padding-top: 90px;
     padding-bottom: 80px;
-  }
-}
-
-/* phones: a clean list split by lines instead of four boxes */
-@media only screen and (max-width: 700px) {
-  .grid {
-    gap: 0;
-    border-bottom: 2px solid var(--line);
-  }
-  .category {
-    padding: 22px 0 22px;
-    border: 0;
-    border-top: 2px solid var(--line);
-    border-radius: 0;
-    background: none;
   }
 }

@@ -247,14 +247,8 @@
   text-align: center;
 }
 
-/* the last three digits are the ones that move live */
-.odo > .wheel:nth-last-child(-n + 3) {
-  color: var(--acc);
-}
-
 .comma {
   line-height: 1.2em;
-  opacity: 0.35;
   margin: 0 0.02em;
 }
 
@@ -511,7 +505,7 @@
     height: auto;
     padding: 0;
     background: none;
-    color: #ff2a6d;
+    color: var(--fg);
     font-size: 12px;
   }
   .livePill i {

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { renderText } from "@/lib/utils";
 import styles from "./Categories.module.css";
 import data from "@/data.json";
@@ -10,6 +10,22 @@ const KEYS = ["content", "brand", "social", "web"];
 
 const Categories = ({ language }) => {
   const [sel, setSel] = useState(0);
+  // phones: picker + one big panel that rotates on its own until tapped
+  const [pick, setPick] = useState(0);
+  const [auto, setAuto] = useState(true);
+  const mob = useRef(null);
+
+  useEffect(() => {
+    if (!auto || !mob.current) return;
+    let visible = false;
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), { threshold: 0.4 });
+    io.observe(mob.current);
+    const t = setInterval(() => visible && setPick((p) => (p + 1) % KEYS.length), 4500);
+    return () => {
+      io.disconnect();
+      clearInterval(t);
+    };
+  }, [auto]);
 
   // Jump to the form with the chosen service already written in.
   const ask = (k) => {
@@ -60,6 +76,34 @@ const Categories = ({ language }) => {
             </a>
           </Reveal>
         ))}
+      </div>
+      <div className={styles.mob} ref={mob}>
+        <div className={styles.picker} role="tablist">
+          {KEYS.map((k, i) => (
+            <button
+              key={k}
+              type="button"
+              role="tab"
+              aria-selected={pick === i}
+              className={`${styles.pick} ${pick === i ? styles.pickOn : ""}`}
+              onClick={() => {
+                setPick(i);
+                setAuto(false);
+              }}
+            >
+              <span className={styles.pickNum}>0{i + 1}</span>
+              <span className={styles.pickName}>{categories_title[language][k].replace(/<br>/g, " ")}</span>
+              {auto && pick === i && <i className={styles.pickBar} />}
+            </button>
+          ))}
+        </div>
+        <div className={styles.panel} key={pick}>
+          <h2>{categories_title[language][KEYS[pick]].replace(/<br>/g, " ")}</h2>
+          <p>{renderText(categories_description[language][KEYS[pick]])}</p>
+          <a className={styles.ask} href="#form" onClick={() => ask(KEYS[pick])}>
+            {language === "cz" ? "Chci nabídku" : "Get a quote"} <span aria-hidden="true">→</span>
+          </a>
+        </div>
       </div>
     </section>
   );
