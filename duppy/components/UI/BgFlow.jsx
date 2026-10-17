@@ -2,7 +2,8 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
-const PHONE = "(hover: none), (max-width: 820px)";
+// width only: a touch-screen laptop must still get the moving desktop field
+const PHONE = "(max-width: 820px)";
 
 // Colour field behind the page. Each section carries data-bg with its own
 // palette (globals.css).

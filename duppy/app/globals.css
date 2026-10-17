@@ -103,9 +103,9 @@ html {
   transition: --f1 1.6s ease, --f2 1.6s ease, --f3 1.6s ease, --f4 1.6s ease, background-color 0.4s ease;
 }
 
-/* phones ignore fixed backgrounds: paint one field per screen height instead,
-   so there is never an overlay or a hard edge while the toolbar moves */
-@media (hover: none), (max-width: 820px) {
+/* phones (decided by width only, so touch-screen computers keep the moving
+   desktop field): the field is painted into the page instead */
+@media (max-width: 820px) {
   /* phones: the same field on one fixed sheet taller than the largest
      viewport, so no seams and nothing shows when the toolbar slides */
   html {
