@@ -56,16 +56,17 @@ export default function App() {
   const [err, setErr] = useState("");
   const [code, setCode] = useState("");
   const [me, setMe] = useState(null);
-  const [settings, setSettings] = useState(null);
+
+  // The team gets the admin view by being signed in to the admin hub; the
+  // server decides, there is no shared PIN.
+  useEffect(() => {
+    sget("session").then((s) => { if (s?.team) setView("admin"); });
+  }, []);
 
   const login = async () => {
     const c = code.trim().toUpperCase();
     if (!c) return;
     setLoading(true); setErr("");
-    let st = await sget("settings");
-    if (!st) { st = { adminPin: "DUPSCALED" }; await sset("settings", st); }
-    setSettings(st);
-    if (c === st.adminPin.toUpperCase()) { setView("admin"); setLoading(false); return; }
     const cl = await sget("client:" + c);
     if (cl) { setMe(cl); setView("client"); }
     else setErr("Code not found. Double-check it or contact Dalibor.");
@@ -96,21 +97,20 @@ export default function App() {
             <button className="btn solid wide" onClick={login} disabled={loading}>
               {loading ? "Verifying…" : "Enter →"}
             </button>
-            <p className="hint">Clients receive their code from DUPSCALED. Admins use their PIN.</p>
+            <p className="hint">Clients receive their code from DUPSCALED. Team: <a href="/adminhub/login" style={{ textDecoration: "underline" }}>sign in</a>.</p>
           </div>
         </div>
       )}
-      {view === "admin" && <Admin settings={settings} setSettings={setSettings} onLogout={() => { setView("login"); setCode(""); }} />}
+      {view === "admin" && <Admin onLogout={() => { setView("login"); setCode(""); }} />}
       {view === "client" && <ClientPortal client={me} setClient={setMe} onLogout={() => { setView("login"); setCode(""); setMe(null); }} />}
     </div>
   );
 }
 
-function Admin({ settings, setSettings, onLogout }) {
+function Admin({ onLogout }) {
   const [clients, setClients] = useState(null);
   const [sel, setSel] = useState(null);
   const [showNew, setShowNew] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
 
   const loadAll = useCallback(async () => {
     const idx = (await sget("clients:index")) || [];
@@ -157,9 +157,7 @@ function Admin({ settings, setSettings, onLogout }) {
 
   return (
     <div className="shell">
-      <TopBar label="ADMIN" onLogout={onLogout} extra={
-        <button className="btn small" onClick={() => setShowSettings(true)}>Settings</button>
-      } />
+      <TopBar label="ADMIN" onLogout={onLogout} />
       {!selected ? (
         <div className="page">
           <Stats clients={clients} />
@@ -194,7 +192,6 @@ function Admin({ settings, setSettings, onLogout }) {
         <ClientDetail client={selected} save={saveClient} del={deleteClient} back={() => setSel(null)} />
       )}
       {showNew && <NewClientModal onClose={() => setShowNew(false)} onCreate={createClient} />}
-      {showSettings && <SettingsModal settings={settings} setSettings={setSettings} onClose={() => setShowSettings(false)} />}
     </div>
   );
 }
@@ -226,22 +223,6 @@ function NewClientModal({ onClose, onCreate }) {
       <button className="btn solid wide" style={{ marginTop: 16 }} disabled={!name.trim()} onClick={() => onCreate(name.trim())}>
         Create & generate code →
       </button>
-    </Modal>
-  );
-}
-
-function SettingsModal({ settings, setSettings, onClose }) {
-  const [pin, setPin] = useState(settings?.adminPin || "");
-  const save = async () => {
-    const st = { ...settings, adminPin: pin.trim() || "DUPSCALED" };
-    await sset("settings", st); setSettings(st); onClose();
-  };
-  return (
-    <Modal title="Settings" onClose={onClose}>
-      <label className="flabel">Admin PIN</label>
-      <input className="finput" value={pin} onChange={(e) => setPin(e.target.value)} />
-      <p className="hint" style={{ marginTop: 10 }}>Default PIN is DUPSCALED — change it now.</p>
-      <button className="btn solid wide" style={{ marginTop: 16 }} onClick={save}>Save</button>
     </Modal>
   );
 }

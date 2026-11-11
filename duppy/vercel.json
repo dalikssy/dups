@@ -1,0 +1,3 @@
+{
+  "crons": [{ "path": "/api/adminhub/cron/sync", "schedule": "0 7 * * *" }]
+}

@@ -3,6 +3,7 @@ import "./globals.css";
 import PixelField from "@/components/UI/PixelField";
 import FX from "@/components/UI/FX";
 import BgFlow from "@/components/UI/BgFlow";
+import SiteChrome from "@/components/UI/SiteChrome";
 
 // Self-hosted (OFL) and subset to Latin + Latin Extended-A for Czech.
 const anton = localFont({
@@ -79,10 +80,14 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <BgFlow />
-        <PixelField />
+        <SiteChrome>
+          <BgFlow />
+          <PixelField />
+        </SiteChrome>
         {children}
-        <FX />
+        <SiteChrome>
+          <FX />
+        </SiteChrome>
       </body>
     </html>
   );
