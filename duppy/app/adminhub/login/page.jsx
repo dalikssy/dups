@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/auth";
+import Logo from "@/components/Brand/Logo";
 
 export default async function Login({ searchParams }) {
   const session = await auth();
@@ -11,11 +12,18 @@ export default async function Login({ searchParams }) {
   }
 
   return (
-    <div className="hub-login">
-      <div className="panel">
-        <div className="stack">
+    <div className="hub-login split">
+      <div className="login-art">
+        <div className="claim">
           <span className="tag">Admin_hub</span>
-          <strong>DUPSCALED</strong>
+          <p>Outreach, clients and numbers in <em>one place.</em></p>
+        </div>
+      </div>
+      <div className="login-side">
+      <div className="panel">
+        <div className="lockup">
+          <Logo variant="full" height={34} />
+          <span className="tag">Admin_hub</span>
         </div>
         {searchParams?.error && (
           <p className="note bad" role="alert">
@@ -30,6 +38,7 @@ export default async function Login({ searchParams }) {
           </button>
         </form>
         <p className="small muted">Team members only.</p>
+      </div>
       </div>
     </div>
   );

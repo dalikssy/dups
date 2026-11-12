@@ -1,7 +1,8 @@
 import { sql } from "./db";
 import { HttpError } from "./errors";
 import { verifyEmail, httpUrl } from "./verify";
-import { writeDraft, writeFollowup } from "./claude";
+import { randomBytes } from "node:crypto";
+import { writeDraft, writeFollowup, researchAudit } from "./claude";
 import * as gmail from "./gmail";
 
 // Pipeline order. "new" and "drafted" are the stages before first contact;
@@ -17,12 +18,14 @@ const FOLLOWUPS_PER_RUN = 8; // keeps one sync run inside the function time limi
 export async function listLeads() {
   const leads = await sql`select * from hub_leads order by updated_at desc`;
   const drafts = await sql`select * from hub_drafts order by created_at`;
+  const audits = await sql`select lead_id, slug, views, created_at, first_viewed_at, last_viewed_at from hub_audits`;
+  const auditOf = new Map(audits.map((a) => [a.lead_id, a]));
   const byLead = new Map();
   for (const d of drafts) {
     if (!byLead.has(d.lead_id)) byLead.set(d.lead_id, []);
     byLead.get(d.lead_id).push(d);
   }
-  return leads.map((l) => ({ ...l, drafts: byLead.get(l.id) || [] }));
+  return leads.map((l) => ({ ...l, drafts: byLead.get(l.id) || [], audit: auditOf.get(l.id) || null }));
 }
 
 const clip = (value, max) => (typeof value === "string" && value.trim() ? value.trim().slice(0, max) : null);
@@ -81,7 +84,8 @@ export async function generateDraft(leadId, user) {
     throw new HttpError(400, "This draft is already in Gmail. Edit it there.");
   }
   const recent = await sql`select subject from hub_drafts where kind = 'initial' order by created_at desc limit 20`;
-  const draft = await writeDraft(lead, recent.map((r) => r.subject));
+  const audit = await sql`select slug from hub_audits where lead_id = ${leadId}`;
+  const draft = await writeDraft(lead, recent.map((r) => r.subject), audit[0] ? auditUrl(audit[0].slug) : null);
   const rows = await sql`
     insert into hub_drafts (lead_id, kind, subject, body, created_by)
     values (${leadId}, 'initial', ${draft.subject}, ${draft.body}, ${user.email})
@@ -138,6 +142,7 @@ export async function updateLead(id, patch) {
       language = ${patch.language === "cs" || patch.language === "en" ? patch.language : lead.language},
       email_verified = ${typeof patch.email_verified === "boolean" ? patch.email_verified : lead.email_verified},
       replied_at = ${status === "replied" && !lead.replied_at ? new Date() : lead.replied_at},
+      contacted_at = ${status === "contacted" && !lead.contacted_at ? new Date() : lead.contacted_at},
       updated_at = now()
     where id = ${id} returning *`;
   return rows[0];
@@ -248,4 +253,54 @@ export async function sync() {
     }
   }
   return report;
+}
+
+/* ---------------------------------------------------------------- audit */
+
+const SITE = (process.env.SITE_URL || "https://www.dupscaled.com").replace(/\/+$/, "");
+
+export function auditUrl(slug) {
+  return `${SITE}/a/${slug}`;
+}
+
+// Readable, but with a random tail so audits cannot be found by guessing.
+function newSlug(name) {
+  const base = name
+    .normalize("NFKD")
+    .replace(/\p{M}/gu, "") // strip the accents split off by NFKD
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40);
+  return `${base || "audit"}-${randomBytes(8).toString("base64url").replace(/[-_]/g, "x").toLowerCase()}`;
+}
+
+// Researches the lead and stores the audit. Running it again replaces the
+// content but keeps the link, so a link already sent in an email stays valid.
+export async function createAudit(leadId, user, { emit, deadline }) {
+  const lead = await getLead(leadId);
+  const data = await researchAudit(lead, { emit, deadline });
+  if (!data) throw new HttpError(504, "The research ran out of time. Try again.");
+  const rows = await sql`
+    insert into hub_audits (lead_id, slug, data, created_by)
+    values (${leadId}, ${newSlug(lead.name)}, ${JSON.stringify(data)}::jsonb, ${user.email})
+    on conflict (lead_id) do update set data = excluded.data, created_at = now(), created_by = excluded.created_by
+    returning lead_id, slug, views, created_at, first_viewed_at, last_viewed_at`;
+  return rows[0];
+}
+
+export async function getAudit(slug) {
+  if (typeof slug !== "string" || !/^[a-z0-9-]{10,80}$/.test(slug)) return null;
+  const rows = await sql`
+    select a.slug, a.data, a.created_at, l.name, l.language, l.website
+    from hub_audits a join hub_leads l on l.id = a.lead_id
+    where a.slug = ${slug}`;
+  return rows[0] || null;
+}
+
+export async function recordAuditView(slug) {
+  await sql`
+    update hub_audits
+    set views = views + 1, first_viewed_at = coalesce(first_viewed_at, now()), last_viewed_at = now()
+    where slug = ${slug}`;
 }

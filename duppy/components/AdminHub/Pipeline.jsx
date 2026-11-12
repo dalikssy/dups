@@ -4,11 +4,11 @@ import Link from "next/link";
 import { api, daysSince } from "./api";
 
 const COLUMNS = [
-  { key: "drafted", label: "Drafted", hint: "In Gmail, waiting for you to send" },
-  { key: "contacted", label: "Contacted", hint: "Sent, no reply yet" },
-  { key: "replied", label: "Replied" },
-  { key: "call", label: "Call" },
-  { key: "closed", label: "Closed" },
+  { key: "drafted", label: "Drafted", hint: "In Gmail, waiting for you to send", color: "#a3a3a3" },
+  { key: "contacted", label: "Contacted", hint: "Sent, no reply yet", color: "#8efc09" },
+  { key: "replied", label: "Replied", hint: "They wrote back", color: "#00fffc" },
+  { key: "call", label: "Call", hint: "Call booked or done", color: "#00fffc" },
+  { key: "closed", label: "Closed", hint: "Signed clients", color: "#8efc09" },
 ];
 const OUT = ["cold", "bounced", "lost"];
 const MOVES = ["drafted", "contacted", "replied", "call", "closed", "cold", "lost"];
@@ -35,6 +35,7 @@ function Card({ lead, onMove }) {
         {lead.status === "contacted" && days != null && <span className="pill">Day {days}</span>}
         {lead.status === "contacted" && followUpPill(lead)}
         {lead.language === "cs" && <span className="pill info">CZ</span>}
+        {lead.audit?.views > 0 && <span className="pill ok">Audit opened {lead.audit.views}×</span>}
       </div>
       <select
         className="field"
@@ -114,10 +115,11 @@ export default function Pipeline() {
 
   return (
     <>
-      <header className="hub-head">
+      <header className="hub-head hero" style={{ "--art": "url(/brand/bg-hero-pipeline.jpg)" }}>
         <div>
           <span className="tag">Outreach_</span>
           <h1>Pipeline</h1>
+          <p className="lede">Every lead from first email to closed deal, kept in step with Gmail.</p>
         </div>
         <div className="row">
           <button className="btn" type="button" onClick={sync} disabled={syncing}>
@@ -136,12 +138,12 @@ export default function Pipeline() {
         </p>
       )}
 
-      <div className="hub-stats">
-        <div><b>{by("new").length}</b><span className="tag dim">New leads</span></div>
-        <div><b>{contacted}</b><span className="tag dim">Contacted</span></div>
-        <div><b>{replied}</b><span className="tag dim">Replied</span></div>
-        <div><b>{contacted ? Math.round((replied / contacted) * 100) : 0}%</b><span className="tag dim">Reply rate</span></div>
-        <div><b>{by("closed").length}</b><span className="tag dim">Closed</span></div>
+      <div className="hub-tiles">
+        <div className="glass hub-tile"><span className="tag dim">New leads</span><b>{by("new").length}</b></div>
+        <div className="glass hub-tile"><span className="tag dim">Contacted</span><b>{contacted}</b></div>
+        <div className="glass hub-tile"><span className="tag dim">Replied</span><b>{replied}</b></div>
+        <div className="glass hub-tile"><span className="tag dim">Reply rate</span><b>{contacted ? Math.round((replied / contacted) * 100) : 0}%</b></div>
+        <div className="glass hub-tile accent"><span className="tag">Closed</span><b>{by("closed").length}</b></div>
       </div>
 
       {leads === null && !error && <p className="muted">Loading pipeline…</p>}
@@ -149,12 +151,16 @@ export default function Pipeline() {
       {leads !== null && (
         <div className="hub-board">
           {COLUMNS.map((col) => (
-            <section className="hub-col" key={col.key} aria-label={col.label}>
+            <section className="hub-col" key={col.key} aria-label={col.label} style={{ "--stage": col.color }}>
               <header>
-                <h3>{col.label}</h3>
+                <img src={`/brand/ic-${col.key}.jpg`} alt="" width="46" height="46" />
+                <div>
+                  <h3>{col.label}</h3>
+                  <p className="small muted">{col.hint}</p>
+                </div>
                 <span className="count">{by(col.key).length}</span>
               </header>
-              {col.hint && <p className="small muted">{col.hint}</p>}
+              {by(col.key).length === 0 && <p className="empty">Nothing here yet</p>}
               {by(col.key).map((lead) => (
                 <Card key={lead.id} lead={lead} onMove={move} />
               ))}
