@@ -110,6 +110,26 @@ const SCHEMA = [
     created_at timestamptz not null default now()
   )`,
   `create unique index if not exists hub_reports_week_idx on hub_reports (client_id, week)`,
+  `create table if not exists hub_quotes (
+    id serial primary key,
+    client text not null,
+    url text,
+    data jsonb not null,
+    created_by text,
+    created_at timestamptz not null default now()
+  )`,
+  `alter table hub_clients add column if not exists retainer numeric`,
+  `alter table hub_clients add column if not exists retainer_currency text not null default 'EUR'`,
+  `create table if not exists hub_payments (
+    id serial primary key,
+    client_id integer not null references hub_clients(id) on delete cascade,
+    month date not null,
+    amount numeric not null,
+    currency text not null,
+    paid boolean not null default false,
+    paid_at timestamptz
+  )`,
+  `create unique index if not exists hub_payments_month_idx on hub_payments (client_id, month)`,
 ];
 
 function ensureSchema() {
