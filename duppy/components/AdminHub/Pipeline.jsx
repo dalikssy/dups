@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { api, daysSince } from "./api";
+import Strategy from "./Strategy";
 
 const COLUMNS = [
   { key: "drafted", label: "Drafted", hint: "In Gmail, waiting for you to send", color: "#a3a3a3" },
@@ -71,6 +72,7 @@ export default function Pipeline() {
   const [error, setError] = useState("");
   const [syncing, setSyncing] = useState(false);
   const [report, setReport] = useState(null);
+  const [strategyRun, setStrategyRun] = useState(0);
 
   const load = useCallback(async () => {
     try {
@@ -122,6 +124,9 @@ export default function Pipeline() {
           <p className="lede">Every lead from first email to closed deal, kept in step with Gmail.</p>
         </div>
         <div className="row">
+          <button className="btn" type="button" onClick={() => setStrategyRun((n) => n + 1)}>
+            Optimize strategy
+          </button>
           <button className="btn" type="button" onClick={sync} disabled={syncing}>
             {syncing ? "Checking Gmail…" : "Check Gmail now"}
           </button>
@@ -137,6 +142,8 @@ export default function Pipeline() {
           {report.errors.length > 0 && ` ${report.errors.length} could not be checked: ${report.errors.join("; ")}`}
         </p>
       )}
+
+      <Strategy trigger={strategyRun} />
 
       <div className="hub-tiles">
         <div className="glass hub-tile"><span className="tag dim">New leads</span><b>{by("new").length}</b></div>

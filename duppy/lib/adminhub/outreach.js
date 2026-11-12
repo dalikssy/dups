@@ -1,4 +1,4 @@
-import { sql } from "./db";
+import { sql, getSetting } from "./db";
 import { HttpError } from "./errors";
 import { verifyEmail, httpUrl } from "./verify";
 import { randomBytes } from "node:crypto";
@@ -87,8 +87,18 @@ export async function generateDraft(leadId, user) {
     throw new HttpError(400, "This draft is already in Gmail. Edit it there.");
   }
   const recent = await sql`select subject from hub_drafts where kind = 'initial' order by created_at desc limit 20`;
-  const audit = await sql`select slug from hub_audits where lead_id = ${leadId}`;
-  const draft = await writeDraft(lead, recent.map((r) => r.subject), audit[0] ? auditUrl(audit[0].slug) : null);
+  const audits = await sql`select slug, data from hub_audits where lead_id = ${leadId}`;
+  // with an audit on file the email is written around it
+  const audit = audits[0]
+    ? {
+        url: auditUrl(audits[0].slug),
+        headline: audits[0].data.headline,
+        gaps: (audits[0].data.gaps || []).map((g) => g.title).slice(0, 4),
+        clips: (audits[0].data.clip_ideas || []).map((c) => c.title).slice(0, 5),
+      }
+    : null;
+  const strategy = await getSetting("strategy");
+  const draft = await writeDraft(lead, recent.map((r) => r.subject), audit, strategy?.guidance || null);
   const rows = await sql`
     insert into hub_drafts (lead_id, kind, subject, body, created_by)
     values (${leadId}, 'initial', ${draft.subject}, ${draft.body}, ${user.email})
