@@ -46,7 +46,10 @@ async function insertLead(lead, user) {
 // Called by the lead finder for every candidate the model wants to save.
 export async function saveFoundLead(input, { segment, market, user }) {
   const check = await verifyEmail(input.email, input.source_url);
-  if (check.rejected || check.verified === false) {
+  // Only a bad source is refused outright. A page that loads but does not show
+  // the address in its HTML is often rendered by scripts, so the lead is kept
+  // and flagged: nobody can draft to it until a person has checked the email.
+  if (check.rejected) {
     return { saved: false, message: `Not saved. ${check.reason} Give the exact official page that shows the address, or drop this target.` };
   }
   const lead = await insertLead({ ...input, segment, market, verified: check.verified === true }, user);
@@ -56,7 +59,7 @@ export async function saveFoundLead(input, { segment, market, user }) {
     lead,
     message: check.verified
       ? "Saved and verified."
-      : `Saved, flagged for a manual check (${check.reason}).`,
+      : `Saved, flagged for a manual check (${check.reason}). Where you can, prefer pages that print the address in plain text.`,
   };
 }
 
