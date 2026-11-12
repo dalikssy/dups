@@ -134,18 +134,50 @@ async function call(path, init = {}) {
 const b64 = (s) => Buffer.from(s, "utf8").toString("base64");
 const header = (s) => (/^[\x20-\x7e]*$/.test(s) ? s : `=?UTF-8?B?${b64(s)}?=`);
 
+const escapeHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+// The same markup Gmail produces when someone types a message: one <div> per
+// line, an empty one between paragraphs. Web addresses become links.
+function html(body) {
+  const lines = body.replace(/\r/g, "").split("\n").map((line) => {
+    if (!line.trim()) return "<div><br></div>";
+    const text = escapeHtml(line).replace(
+      /(https?:\/\/[^\s<]+|www\.dupscaled\.com)/g,
+      (url) => `<a href="${url.startsWith("http") ? url : `https://${url}`}">${url}</a>`,
+    );
+    return `<div>${text}</div>`;
+  });
+  return `<div dir="ltr">${lines.join("")}</div>`;
+}
+
+const part = (type, content) =>
+  `Content-Type: ${type}; charset="UTF-8"\r\nContent-Transfer-Encoding: base64\r\n\r\n${b64(content).replace(/(.{76})/g, "$1\r\n")}`;
+
+// Drafts carry an HTML part next to the plain text. A plain-text-only message
+// opens in Gmail's plain text mode and is hard-wrapped at about 78 characters
+// when sent, which is what makes paragraphs look ragged on the reader's side.
 function mime({ to, subject, body, inReplyTo }) {
+  const boundary = `hub_${randomBytes(12).toString("hex")}`;
   const lines = [
     `From: ${SENDER}`,
     `To: ${to}`,
     `Subject: ${header(subject)}`,
     "MIME-Version: 1.0",
-    'Content-Type: text/plain; charset="UTF-8"',
-    "Content-Transfer-Encoding: base64",
+    `Content-Type: multipart/alternative; boundary="${boundary}"`,
   ];
   if (inReplyTo) lines.push(`In-Reply-To: ${inReplyTo}`, `References: ${inReplyTo}`);
-  const encoded = b64(body.replace(/\r?\n/g, "\r\n")).replace(/(.{76})/g, "$1\r\n");
-  return Buffer.from(`${lines.join("\r\n")}\r\n\r\n${encoded}`, "utf8").toString("base64url");
+  const plain = body.replace(/\r?\n/g, "\r\n");
+  const message = [
+    lines.join("\r\n"),
+    "",
+    `--${boundary}`,
+    part("text/plain", plain),
+    `--${boundary}`,
+    part("text/html", html(body)),
+    `--${boundary}--`,
+    "",
+  ].join("\r\n");
+  return Buffer.from(message, "utf8").toString("base64url");
 }
 
 // Creates a draft in the mailbox. With threadId + inReplyTo it lands as a

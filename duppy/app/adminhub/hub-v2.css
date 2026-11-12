@@ -305,3 +305,11 @@
 .hub .chip:hover { color: var(--white); border-color: rgb(255 255 255 / 0.35); }
 .hub .chip.on { background: var(--energy); border-color: var(--energy); color: var(--black); }
 .hub .chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* ------------------------------------------------------------ strategy */
+
+.hub-strategy { margin-bottom: 26px; gap: 20px; }
+.hub-strategy h3 { margin-bottom: 2px; }
+.hub-change { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 14px; align-items: start; }
+.hub-change .pill { justify-self: start; }
+@media (max-width: 700px) { .hub-change { grid-template-columns: 1fr; } }
