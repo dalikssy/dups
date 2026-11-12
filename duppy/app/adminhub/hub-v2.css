@@ -273,3 +273,35 @@
   .hub-login.split .login-art { min-height: 34vh; }
   .hub-login.split .login-art .claim p { font-size: 24px; }
 }
+
+/* ------------------------------------------------- finder conditions */
+
+.hub-conditions {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 18px;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 18px;
+  background: rgb(0 0 0 / 0.35);
+  min-width: 0;
+}
+.hub-conditions legend { padding: 0 8px; }
+.hub .chip {
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dim);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+}
+.hub .chip:hover { color: var(--white); border-color: rgb(255 255 255 / 0.35); }
+.hub .chip.on { background: var(--energy); border-color: var(--energy); color: var(--black); }
+.hub .chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }

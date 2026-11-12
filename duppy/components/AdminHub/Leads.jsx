@@ -5,8 +5,11 @@ import Audit from "./Audit";
 
 /* ------------------------------------------------------------ finder */
 
+const PLATFORMS = ["YouTube", "Twitch", "Kick", "TikTok", "Instagram", "Podcast"];
+const EMPTY = { segment: "", market: "", count: 5, notes: "", platforms: [], audienceMin: "", audienceMax: "", mustHave: "", leaveOut: "" };
+
 function Finder({ onLead }) {
-  const [form, setForm] = useState({ segment: "", market: "", count: 5, notes: "" });
+  const [form, setForm] = useState(EMPTY);
   const [running, setRunning] = useState(false);
   const [log, setLog] = useState([]);
   const box = useRef(null);
@@ -18,6 +21,21 @@ function Finder({ onLead }) {
     if (box.current) box.current.scrollTop = box.current.scrollHeight;
   }, [log]);
 
+  // The last search is remembered on this device, so the conditions do not
+  // have to be typed again every time.
+  useEffect(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem("hub-finder") || "null");
+      if (saved) setForm({ ...EMPTY, ...saved });
+    } catch {}
+  }, []);
+
+  const toggle = (platform) =>
+    setForm((f) => ({
+      ...f,
+      platforms: f.platforms.includes(platform) ? f.platforms.filter((p) => p !== platform) : [...f.platforms, platform],
+    }));
+
   function handle(event) {
     if (event.type === "status") say("", event.text);
     if (event.type === "lead") {
@@ -27,7 +45,13 @@ function Finder({ onLead }) {
     if (event.type === "skipped") say("miss", `Skipped ${event.name}: ${event.reason}`);
     if (event.type === "error") say("miss", event.error);
     if (event.type === "done") {
-      say("hit", event.finished ? `Done. ${event.saved} saved.` : `Time limit reached with ${event.saved} saved. Run it again to continue.`);
+      const why = {
+        done: `Done. ${event.saved} saved.`,
+        time: `Time limit reached with ${event.saved} saved. Run it again to continue.`,
+        budget: `Research budget used up with ${event.saved} saved. Run it again, or loosen the conditions.`,
+        stuck: `Stopped with ${event.saved} saved: no more candidates with a readable email. Try a broader segment or fewer conditions.`,
+      };
+      say(event.saved > 0 ? "hit" : "miss", why[event.reason] || why.done);
     }
   }
 
@@ -35,6 +59,9 @@ function Finder({ onLead }) {
     e.preventDefault();
     setRunning(true);
     setLog([{ cls: "", text: "Starting research…" }]);
+    try {
+      localStorage.setItem("hub-finder", JSON.stringify(form));
+    } catch {}
     try {
       const res = await fetch("/api/adminhub/leads/find", {
         method: "POST",
@@ -87,9 +114,41 @@ function Finder({ onLead }) {
             </select>
           </label>
         </div>
+        <fieldset className="hub-conditions">
+          <legend className="tag blue">Conditions_</legend>
+          <p className="small muted">Only targets that meet all of these are saved. Leave a field empty to skip it.</p>
+          <div className="lbl">
+            Platform
+            <div className="row" role="group" aria-label="Platform">
+              {PLATFORMS.map((p) => (
+                <button key={p} type="button" className={`chip${form.platforms.includes(p) ? " on" : ""}`} aria-pressed={form.platforms.includes(p)} onClick={() => toggle(p)}>
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="row">
+            <label className="lbl grow">
+              Audience from
+              <input className="field" value={form.audienceMin} onChange={set("audienceMin")} placeholder="100K" />
+            </label>
+            <label className="lbl grow">
+              Audience to
+              <input className="field" value={form.audienceMax} onChange={set("audienceMax")} placeholder="2M" />
+            </label>
+          </div>
+          <label className="lbl">
+            Must have
+            <input className="field" value={form.mustHave} onChange={set("mustHave")} placeholder="e.g. streams at least 3 times a week, English-speaking" />
+          </label>
+          <label className="lbl">
+            Leave out
+            <input className="field" value={form.leaveOut} onChange={set("leaveOut")} placeholder="e.g. FaZe members, gambling streams, anyone with an agency" />
+          </label>
+        </fieldset>
         <label className="lbl">
           Notes (optional)
-          <input className="field" value={form.notes} onChange={set("notes")} placeholder="Anything to prefer or avoid" />
+          <input className="field" value={form.notes} onChange={set("notes")} placeholder="Anything to prefer" />
         </label>
         <div className="row">
           <button className="btn primary" type="submit" disabled={running}>

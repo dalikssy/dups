@@ -26,6 +26,18 @@ export async function POST(request) {
   const segment = text(input.segment, 1000);
   const market = text(input.market, 200);
   const count = Math.min(Math.max(Number(input.count) || 5, 1), 10);
+
+  // The form's conditions, turned into plain sentences for the model.
+  const PLATFORMS = ["YouTube", "Twitch", "Kick", "TikTok", "Instagram", "Podcast"];
+  const platforms = Array.isArray(input.platforms) ? PLATFORMS.filter((p) => input.platforms.includes(p)) : [];
+  const from = text(input.audienceMin, 20);
+  const to = text(input.audienceMax, 20);
+  const criteria = [
+    platforms.length ? `Main platform is one of: ${platforms.join(", ")}` : null,
+    from || to ? `Audience on their main platform is ${from ? `at least ${from}` : ""}${from && to ? " and " : ""}${to ? `at most ${to}` : ""} followers or subscribers` : null,
+    text(input.mustHave, 500) ? `Must have: ${text(input.mustHave, 500)}` : null,
+    text(input.leaveOut, 500) ? `Leave out: ${text(input.leaveOut, 500)}` : null,
+  ].filter(Boolean);
   const encoder = new TextEncoder();
 
   const body = new ReadableStream({
@@ -38,6 +50,7 @@ export async function POST(request) {
             segment,
             market,
             count,
+            criteria,
             notes: text(input.notes, 1000),
             exclude: known.map((l) => `${l.name} <${l.email}>`),
             deadline: Date.now() + BUDGET,
