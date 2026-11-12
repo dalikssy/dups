@@ -56,6 +56,60 @@ const SCHEMA = [
     sent_at timestamptz
   )`,
   `create unique index if not exists hub_drafts_lead_kind_idx on hub_drafts (lead_id, kind)`,
+  `create table if not exists hub_audits (
+    id serial primary key,
+    lead_id integer not null unique references hub_leads(id) on delete cascade,
+    slug text not null unique,
+    data jsonb not null,
+    created_by text,
+    created_at timestamptz not null default now(),
+    views integer not null default 0,
+    first_viewed_at timestamptz,
+    last_viewed_at timestamptz
+  )`,
+  `create table if not exists hub_clients (
+    id serial primary key,
+    name text not null,
+    email text not null,
+    password_hash text,
+    session_version integer not null default 1,
+    status text not null default 'active',
+    notes text,
+    failed_logins integer not null default 0,
+    locked_until timestamptz,
+    last_login_at timestamptz,
+    created_by text,
+    created_at timestamptz not null default now()
+  )`,
+  `create unique index if not exists hub_clients_email_idx on hub_clients (lower(email))`,
+  `create table if not exists hub_deliverables (
+    id serial primary key,
+    client_id integer not null references hub_clients(id) on delete cascade,
+    title text not null,
+    due_date date,
+    status text not null default 'in_progress',
+    assignee text,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+  )`,
+  `create table if not exists hub_stats (
+    id serial primary key,
+    client_id integer not null references hub_clients(id) on delete cascade,
+    week date not null,
+    platform text not null,
+    followers bigint,
+    views bigint
+  )`,
+  `create unique index if not exists hub_stats_week_idx on hub_stats (client_id, week, platform)`,
+  `create table if not exists hub_reports (
+    id serial primary key,
+    client_id integer not null references hub_clients(id) on delete cascade,
+    week date not null,
+    body text not null,
+    created_by text,
+    created_at timestamptz not null default now()
+  )`,
+  `create unique index if not exists hub_reports_week_idx on hub_reports (client_id, week)`,
 ];
 
 function ensureSchema() {

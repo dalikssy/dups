@@ -11,9 +11,15 @@ const PRIVATE = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  experimental: {
+    // the audit PDF reads its fonts from disk at request time
+    outputFileTracingIncludes: { "/a/[slug]/pdf": ["./lib/adminhub/fonts/**"] },
+  },
   async headers() {
     return [
       { source: "/adminhub/:path*", headers: PRIVATE },
+      { source: "/portal/:path*", headers: PRIVATE },
+      { source: "/a/:path*", headers: PRIVATE },
       { source: "/api/:path*", headers: PRIVATE },
       { source: "/onboarding/:path*", headers: PRIVATE.filter((h) => h.key !== "Cache-Control") },
       {

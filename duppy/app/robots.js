@@ -1,5 +1,5 @@
 export default function robots() {
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/adminhub", "/api/", "/onboarding"] }],
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/adminhub", "/api/", "/onboarding", "/a/", "/portal"] }],
   };
 }

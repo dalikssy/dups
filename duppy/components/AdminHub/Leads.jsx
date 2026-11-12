@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "./api";
+import Audit from "./Audit";
 
 /* ------------------------------------------------------------ finder */
 
@@ -188,6 +189,11 @@ function Lead({ lead, gmailReady, reload, flash }) {
 
       {lead.hook && <p className="small muted">{lead.hook}</p>}
 
+      <Audit lead={lead} onChange={reload} />
+      {lead.audit && draft && !draft.body.includes(lead.audit.slug) && (
+        <p className="small muted">This draft was written before the audit. Rewrite it to include the audit link.</p>
+      )}
+
       {draft ? (
         <div className="stack">
           <label className="lbl">
@@ -301,10 +307,11 @@ export default function Leads() {
 
   return (
     <>
-      <header className="hub-head">
+      <header className="hub-head hero" style={{ "--art": "url(/brand/bg-hero-leads.jpg)" }}>
         <div>
           <span className="tag">Outreach_</span>
           <h1>Lead finder</h1>
+          <p className="lede">Find targets with verified emails, write the first email, add an audit.</p>
         </div>
       </header>
 
