@@ -340,12 +340,9 @@
 .hub-legal-body a { color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
 .hub-legal .audit-foot a { text-decoration: underline; text-underline-offset: 3px; }
 
-/* Invoices on a client's page */
-.hub .hub-inv-form { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: rgb(255 255 255 / 0.02); }
-.hub .hub-inv-head { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
-.hub .hub-inv-item { display: grid; grid-template-columns: minmax(0, 1fr) 90px 140px auto; gap: 10px; align-items: center; }
-@media (max-width: 720px) {
-  .hub .hub-inv-head { grid-template-columns: 1fr 1fr; }
-  .hub .hub-inv-item { grid-template-columns: 1fr 1fr; }
-  .hub .hub-inv-item > :first-child { grid-column: 1 / -1; }
+/* Hand-entered income in Finance */
+.hub .hub-entry { display: grid; grid-template-columns: minmax(0, 2fr) 130px 92px 160px minmax(0, 1.4fr) auto auto; gap: 10px; align-items: center; }
+@media (max-width: 900px) {
+  .hub .hub-entry { grid-template-columns: 1fr 1fr; }
+  .hub .hub-entry > :first-child { grid-column: 1 / -1; }
 }
