@@ -1,9 +1,10 @@
 import { sql } from "./db";
 import { HttpError } from "./errors";
 import { CURRENCIES } from "./quotes";
+import { httpUrl } from "./verify";
 
 // Finance is an overview only: who pays what each month and who has paid.
-// Invoices are issued elsewhere.
+// Invoices are issued elsewhere; the hub keeps a hand-entered record of them.
 
 const isMonth = (value) => typeof value === "string" && /^\d{4}-(0[1-9]|1[0-2])$/.test(value);
 export const thisMonth = () => new Date().toISOString().slice(0, 7);
@@ -48,17 +49,31 @@ export async function overview(month) {
     }))
     .filter((c) => c.amount > 0 || c.retainer === null);
 
-  const billable = rows.filter((r) => r.amount > 0);
+  // Invoices count in the month they were issued, on top of the retainers.
+  const invoices = await sql`
+    select i.id, i.client_id, c.name as client, i.number, to_char(i.issued, 'YYYY-MM-DD') as issued,
+           to_char(i.due, 'YYYY-MM-DD') as due, i.currency, i.total::float8 as amount, i.paid
+    from hub_invoices i join hub_clients c on c.id = i.client_id
+    where to_char(i.issued, 'YYYY-MM') = ${current}
+    order by i.issued, i.id`;
+
+  const billable = [...rows.filter((r) => r.amount > 0), ...invoices];
   const from = `${shift(current, -5)}-01`;
+  const until = `${shift(current, 1)}-01`;
   const history = await sql`
-    select to_char(month, 'YYYY-MM') as month, currency, sum(amount)::float8 as received
-    from hub_payments where paid and month >= ${from} and month <= ${first}
-    group by 1, 2 order by 1`;
+    select month, currency, sum(received)::float8 as received from (
+      select to_char(month, 'YYYY-MM') as month, currency, amount as received
+      from hub_payments where paid and month >= ${from} and month <= ${first}
+      union all
+      select to_char(issued, 'YYYY-MM'), currency, total
+      from hub_invoices where paid and issued >= ${from} and issued < ${until}
+    ) t group by 1, 2 order by 1`;
 
   return {
     month: current,
     months: Array.from({ length: 6 }, (_, i) => shift(current, i - 5)),
     clients: rows,
+    invoices,
     expected: byCurrency(billable, (r) => r.amount),
     received: byCurrency(billable.filter((r) => r.paid), (r) => r.amount),
     outstanding: byCurrency(billable.filter((r) => !r.paid), (r) => r.amount),
@@ -87,4 +102,69 @@ export async function setPaid(clientId, month, paid) {
     insert into hub_payments (client_id, month, amount, currency, paid, paid_at)
     values (${clientId}, ${`${month}-01`}, ${client.retainer}, ${client.retainer_currency}, ${Boolean(paid)}, ${paid ? new Date() : null})
     on conflict (client_id, month) do update set paid = excluded.paid, paid_at = excluded.paid_at`;
+}
+
+const isDate = (value) => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value));
+
+function cleanItems(input) {
+  const items = (Array.isArray(input) ? input : [])
+    .slice(0, 40)
+    .map((item) => ({
+      description: String(item?.description ?? "").trim().slice(0, 200),
+      quantity: item?.quantity === "" || item?.quantity == null ? 1 : Number(item.quantity),
+      price: Number(item?.price),
+    }))
+    .filter((item) => item.description);
+  if (!items.length) throw new HttpError(400, "Add at least one item with a description.");
+  for (const item of items) {
+    if (!Number.isFinite(item.quantity) || item.quantity <= 0 || item.quantity > 1e5) throw new HttpError(400, `Enter a valid quantity for "${item.description}".`);
+    // A negative price is allowed, for a discount line.
+    if (!Number.isFinite(item.price) || Math.abs(item.price) > 1e7) throw new HttpError(400, `Enter a valid price for "${item.description}".`);
+  }
+  return items;
+}
+
+export async function listInvoices(clientId) {
+  return sql`
+    select id, number, to_char(issued, 'YYYY-MM-DD') as issued, to_char(due, 'YYYY-MM-DD') as due, currency, items,
+           total::float8 as total, paid, paid_at, link
+    from hub_invoices where client_id = ${clientId} order by issued desc, id desc`;
+}
+
+// Creates an invoice, or rewrites one when input.id is given.
+export async function saveInvoice(clientId, input, user) {
+  const items = cleanItems(input?.items);
+  const total = Math.round(items.reduce((sum, item) => sum + item.quantity * item.price, 0) * 100) / 100;
+  if (!isDate(input?.issued)) throw new HttpError(400, "Pick the invoice date.");
+  const due = isDate(input?.due) ? input.due : null;
+  const currency = CURRENCIES.includes(input?.currency) ? input.currency : "EUR";
+  const number = String(input?.number ?? "").trim().slice(0, 60) || null;
+  const link = input?.link ? httpUrl(input.link) : null;
+  if (input?.link && !link) throw new HttpError(400, "The link must start with https://");
+  const data = JSON.stringify(items);
+
+  if (input?.id) {
+    const rows = await sql`
+      update hub_invoices set number = ${number}, issued = ${input.issued}, due = ${due}, currency = ${currency},
+        items = ${data}::jsonb, total = ${total}, link = ${link}
+      where id = ${Number(input.id)} and client_id = ${clientId} returning id`;
+    if (!rows[0]) throw new HttpError(404, "Invoice not found.");
+    return;
+  }
+  const client = (await sql`select id from hub_clients where id = ${clientId}`)[0];
+  if (!client) throw new HttpError(404, "Client not found.");
+  await sql`
+    insert into hub_invoices (client_id, number, issued, due, currency, items, total, link, created_by)
+    values (${clientId}, ${number}, ${input.issued}, ${due}, ${currency}, ${data}::jsonb, ${total}, ${link}, ${user?.email ?? null})`;
+}
+
+export async function setInvoicePaid(clientId, id, paid) {
+  const rows = await sql`
+    update hub_invoices set paid = ${Boolean(paid)}, paid_at = ${paid ? new Date() : null}
+    where id = ${id} and client_id = ${clientId} returning id`;
+  if (!rows[0]) throw new HttpError(404, "Invoice not found.");
+}
+
+export async function deleteInvoice(clientId, id) {
+  await sql`delete from hub_invoices where id = ${id} and client_id = ${clientId}`;
 }

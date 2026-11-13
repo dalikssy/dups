@@ -130,6 +130,22 @@ const SCHEMA = [
     paid_at timestamptz
   )`,
   `create unique index if not exists hub_payments_month_idx on hub_payments (client_id, month)`,
+  `create table if not exists hub_invoices (
+    id serial primary key,
+    client_id integer not null references hub_clients(id) on delete cascade,
+    number text,
+    issued date not null,
+    due date,
+    currency text not null,
+    items jsonb not null,
+    total numeric not null,
+    paid boolean not null default false,
+    paid_at timestamptz,
+    link text,
+    created_by text,
+    created_at timestamptz not null default now()
+  )`,
+  `create index if not exists hub_invoices_client_idx on hub_invoices (client_id, issued)`,
 ];
 
 function ensureSchema() {

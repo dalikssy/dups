@@ -10,6 +10,7 @@ const COLORS = { EUR: "#8efc09", CZK: "#00fffc", USD: "#ff5fa2", GBP: "#ffc94d" 
 const cash = (n, currency) =>
   new Intl.NumberFormat("en-GB", { style: "currency", currency: currency || "EUR", maximumFractionDigits: 0 }).format(n || 0);
 const monthName = (m) => new Date(`${m}-01T00:00:00Z`).toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+const shortDay = (d) => new Date(`${d}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
 const shortMonth = (m) => new Date(`${m}-01T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" });
 
 // Totals per currency, e.g. "€3,600 + 25 000 Kč". Currencies are never mixed.
@@ -117,7 +118,7 @@ export default function Finance() {
         <div>
           <span className="tag">Admin_</span>
           <h1>Finance</h1>
-          <p className="lede">Retainers, who has paid this month and what the agency takes in.</p>
+          <p className="lede">Retainers, invoices, who has paid this month and what the agency takes in.</p>
         </div>
         {data && (
           <div className="row">
@@ -160,6 +161,43 @@ export default function Finance() {
               </div>
             )}
             <p className="small muted">A month keeps the amount it was recorded with, so changing a retainer does not rewrite earlier months.</p>
+          </section>
+
+          <section className="panel stack">
+            <h2>Invoices issued in {monthName(month)}</h2>
+            {data.invoices.length === 0 ? (
+              <p className="muted">None this month. Add invoices and their items on a client&apos;s page.</p>
+            ) : (
+              <div style={{ overflowX: "auto" }}>
+                <table className="hub-table">
+                  <thead>
+                    <tr><th>Client</th><th>Invoice</th><th>Total</th><th>Status</th></tr>
+                  </thead>
+                  <tbody>
+                    {data.invoices.map((inv) => (
+                      <tr key={inv.id}>
+                        <td><Link className="link" href={`/adminhub/clients/${inv.client_id}`}><b>{inv.client}</b></Link></td>
+                        <td>
+                          {inv.number || "No number"}
+                          <div className="small muted">{shortDay(inv.issued)}{inv.due ? ` · due ${shortDay(inv.due)}` : ""}</div>
+                        </td>
+                        <td><b>{cash(inv.amount, inv.currency)}</b></td>
+                        <td>
+                          <button
+                            className={`btn sm ${inv.paid ? "primary" : ""}`}
+                            type="button"
+                            aria-pressed={inv.paid}
+                            onClick={() => change(() => api(`/clients/${inv.client_id}/invoices`, { method: "PUT", body: { id: inv.id, paid: !inv.paid } }))}
+                          >
+                            {inv.paid ? "Paid" : "Mark as paid"}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </section>
 
           <figure className="glass hub-chart">
