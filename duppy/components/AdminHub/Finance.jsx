@@ -11,6 +11,12 @@ const cash = (n, currency) =>
   new Intl.NumberFormat("en-GB", { style: "currency", currency: currency || "EUR", maximumFractionDigits: 0 }).format(n || 0);
 const monthName = (m) => new Date(`${m}-01T00:00:00Z`).toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
 const shortDay = (d) => new Date(`${d}T00:00:00Z`).toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+// New entries default to today, or to the 1st when another month is open.
+const defaultDate = (month) => {
+  const today = new Date().toISOString().slice(0, 10);
+  return today.startsWith(month) ? today : `${month}-01`;
+};
+const emptyEntry = () => ({ name: "", amount: "", currency: "EUR", date: "", note: "", paid: false });
 const shortMonth = (m) => new Date(`${m}-01T00:00:00Z`).toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" });
 
 // Totals per currency, e.g. "€3,600 + 25 000 Kč". Currencies are never mixed.
@@ -76,6 +82,7 @@ export default function Finance() {
   const [data, setData] = useState(null);
   const [month, setMonth] = useState("");
   const [error, setError] = useState("");
+  const [entry, setEntry] = useState(emptyEntry);
 
   const load = useCallback(async (m) => {
     try {
@@ -101,6 +108,17 @@ export default function Finance() {
     }
   };
 
+  async function addEntry(e) {
+    e.preventDefault();
+    try {
+      await api("/finance/entries", { method: "POST", body: { ...entry, date: entry.date || defaultDate(month) } });
+      setEntry({ ...emptyEntry(), currency: entry.currency });
+      await load(month);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   const step = (by) => {
     const d = new Date(`${month}-01T00:00:00Z`);
     d.setUTCMonth(d.getUTCMonth() + by);
@@ -118,7 +136,7 @@ export default function Finance() {
         <div>
           <span className="tag">Admin_</span>
           <h1>Finance</h1>
-          <p className="lede">Retainers, invoices, who has paid this month and what the agency takes in.</p>
+          <p className="lede">Retainers, other income, who has paid this month and what the agency takes in.</p>
         </div>
         {data && (
           <div className="row">
@@ -164,32 +182,54 @@ export default function Finance() {
           </section>
 
           <section className="panel stack">
-            <h2>Invoices issued in {monthName(month)}</h2>
-            {data.invoices.length === 0 ? (
-              <p className="muted">None this month. Add invoices and their items on a client&apos;s page.</p>
-            ) : (
+            <h2>Other income in {monthName(month)}</h2>
+            <p className="muted">Anyone who pays you, client or not. Counted on top of the retainers.</p>
+            <form className="hub-entry" onSubmit={addEntry}>
+              <input className="field" required placeholder="Person or company" aria-label="Person or company" value={entry.name} onChange={(e) => setEntry({ ...entry, name: e.target.value })} />
+              <input className="field" type="number" min="0" step="any" required placeholder="Amount" aria-label="Amount" value={entry.amount} onChange={(e) => setEntry({ ...entry, amount: e.target.value })} />
+              <select className="field" aria-label="Currency" value={entry.currency} onChange={(e) => setEntry({ ...entry, currency: e.target.value })}>
+                {CURRENCIES.map((c) => <option key={c}>{c}</option>)}
+              </select>
+              <input className="field" type="date" required aria-label="Date" value={entry.date || defaultDate(month)} onChange={(e) => setEntry({ ...entry, date: e.target.value })} />
+              <input className="field" placeholder="Note (optional)" aria-label="Note" value={entry.note} onChange={(e) => setEntry({ ...entry, note: e.target.value })} />
+              <label className="row small" style={{ flexWrap: "nowrap", gap: 6 }}>
+                <input type="checkbox" checked={entry.paid} onChange={(e) => setEntry({ ...entry, paid: e.target.checked })} />
+                Paid
+              </label>
+              <button className="btn primary" type="submit">Add</button>
+            </form>
+            {data.entries.length > 0 && (
               <div style={{ overflowX: "auto" }}>
                 <table className="hub-table">
                   <thead>
-                    <tr><th>Client</th><th>Invoice</th><th>Total</th><th>Status</th></tr>
+                    <tr><th>From</th><th>Date</th><th>Amount</th><th>Status</th><th /></tr>
                   </thead>
                   <tbody>
-                    {data.invoices.map((inv) => (
-                      <tr key={inv.id}>
-                        <td><Link className="link" href={`/adminhub/clients/${inv.client_id}`}><b>{inv.client}</b></Link></td>
+                    {data.entries.map((item) => (
+                      <tr key={item.id}>
                         <td>
-                          {inv.number || "No number"}
-                          <div className="small muted">{shortDay(inv.issued)}{inv.due ? ` · due ${shortDay(inv.due)}` : ""}</div>
+                          <b>{item.name}</b>
+                          {item.note && <div className="small muted">{item.note}</div>}
                         </td>
-                        <td><b>{cash(inv.amount, inv.currency)}</b></td>
+                        <td>{shortDay(item.date)}</td>
+                        <td><b>{cash(item.amount, item.currency)}</b></td>
                         <td>
                           <button
-                            className={`btn sm ${inv.paid ? "primary" : ""}`}
+                            className={`btn sm ${item.paid ? "primary" : ""}`}
                             type="button"
-                            aria-pressed={inv.paid}
-                            onClick={() => change(() => api(`/clients/${inv.client_id}/invoices`, { method: "PUT", body: { id: inv.id, paid: !inv.paid } }))}
+                            aria-pressed={item.paid}
+                            onClick={() => change(() => api("/finance/entries", { method: "PUT", body: { id: item.id, paid: !item.paid } }))}
                           >
-                            {inv.paid ? "Paid" : "Mark as paid"}
+                            {item.paid ? "Paid" : "Mark as paid"}
+                          </button>
+                        </td>
+                        <td style={{ textAlign: "right" }}>
+                          <button
+                            className="btn sm quiet danger"
+                            type="button"
+                            onClick={() => window.confirm(`Delete ${item.name}, ${cash(item.amount, item.currency)}? This cannot be undone.`) && change(() => api(`/finance/entries?id=${item.id}`, { method: "DELETE" }))}
+                          >
+                            Delete
                           </button>
                         </td>
                       </tr>

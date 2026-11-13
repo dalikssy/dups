@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { api } from "./api";
 import { Password } from "./Clients";
-import Invoices from "./Invoices";
 import Charts, { PLATFORMS, shortDate } from "@/components/Portal/Charts";
 
 const STATUS = [
@@ -174,8 +173,6 @@ export default function ClientDetail({ id, admin }) {
             <button className="btn primary" type="submit">Add deliverable</button>
           </form>
         </section>
-
-        {admin && <Invoices clientId={id} />}
 
         <section className="panel stack">
           <h2>Weekly update</h2>

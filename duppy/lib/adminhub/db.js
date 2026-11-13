@@ -146,6 +146,9 @@ const SCHEMA = [
     created_at timestamptz not null default now()
   )`,
   `create index if not exists hub_invoices_client_idx on hub_invoices (client_id, issued)`,
+  // Entries no longer need a client: any name and an amount will do.
+  `alter table hub_invoices alter column client_id drop not null`,
+  `alter table hub_invoices add column if not exists name text`,
 ];
 
 function ensureSchema() {
