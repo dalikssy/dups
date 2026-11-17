@@ -341,8 +341,41 @@
 .hub-legal .audit-foot a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* Hand-entered income in Finance */
-.hub .hub-entry { display: grid; grid-template-columns: minmax(0, 2fr) 130px 92px 160px minmax(0, 1.4fr) auto auto; gap: 10px; align-items: center; }
-@media (max-width: 900px) {
-  .hub .hub-entry { grid-template-columns: 1fr 1fr; }
-  .hub .hub-entry > :first-child { grid-column: 1 / -1; }
+.hub .hub-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr) 180px;
+  grid-template-areas: "name amount date" "note note actions";
+  width: 100%;
+  max-width: none;
+  align-self: stretch;
+  gap: 12px;
+  align-items: end;
+  padding: 16px;
+  border: 1px solid rgb(255 255 255 / 0.08);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 0.02);
 }
+.hub .hub-entry .e-name { grid-area: name; }
+.hub .hub-entry .e-amount { grid-area: amount; }
+.hub .hub-entry .e-date { grid-area: date; }
+.hub .hub-entry .e-note { grid-area: note; }
+.hub .hub-entry .e-actions { grid-area: actions; display: flex; gap: 8px; }
+.hub .hub-entry .e-actions { justify-content: flex-end; }
+.hub .hub-entry .btn { min-height: 42px; white-space: nowrap; }
+/* Fields inside a mono caption keep the body font. */
+.hub label.lbl .field { font-family: var(--font-inter), system-ui, sans-serif; letter-spacing: 0; text-transform: none; }
+.hub .hub-entry .btn.on { border-color: var(--energy); color: var(--energy); background: rgb(142 252 9 / 0.08); }
+.hub .hub-money { display: grid; grid-template-columns: minmax(0, 1fr) 84px; gap: 6px; }
+@media (max-width: 1000px) {
+  .hub .hub-entry {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "name name" "amount date" "note note" "actions actions";
+  }
+}
+
+@media (max-width: 560px) {
+  .hub .hub-entry { grid-template-columns: minmax(0, 1fr); grid-template-areas: "name" "amount" "date" "note" "actions"; padding: 14px; }
+}
+
+/* The marketing site styles every input and label; checkboxes in the hub keep their own size. */
+.hub input[type="checkbox"], .hub input[type="radio"] { width: auto; height: auto; max-width: none; padding: 0; }
