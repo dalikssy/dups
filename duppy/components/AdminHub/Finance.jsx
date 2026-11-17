@@ -23,11 +23,9 @@ const shortMonth = (m) => new Date(`${m}-01T00:00:00Z`).toLocaleDateString("en-G
 function Sums({ totals }) {
   const parts = Object.entries(totals).filter(([, n]) => n > 0);
   if (!parts.length) return <b>–</b>;
-  return (
-    <b style={parts.length > 1 ? { fontSize: 22 } : undefined}>
-      {parts.map(([currency, n]) => cash(n, currency)).join(" + ")}
-    </b>
-  );
+  const text = parts.map(([currency, n]) => cash(n, currency)).join(" + ");
+  // Long sums (several currencies, CZK amounts) shrink so they stay inside the tile.
+  return <b style={text.length > 9 ? { fontSize: text.length > 16 ? 20 : 26 } : undefined}>{text}</b>;
 }
 
 function Row({ client, month, onChange }) {
@@ -185,19 +183,40 @@ export default function Finance() {
             <h2>Other income in {monthName(month)}</h2>
             <p className="muted">Anyone who pays you, client or not. Counted on top of the retainers.</p>
             <form className="hub-entry" onSubmit={addEntry}>
-              <input className="field" required placeholder="Person or company" aria-label="Person or company" value={entry.name} onChange={(e) => setEntry({ ...entry, name: e.target.value })} />
-              <input className="field" type="number" min="0" step="any" required placeholder="Amount" aria-label="Amount" value={entry.amount} onChange={(e) => setEntry({ ...entry, amount: e.target.value })} />
-              <select className="field" aria-label="Currency" value={entry.currency} onChange={(e) => setEntry({ ...entry, currency: e.target.value })}>
-                {CURRENCIES.map((c) => <option key={c}>{c}</option>)}
-              </select>
-              <input className="field" type="date" required aria-label="Date" value={entry.date || defaultDate(month)} onChange={(e) => setEntry({ ...entry, date: e.target.value })} />
-              <input className="field" placeholder="Note (optional)" aria-label="Note" value={entry.note} onChange={(e) => setEntry({ ...entry, note: e.target.value })} />
-              <label className="row small" style={{ flexWrap: "nowrap", gap: 6 }}>
-                <input type="checkbox" checked={entry.paid} onChange={(e) => setEntry({ ...entry, paid: e.target.checked })} />
-                Paid
+              <label className="lbl e-name">
+                From
+                <input className="field" required placeholder="Person or company" value={entry.name} onChange={(e) => setEntry({ ...entry, name: e.target.value })} />
               </label>
-              <button className="btn primary" type="submit">Add</button>
+              <label className="lbl e-amount">
+                Amount
+                <span className="hub-money">
+                  <input className="field" type="number" min="0" step="any" required inputMode="decimal" placeholder="0" value={entry.amount} onChange={(e) => setEntry({ ...entry, amount: e.target.value })} />
+                  <select className="field" aria-label="Currency" value={entry.currency} onChange={(e) => setEntry({ ...entry, currency: e.target.value })}>
+                    {CURRENCIES.map((c) => <option key={c}>{c}</option>)}
+                  </select>
+                </span>
+              </label>
+              <label className="lbl e-date">
+                Date
+                <input className="field" type="date" required value={entry.date || defaultDate(month)} onChange={(e) => setEntry({ ...entry, date: e.target.value })} />
+              </label>
+              <label className="lbl e-note">
+                Note
+                <input className="field" placeholder="Optional, e.g. invoice 2026-014" value={entry.note} onChange={(e) => setEntry({ ...entry, note: e.target.value })} />
+              </label>
+              <div className="e-actions">
+                <button
+                  className={`btn ${entry.paid ? "on" : ""}`}
+                  type="button"
+                  aria-pressed={entry.paid}
+                  onClick={() => setEntry({ ...entry, paid: !entry.paid })}
+                >
+                  {entry.paid ? "✓ Paid" : "Unpaid"}
+                </button>
+                <button className="btn primary" type="submit">Add</button>
+              </div>
             </form>
+            {data.entries.length === 0 && <p className="small muted">Nothing entered for this month yet.</p>}
             {data.entries.length > 0 && (
               <div style={{ overflowX: "auto" }}>
                 <table className="hub-table">
