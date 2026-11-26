@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import { currentClient, signOut } from "@/lib/portal/auth";
+import Link from "next/link";
 import { clientDetail } from "@/lib/adminhub/clients";
+import { listCampaigns } from "@/lib/adminhub/campaigns";
+import { compact } from "@/lib/campaignFields";
 import Logo from "@/components/Brand/Logo";
 import Backdrop from "@/components/Brand/Backdrop";
 import Charts from "@/components/Portal/Charts";
@@ -20,7 +23,10 @@ export default async function Portal() {
   const me = await currentClient();
   if (!me) redirect("/portal/login");
   // Everything shown here is loaded for the signed-in client's own id only.
-  const { client, deliverables, stats, reports } = await clientDetail(me.id, { forClient: true });
+  const [{ client, deliverables, stats, reports }, campaigns] = await Promise.all([
+    clientDetail(me.id, { forClient: true }),
+    listCampaigns(me.id),
+  ]);
 
   async function logout() {
     "use server";
@@ -49,6 +55,24 @@ export default async function Portal() {
             <p className="lede">Your deliverables, numbers and weekly updates in one place.</p>
           </div>
         </header>
+
+        {campaigns.length > 0 && (
+          <section>
+            <span className="tag">Campaigns_</span>
+            <h2>Campaign reports</h2>
+            <div className="cmp-list">
+              {campaigns.map((c) => (
+                <Link key={c.id} className="glass cmp-card" href={`/portal/campaigns/${c.id}`}>
+                  <b>{c.name}</b>
+                  <span className="btn sm">Open report</span>
+                  <span className="small muted">
+                    {[c.brand, c.starts && day(c.starts), `${c.videos} videos`, c.views ? `${compact(c.views)} views` : null].filter(Boolean).join(" · ")}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section>
           <span className="tag">Numbers_</span>

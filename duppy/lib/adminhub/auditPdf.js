@@ -4,7 +4,7 @@ import { PDFDocument, rgb } from "pdf-lib";
 import fontkit from "@pdf-lib/fontkit";
 import { LOGOS } from "../../components/Brand/logoData.js";
 
-// Branded audit PDF. All type is set in the site's own fonts (Unbounded for
+// Branded audit PDF. The layout pieces are shared with the campaign report. All type is set in the site's own fonts (Unbounded for
 // display, Inter for text) and drawn as outlines, so any weight is available
 // and the file looks identical everywhere.
 //
@@ -12,20 +12,20 @@ import { LOGOS } from "../../components/Brand/logoData.js";
 // its capitals to its last baseline, and every gap is one of the SPACE steps.
 // That keeps padding inside cards even on all four sides.
 
-const W = 595.28;
-const H = 841.89;
-const M = 48; // page margin
-const PAD = 18; // inside cards
+export const W = 595.28;
+export const H = 841.89;
+export const M = 48; // page margin
+export const PAD = 18; // inside cards
 // sm is the gap between two text rows; it has to clear the upper row's descenders
-const SPACE = { xs: 6, sm: 13, md: 18, lg: 30, xl: 40 };
+export const SPACE = { xs: 6, sm: 13, md: 18, lg: 30, xl: 40 };
 
-const BLACK = rgb(0, 0, 0);
-const GHOST = rgb(0.094, 0.094, 0.094);
-const LINE = rgb(0.2, 0.2, 0.2);
-const WHITE = rgb(0.969, 0.969, 0.969);
-const DIM = rgb(0.66, 0.66, 0.66);
-const ENERGY = rgb(0.557, 0.988, 0.035);
-const BLUE = rgb(0, 1, 0.988);
+export const BLACK = rgb(0, 0, 0);
+export const GHOST = rgb(0.094, 0.094, 0.094);
+export const LINE = rgb(0.2, 0.2, 0.2);
+export const WHITE = rgb(0.969, 0.969, 0.969);
+export const DIM = rgb(0.66, 0.66, 0.66);
+export const ENERGY = rgb(0.557, 0.988, 0.035);
+export const BLUE = rgb(0, 1, 0.988);
 
 const DIR = path.join(process.cwd(), "lib", "adminhub", "fonts");
 const files = {};
@@ -87,7 +87,7 @@ function wrap(text, style, size, maxWidth) {
 }
 
 // A measured piece of text: lines plus its exact height (cap top to last baseline).
-function block(text, { style = "body", size = 10, color = WHITE, width, align = "left" }) {
+export function block(text, { style = "body", size = 10, color = WHITE, width, align = "left" }) {
   const s = STYLES[style];
   const lines = wrap(text, s, size, width);
   const cap = metrics(s).cap * size;
@@ -95,11 +95,11 @@ function block(text, { style = "body", size = 10, color = WHITE, width, align = 
   return { lines, s, size, color, width, align, cap, step, height: lines.length ? cap + (lines.length - 1) * step : 0 };
 }
 
-function roundRect(x, y, w, h, r) {
+export function roundRect(x, y, w, h, r) {
   return `M${x + r} ${y}H${x + w - r}Q${x + w} ${y} ${x + w} ${y + r}V${y + h - r}Q${x + w} ${y + h} ${x + w - r} ${y + h}H${x + r}Q${x} ${y + h} ${x} ${y + h - r}V${y + r}Q${x} ${y} ${x + r} ${y}Z`;
 }
 
-class Doc {
+export class Doc {
   constructor(pdf, running) {
     this.pdf = pdf;
     this.running = running;

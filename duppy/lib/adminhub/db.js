@@ -149,6 +149,27 @@ const SCHEMA = [
   // Entries no longer need a client: any name and an amount will do.
   `alter table hub_invoices alter column client_id drop not null`,
   `alter table hub_invoices add column if not exists name text`,
+  `create table if not exists hub_campaigns (
+    id serial primary key,
+    client_id integer not null references hub_clients(id) on delete cascade,
+    name text not null,
+    brand text,
+    summary text,
+    starts date,
+    ends date,
+    highlights jsonb not null default '[]'::jsonb,
+    created_at timestamptz not null default now(),
+    updated_at timestamptz not null default now()
+  )`,
+  `create table if not exists hub_campaign_videos (
+    id serial primary key,
+    campaign_id integer not null references hub_campaigns(id) on delete cascade,
+    title text not null,
+    posted_on date,
+    length_s numeric,
+    stats jsonb not null default '{}'::jsonb
+  )`,
+  `create index if not exists hub_campaign_videos_idx on hub_campaign_videos (campaign_id)`,
 ];
 
 function ensureSchema() {

@@ -13,7 +13,11 @@ const nextConfig = {
   poweredByHeader: false,
   experimental: {
     // the audit PDF reads its fonts from disk at request time
-    outputFileTracingIncludes: { "/a/[slug]/pdf": ["./lib/adminhub/fonts/**"] },
+    outputFileTracingIncludes: {
+      "/a/[slug]/pdf": ["./lib/adminhub/fonts/**"],
+      "/adminhub/clients/[id]/campaigns/[cid]/pdf": ["./lib/adminhub/fonts/**"],
+      "/portal/campaigns/[cid]/pdf": ["./lib/adminhub/fonts/**"],
+    },
   },
   async headers() {
     return [

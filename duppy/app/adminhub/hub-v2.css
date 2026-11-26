@@ -379,3 +379,83 @@
 
 /* The marketing site styles every input and label; checkboxes in the hub keep their own size. */
 .hub input[type="checkbox"], .hub input[type="radio"] { width: auto; height: auto; max-width: none; padding: 0; }
+
+/* ---------------------------------------------------------- campaigns */
+.hub .cmp-bar { justify-content: space-between; gap: 14px; }
+.hub .cmp-chips { gap: 8px; }
+.hub .cmp-chip {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 14px;
+  border: 1px solid rgb(255 255 255 / 0.14); border-radius: 999px; background: rgb(255 255 255 / 0.03);
+  color: var(--white); font: inherit; font-size: 13px; cursor: pointer; transition: border-color 0.14s, background 0.14s;
+}
+.hub .cmp-chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+.hub .cmp-chip:hover { border-color: var(--c, var(--white)); }
+.hub .cmp-chip.on { border-color: var(--c, var(--energy)); background: color-mix(in srgb, var(--c, #8efc09) 16%, transparent); }
+.hub .cmp-chip:focus-visible, .hub .cmp-ret:focus-visible, .hub .cmp-legend:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+.hub .cmp-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.hub .cmp-kpis.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.hub .cmp .recharts-wrapper:focus, .hub .cmp .recharts-surface:focus, .hub .cmp .recharts-wrapper *:focus { outline: none; }
+.hub .cmp-kpi {
+  position: relative; overflow: hidden; display: grid; gap: 8px; align-content: start; padding: 18px 20px;
+  border-top: 2px solid var(--c);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c) 14%, transparent), transparent 60%), rgb(255 255 255 / 0.02);
+}
+.hub .cmp-kpi .tag { color: var(--c); }
+.hub .cmp-kpi b { font-family: var(--wide); font-weight: 800; font-size: clamp(24px, 3vw, 34px); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+
+.hub .cmp-split { display: flex; gap: 3px; height: 18px; border-radius: 999px; overflow: hidden; }
+.hub .cmp-split i { min-width: 4px; }
+.hub .cmp-legend { display: inline-flex; align-items: center; gap: 8px; padding: 0; border: 0; background: none; color: var(--white); font: inherit; font-size: 14px; cursor: pointer; }
+.hub .cmp-legend i { width: 10px; height: 10px; border-radius: 50%; }
+
+.hub .cmp-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; }
+.hub .cmp-donut { position: relative; }
+.hub .cmp-donut-mid { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 4px; pointer-events: none; }
+.hub .cmp-donut-mid b { font-family: var(--wide); font-weight: 800; font-size: 24px; letter-spacing: -0.03em; }
+.hub .cmp-mix { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; font-size: 13px; }
+.hub .cmp-mix span { display: inline-flex; align-items: center; gap: 8px; }
+.hub .cmp-mix i { width: 10px; height: 10px; border-radius: 3px; }
+.hub .cmp-mix b { margin-left: auto; }
+
+.hub .cmp-retention { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.hub .cmp-ret {
+  display: grid; gap: 12px; align-content: start; padding: 16px; text-align: left; cursor: pointer;
+  border: 1px solid rgb(255 255 255 / 0.08); border-radius: 16px; background: rgb(255 255 255 / 0.02); color: var(--white); font: inherit;
+  transition: border-color 0.14s;
+}
+.hub .cmp-ret:hover, .hub .cmp-ret.on { border-color: rgb(255 255 255 / 0.35); }
+.hub .cmp-meter { display: grid; gap: 6px; }
+.hub .cmp-track { display: block; height: 8px; border-radius: 999px; background: rgb(255 255 255 / 0.07); overflow: hidden; }
+.hub .cmp-track i { display: block; height: 100%; border-radius: 999px; transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+.hub .cmp-detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.hub .cmp-plat { display: grid; gap: 10px; align-content: start; padding: 16px; border-radius: 16px; border: 1px solid color-mix(in srgb, var(--c) 40%, transparent); background: color-mix(in srgb, var(--c) 6%, transparent); }
+.hub .cmp-plat .tag { color: var(--c); }
+.hub .cmp-plat dl { display: grid; margin: 0; }
+.hub .cmp-plat dl div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgb(255 255 255 / 0.06); }
+.hub .cmp-plat dl div:last-child { border-bottom: 0; }
+.hub .cmp-plat dt { color: var(--dim); font-size: 14px; }
+.hub .cmp-plat dd { margin: 0; font-weight: 650; font-variant-numeric: tabular-nums; }
+
+.hub .cmp-list { display: grid; gap: 10px; }
+.hub .cmp-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 18px 22px; color: var(--white); text-decoration: none; transition: border-color 0.14s; }
+.hub .cmp-card:hover { border-color: var(--energy); }
+.hub .cmp-card b { font-family: var(--wide); font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
+
+.hub .cmp-video { display: grid; gap: 14px; padding: 16px; border: 1px solid rgb(255 255 255 / 0.08); border-radius: 18px; background: rgb(255 255 255 / 0.02); }
+.hub .cmp-video-head { display: grid; grid-template-columns: minmax(0, 1fr) 170px 120px; gap: 10px; align-items: end; }
+.hub .cmp-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.hub .cmp-edit-plat { display: grid; gap: 10px; padding: 14px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); }
+.hub .cmp-edit-plat > .row .tag { color: var(--c); }
+
+@media (max-width: 860px) {
+  .hub .cmp-grid { grid-template-columns: minmax(0, 1fr); }
+  .hub .cmp-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hub .cmp-video-head { grid-template-columns: 1fr 1fr; }
+  .hub .cmp-video-head > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .hub .cmp-kpis.two { grid-template-columns: minmax(0, 1fr); }
+  .hub .cmp-kpi { padding: 14px 16px; }
+}

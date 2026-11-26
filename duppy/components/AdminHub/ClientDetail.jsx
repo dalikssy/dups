@@ -4,6 +4,7 @@ import Link from "next/link";
 import { api } from "./api";
 import { Password } from "./Clients";
 import Charts, { PLATFORMS, shortDate } from "@/components/Portal/Charts";
+import { compact } from "@/lib/campaignFields";
 
 const STATUS = [
   ["in_progress", "In progress"],
@@ -52,12 +53,15 @@ export default function ClientDetail({ id, admin }) {
   const [title, setTitle] = useState("");
   const [week, setWeek] = useState(emptyWeek);
   const [notes, setNotes] = useState("");
+  const [campaigns, setCampaigns] = useState([]);
+  const [campaignName, setCampaignName] = useState("");
 
   const load = useCallback(async () => {
     try {
       const d = await api(`/clients/${id}`);
       setData(d);
       setNotes(d.client.notes || "");
+      setCampaigns((await api(`/clients/${id}/campaigns`)).campaigns);
       setError("");
     } catch (e) {
       setError(e.message);
@@ -86,6 +90,16 @@ export default function ClientDetail({ id, admin }) {
   function addDeliverable(e) {
     e.preventDefault();
     run(() => api(`/clients/${id}/deliverables`, { method: "POST", body: { title } })).then(() => setTitle(""));
+  }
+
+  async function addCampaign(e) {
+    e.preventDefault();
+    try {
+      const { id: cid } = await api(`/clients/${id}/campaigns`, { method: "POST", body: { name: campaignName } });
+      window.location.href = `/adminhub/clients/${id}/campaigns/${cid}`;
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   // Picking a week that already has numbers loads them for editing.
@@ -171,6 +185,28 @@ export default function ClientDetail({ id, admin }) {
           <form className="row" onSubmit={addDeliverable}>
             <input className="field grow" required placeholder="e.g. 12 clips from the October podcast episodes" value={title} onChange={(e) => setTitle(e.target.value)} />
             <button className="btn primary" type="submit">Add deliverable</button>
+          </form>
+        </section>
+
+        <section className="panel stack">
+          <h2>Campaigns</h2>
+          <p className="muted">A report per campaign, with numbers for every video. The client sees it in their portal and can download it as a PDF.</p>
+          {campaigns.length > 0 && (
+            <div className="cmp-list">
+              {campaigns.map((c) => (
+                <Link key={c.id} className="glass cmp-card" href={`/adminhub/clients/${id}/campaigns/${c.id}`}>
+                  <b>{c.name}</b>
+                  <span className="btn sm">Edit</span>
+                  <span className="small muted">
+                    {[c.brand, `${c.videos} videos`, c.views ? `${compact(c.views)} views` : null].filter(Boolean).join(" · ")}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
+          <form className="row" onSubmit={addCampaign}>
+            <input className="field grow" required placeholder="e.g. NVIDIA × Benjyfishy" value={campaignName} onChange={(e) => setCampaignName(e.target.value)} />
+            <button className="btn primary" type="submit">New campaign</button>
           </form>
         </section>
 
